@@ -1,15 +1,14 @@
 ---
-title: "[Unity] Scene View에서 Vector의 Position Handle 조작하기 - Release 1"
+title: "[Unity] Scene View에서 Vector의 Position Handle 조작하기"
 excerpt: "Vector의 Position Handle을 Scene View에서 조작하기 위한 알고리즘을 소개한다."
-categories:
-    - Unity Algorithm
+categories: [Unity, Implementation]
 tags:
-    - [Unity, Attribute, Reflection, Vector, Scene View]
+    - [Unity, Unity Editor, Attribute, Reflection, Vector]
 date: 2022-01-17
 last_modified_at: 2022-02-03
 ---
 
-# 1. 개요
+## 1. 개요
 
 유니티로 게임을 만들다 보면 Vector의 Position을 조작하는 일이 수도 없이 많다. 
 게임 오브젝트의 Position은 `Transform` 컴포넌트가 지원하는 자체적인 **Move-Tool** 도구로 Scene View에서 쉽게 위치를 조작할 수 있지만, 일반적인 `Vector2` 혹은 `Vector3` 타입의 필드의 값을 변경할 때는 수동으로 값을 직접 입력해야 한다. 이는 굉장한 불편함이다.
@@ -19,7 +18,7 @@ last_modified_at: 2022-02-03
 
 위 장면을 보면 알 수 있지만 `Transfrom` 컴포넌트를 조작하는 것이 아닌 `Vector3` 타입의 직렬화된 필드 자체를 Scene View에서 조작하고 있다. 위와 같이 필드로 선언되어있는 Vector 구조체를 Scene View의 **Move-Tool** 도구를 활용해 조작하는 방법을 알아보자.
 
-## Releases
+### Releases
 
 이 블로그는 Release 1을 기준으로 작성되었기 때문에 ***deprecated*** 된 내용이 포함되어있습니다. 업데이트된 버전을 이용하시기 바랍니다.  
 아래는 제가 배포하는 공식 릴리스입니다.
@@ -30,7 +29,7 @@ last_modified_at: 2022-02-03
 |   Release 2    |  2022-02-16  | [release-2](https://github.com/kgmslem/unity-move-tool/tree/release-2) | 7.0 or higher |
 
 
-# 2. 구현에 앞서 필요한 지식
+## 2. 구현에 앞서 필요한 지식
 
 우리가 흔히 유니티에서 인스펙터를 간편히 조작하기 위해 아래와 같이 필드에 *Attribute* 를 정의한다. 
 
@@ -49,7 +48,7 @@ private Vector3 privateVector;
 위 내용만 봐서는 프로그래밍에 깊은 지식과 이해가 있지 않은 한 이해하기 어렵다고 생각한다. 또한 ***Reflection(리플렉션)***이라는 개념도 등장한다. 이들은 C#의 고급기술에 속한다(뇌피셜). 
 나도 처음에는 다소 생소하고 어려웠었다. 그러나 **Move-Tool** 구현을 위해 *Reflection* 에 대해 알아갈 수록, 정말 대단한 기능이라고 느껴질 정도로 강력한 기능이었다. 이에 대해 간단히 알아보자.
 
-## Atribute(특성)
+### Atribute(특성)
 
 먼저, *Attribute*에 대해 내가 이해한 핵심적인 요약은 아래와 같다.
 
@@ -61,7 +60,7 @@ private Vector3 privateVector;
 마찬가지로 우리가 Vector 구조체를 Scene View에서 조작할 수 있게 하기 위해 *Attribute* 를 만들려고 한 이유도 이와 같다. 즉, 이 필드는 **Scene View에서 Position을 조작할 수 있는 Move-Tool 도구를 지원**해야한다고 프로그램에게 알리기 위해서이다.
 
 
-## Reflection(리플렉션)
+### Reflection(리플렉션)
 
 그렇다면 누가 어떤 *Attribute* 를 가지고 있는지 알 수 있을까? C#에서는 ***Reflection(리플렉션)*** 이라는 기법을 통해 가능하다. *Reflection* 은 **런타임**에 **어떤 타입에 대한 정보를 뜯어볼 수 있도록 해준다**. 이는 굉장한 기능이다. 우리가 선언한 클래스 혹은 인터페이스를 비롯해 각종 메서드, 필드에 대해 런타임에 확인하고 조작할 수 있다는 것을 의미한다. 어떤 클래스 내에 선언한 필드에 어떤 *Attribute* 가 할당되어있는지 역시 런타임에 조사가 가능하다.  
 이것이 가능한 이유는 바로 아래와 같다.  
@@ -72,7 +71,7 @@ private Vector3 privateVector;
 앞서 말했듯이 *Reflection* 은 **어떤 타입에 대한 정보를 뜯어볼 수 있도록 해준다**. 즉, 어떤 타입에 대한 정보를 담고 있는 보관함이 필요한데, 그게 바로 `System.Type` 클래스이다. `Type` 인스턴스를 통해 어떤 타입의 정보를 열람하고, 타입 멤버의 데이터를 얻거나 수정이 가능하다. 자세한 내용은 MS 공식 문서 [**리플렉션(C#)**](https://docs.microsoft.com/ko-kr/dotnet/csharp/programming-guide/concepts/reflection)을 참조하기 바란다.
 
 
-# 3. 전체 알고리즘
+## 3. 전체 알고리즘
 
 위에서 구현을 위한 지식을 간단히 소개했다. 필요한 문법은 아래에서 간단히 소개할 것이나, 자세한 내용이 궁금하다면 직접 문서를 참조하길 권장한다.  
 아래는 소스코드가 있는 **Github** 링크이다. 소스코드가 상당히 길기 때문에, **Github Repository**에서도 제공하였다.
@@ -80,7 +79,7 @@ private Vector3 privateVector;
 > [**Code from Github**](https://github.com/kgmslem/unity-move-tool)
 
 
-# 4. MoveToolAttribute
+## 4. MoveToolAttribute
 
 먼저, 필요한 *Attribute* 를 선언하자. 나는 Scene View에서 **Move-Tool** 도구를 지원해준다는 의미로 `MoveToolAttribute`라는 이름으로 선언했다.  
 
@@ -99,7 +98,7 @@ C#에서 ***Attribute(특성)*** 를 생성하기 위해서는 `System.Attribute
 우리는 Vector 타입의 **필드**에만 적용할 거기 때문에 `AttributeUsage`의 생성자에 `AttributeTargets.Field` 값을 인자로 주었다. 이에 대한 자세한 내용은 MS 공식 문서 [**AttributeTargets 열거형**](https://docs.microsoft.com/ko-kr/dotnet/api/system.attributetargets?view=net-6.0)에서 확인하기 바란다.
 
 
-# 5. MoveToolAvailableAttribute
+## 5. MoveToolAvailableAttribute
 
 Vector 타입이 아닌 Vector 타입의 필드 및 컬렉션을 포함하는 커스텀 타입에서 **Move-Tool** 도구를 사용하고 싶을 때 정의해야하는 *Attribute* 이다.
 
@@ -108,11 +107,11 @@ Vector 타입이 아닌 Vector 타입의 필드 및 컬렉션을 포함하는 �
 <br>
 *Attribute* 적용 대상은 `class`와 `struct`이다.
 
-# 6. MoveToolEditor
+## 6. MoveToolEditor
 
 `MoveToolAttribute`를 정의한 필드를 위해 **Move-Tool(Position Handle)**을 유니티 에디터의 Scene View에 생성 및 배치하는 기능을 구현한다. 이를 위해 커스텀 에디터를 만들어야 한다.
 
-## 전체 알고리즘
+### 전체 알고리즘
 
 C#의 *Reflection*과 *Attribute* 기능을 최대한 활용하여 구현했다.  
 참고로 흔히 에디터를 작성할 때 사용하는 `Editor` 베이스 클래스의 멤버인 `serializedObject` 프로퍼티나 기타 방법을 통해 얻을 수 있는 `SerializedProperty` 타입의 직렬화된 프로퍼티들을 전혀 활용하지 않는다.
@@ -135,7 +134,7 @@ Unity 공식 문서 [**Editor.serializedObject**](https://docs.unity3d.com/Scrip
 <script src="https://gist.github.com/kgmslem/3227bf196c22d09e61f56e20dfd6f4eb.js"></script>
 
 
-## GetSerializedFields
+### GetSerializedFields
 
 어떤 타입의 모든 직렬화된 필드를 열거자로 반환한다.
 
@@ -160,7 +159,7 @@ private IEnumerable<FieldInfo> GetSerializedFields(Type type)
 **LINQ 쿼리문**을 통해 필드들을 필터링했다. **public** 필드는 `NonSerializedAttribute`가 존재하지 않을 때, **non-public** 필드는 `UnityEngine.SerializeField`가 존재할 때 직렬화가 가능하기 때문에, 이에 대해 필터링 후 열거자 형태로 반환한다.
 
 
-## SetMoveTool
+### SetMoveTool
 
 `SetMoveTool()` 메서드는 에디터의 **Move-Tool** 기능을 실행시켜주는 메서드이다.  
 
@@ -192,7 +191,7 @@ public void SetMoveTool()
 위 메서드에서 사용한 `GetCustomAttribute<T>()`는 `System.Reflection`의 확장 메서드로, 어떤 멤버에 정의되어 있는 *Attribute* 를 반환한다. 
 MS 공식 문서 [**GetCustomAttribute\<T\>(MemberInfo, Boolean)**](https://docs.microsoft.com/ko-kr/dotnet/api/system.reflection.customattributeextensions.getcustomattribute?view=net-6.0#System_Reflection_CustomAttributeExtensions_GetCustomAttribute__1_System_Reflection_MemberInfo_System_Boolean_)
 
-## HasAvailableAttribute
+### HasAvailableAttribute
 
 해당 타입에 `MoveToolAvailableAttribute`와 `SerializableAttribute`가 정의되어 있는지 확인한다. 
 이는 커스텀 타입이 **Move-Tool** 기능을 사용할 수 있는지 확인하기 위한 메서드이다.
@@ -207,7 +206,7 @@ private bool HasAvailableAttribute(Type type)
 }
 ```
 
-## IsVector
+### IsVector
 
 해당 타입이 Vector이거나 Vector 컬렉션인지를 확인하기 위한 메서드이다.
 
@@ -217,7 +216,7 @@ private bool IsVector(Type type) => type == typeof(Vector2) || type == typeof(Ve
     typeof(IEnumerable<Vector3>).IsAssignableFrom(type) || typeof(IEnumerable<Vector2>).IsAssignableFrom(type);
 ```
 
-## AddIndexLabel
+### AddIndexLabel
 
 단순히 레이블에 인덱스 기호와 번호를 추가해주는 메서드이다.
 
@@ -242,7 +241,7 @@ private string AddIndexLabel(string label, int index, bool isFront = false)
 }
 ```
 
-## SetMoveToolAvailableField
+### SetMoveToolAvailableField
 
 드디어 메인 코드이다.  
 유니티 에디터의 Scene View에 **Move-Tool** 기능을 구현하기 위해 관련 요소를 파악한다.
@@ -340,7 +339,7 @@ private void SetMoveToolAvailableField((FieldInfo field, int index) top, (object
 }
 ```
 
-### 현재 필드가 Vector일 경우
+#### 현재 필드가 Vector일 경우
 
 현재 필드가 Vector일 경우 **Move-Tool** 기능을 위한 **Position Handle**을 유니티 Scene View에 생성 및 배치하는 `SetPositionHandle()` 메서드를 호출하고 재귀호출을 종료한다. `SetPositionHandle()` 메서드는 뒤에서 자세히 설명할 예정이다.
 
@@ -361,7 +360,7 @@ if (IsVector(current.field.FieldType))
 }
 ```
 
-### Vector가 아닌 단일 필드일 경우
+#### Vector가 아닌 단일 필드일 경우
 
 먼저 위 `SetMoveToolAvailableField()` 메서드의 조건문 분기 중 `else`문 부터 보자.  
 Vector 타입이 아닌 커스텀 타입의 컬렉션이 아닌 단일 필드일 경우의 처리이다.  
@@ -393,7 +392,7 @@ else
 현재 필드 타입에 정의된 각각의 직렬화된 필드에 대해 `SetMoveToolAvailableField()` 메서드를 재귀 호출한다.  
 이때, `current` 튜플 매개변수의 `obj`에 직전에 얻은 지역변수 `obj`, `field`에 현재 필드 타입에 정의된 각각의 직렬화된 필드, `index`에 인덱스를 인자로 넘겨준다. 현재 필드는 배열이 아닌 단일 필드이기 때문에 인덱스는 -1의 값을 준다.  
 
-#### FieldInfo.GetValue()
+##### FieldInfo.GetValue()
 
 `FieldInfo.GetValue()` 메서드는 리플렉션의 핵심 기능 중 하나이다. 
 우리가 어떤 인스턴스와 그 인스턴스에 선언된 필드 정보를 알고 있다면, 그 인스턴스의 필드가 보유하고 있는 실제 값을 알아낼 수 있다. 
@@ -404,7 +403,7 @@ else
 
 자세한 내용은 MS 공식 문서 [**FieldInfo.GetValue(Object) 메서드**](https://docs.microsoft.com/ko-kr/dotnet/api/system.reflection.fieldinfo.getvalue?view=net-6.0)를 참조하기 바란다.
 
-#### 구조체에 대한 리플렉션
+##### 구조체에 대한 리플렉션
 
 현재 필드 타입에 정의된 각각의 직렬화된 필드에 대한 재귀호출이 모두 끝났다면, 지역변수 `obj` 인스턴스에 대한 각각의 직렬화된 필드들은 모두 값이 변경되었다. 이때, 현재 필드가 구조체인 *value type* 이라면 문제가 발생한다.  
 현재 필드가 클래스라면 `obj` 지역변수는 곧 `current.obj`를 통해 얻은 실제 인스턴스 그 자체이다. 몰론 엄밀하게는 인스턴스에 대한 참조이다.  
@@ -414,7 +413,7 @@ else
 따라서 변경된 `obj` 지역변수를 현재 필드에 복사해줘야한다.  
 위 이유로 구조체를 고려하지 않았을 때는 구조체에 대해서는 **Position Handle** 자체는 표시했지만 핸들을 움직이려고 시도해도 고정된채로 남아있었다.
 
-### Vector가 아닌 배열 혹은 컬렉션 필드일 경우
+#### Vector가 아닌 배열 혹은 컬렉션 필드일 경우
 
 Vector가 아닌 배열 혹은 컬렉션 필드는 위 [**Vector가 아닌 단일 필드일 경우**](#vector가-아닌-단일-필드일-경우)에서 소개한 내용의 연장선일 뿐이다. 
 단지, 현재 단일 필드에 대해서가 아닌, 배열 혹은 컬렉션의 각각의 원소에 대해서 재귀호출을 실행한다는 차이가 있다. 
@@ -446,7 +445,7 @@ if (type.IsArray)
 }
 ```
 
-## SetPositionHandle
+### SetPositionHandle
 
 벡터 타입의 필드나 컬렉션에 대해 **Move-Tool** 기능을 위한 **Position Handle**을 유니티 에디터 Scene View에 실제로 생성 및 배치하는 메서드이다.
 
@@ -531,7 +530,7 @@ private void SetVectorField(object obj, FieldInfo field, string label, bool loca
 <br>
 위 메서드에서 중요한 포인트는 **Position Handle**을 배치하고 필드의 값을 변경하기 위해 `FieldInfo.GetValue()`와 `FieldInfo.SetValue()` 메서드를 활용하고 있다는 점이다. 필드에 대한 정보만 알고 있다면 그 필드의 값을 얻거나 수정하는게 가능하다.
 
-## SetHandleVector3 & SetHandleVector2
+### SetHandleVector3 & SetHandleVector2
 
 이 메서드들은 각각 `Vector3`와 `Vector2` 타입의 값에 대해 실제로 Position Handle을 배치하고 값을 변경하는 메서드이다. 
 리플렉션을 통해 값을 수정하고 있기 때문에 `Undo.RecordObject()`와 `PrefabUtility.RecordPrefabInstancePropertyModifications()`를 호출해줘야 한다. 
@@ -581,7 +580,7 @@ private void SetHandleVector2(string label, Vector2 origin, Vector2 oldValue, ob
 }
 ```
 
-# 7. 정리
+## 7. 정리
 
 우리는 `MonoBehaviour`에 대한 단 하나의 에디터만을 작성했으며 이를 모든 `MonoBehaviour` 컴포넌트 객체에 적용할 수 있다. 만약, 리플렉션을 활용하지 않으면 어떤 컴포넌트의 필드에 **Move-Tool** 기능을 구현하고 싶을 때마다 그 컴포넌트에 대한 에디터를 새롭게 작성하고, 그 필드에 값을 넣는 코드를 매번 작성해야 한다. 이는 굉장히 비효율적이다.  
 그러나 *Reflection* 을 활용하면 위와 같이 동적으로 제어할 수 있다. 개발자가 만든 어떤 타입의 어떤 필드에 **Move-Tool** 기능을 구현할 지는 모르겠지만, 개발자가 **Move-Tool** 기능을 구현해달라고 `MoveToolAttribute`를 선언만 하면, 자동으로 에디터는 이 *Attribute*를 인식해 관련된 필드 정보를 가져와 **Move-Tool** 기능을 구현하여, 값을 변경시켜준다.

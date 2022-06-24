@@ -1,25 +1,23 @@
 ---
 title: "[Unity] 유니티 첫 게임 - 미니 보스"
 excerpt: "Unity로 미니 보스 몬스터 구현함"
-categories:
-    - Unity Game Development
-tags:
-    - [Unity, 유니티, Game, 게임, 유니티 개발, 유니티 프로젝트]
+categories: [Unity, Implementation]
+tags: [Unity, Game Development, Project, Enemy]
 date: 2021-12-15
 last_modified_at: 2021-12-16
 ---
 
-# 1. 개요
+## 1. 개요
 
 Unity로 개발한 첫 게임에서 구현한 미니보스를 소개한다.  
 
 사용한 에셋은 [**Bringer Of Death**](https://assetstore.unity.com/packages/2d/characters/bringer-of-death-free-195719)이다. [**유니티 에셋스토어**](https://assetstore.unity.com/)에서 무료로 구할 수 있다. 참고로 스킬, 이동, 체력 관리는 모두 직접 코딩해야 한다. 에셋에는 스프라이트 관련 파일만 존재한다.  
 
-# 2. 스킬
+## 2. 스킬
 
 스킬 구성은 크게 3개로 나눴다. 더 구현하고 싶은 욕심이 있지만 미니 보스라는 점과 시간적인 문제 때문에 3개만 구현했다.  
 
-## 기본 공격
+### 기본 공격
 
 플레이어가 미니 보스의 일정 범위 안에 들어왔을 때 **기본 공격**을 실행한다. 나는 일정 범위를 유효 사거리로 지정했다.  
 
@@ -41,7 +39,7 @@ Unity로 개발한 첫 게임에서 구현한 미니보스를 소개한다.
   ![미니보스 기본공격 모션 1/3배속](/assets/images/unity-my-first-game/first-game-mini-boss(6).webp)
 
 
-## 뒤치기
+### 뒤치기
 
 스킬 이름을 뭘로 할까 고민했는데 **뒤치기**가 가장 직관적인거 같아서 조금 없어보이지만 일단 이렇게 네이밍했다.  
 
@@ -56,7 +54,7 @@ Unity로 개발한 첫 게임에서 구현한 미니보스를 소개한다.
 ![뒤치기](/assets/images/unity-my-first-game/first-game-mini-boss(2).webp)
 
 
-## Spell Cast
+### Spell Cast
 
 역시 스킬 네이밍은 어렵다. 그냥 에셋에서 제공하는 스킬 애니메이션에서 이름을 따왔다.  
 
@@ -72,16 +70,16 @@ Unity로 개발한 첫 게임에서 구현한 미니보스를 소개한다.
 
 
 
-# 3. 전투
+## 3. 전투
 
-## 실제 전투 모습
+### 실제 전투 모습
 
 보스가 사용하는 스킬에 집중하기 위해 공격은 거의 하지 않고 일부로 피격 당했다. 각 스킬 하나 하나도 강력하지만 모였을 때는 상당히 강력해진다. 보스의 움직임과 스킬 사용을 예측하고 정밀한 움직임을 해야 피할 수 있다.  
 
 ![전투1](/assets/images/unity-my-first-game/first-game-mini-boss(4).webp)
 
 
-## 전투 및 클리어
+### 전투 및 클리어
 
 아래는 클리어 장면이다. 무기는 샷건을 사용했으며 클리어 장면을 보여주기 위해 다소 난이도를 낮춰서 진행했다.  
 클리어 시 아이템을 드랍하는데 특수무기인 미니건을 획득할 수 있다.  
