@@ -35,7 +35,7 @@ DP는 Environment의 model(reward, state transition 등)에 대해 안다는 전
 1. Prediction
 2. Control
 
-위 step을 처리하는 방식에 따라 [**Policy iteration**](#building-policy-iteration)과 [**Value iteration**](#building-value-iteration)으로 구분됨.
+위 step을 처리하는 방식에 따라 Policy iteration과 Value iteration으로 구분됨.
 
 #### Memoization
 
