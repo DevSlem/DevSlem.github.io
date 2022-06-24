@@ -1,17 +1,15 @@
 ---
-title: "게임 물리 (Game Physics)"
+title: "게임 물리 요약 (Game Physics Summary)"
 excerpt: "게임에 적용되는 기본적인 물리 법칙에 대해 소개한다."
-categories:
-    - Physics
-tags:
-    - [Game Development, Physics]
+categories: [Game Development, Math Physics]
 date: 2022-05-22
 last_modified_at: 2022-05-22
+math: true
 ---
 
 이 포스트에서는 게임에 적용되는 기본적인 물리 법칙에 대해 소개한다.
 
-# 등가속도 운동
+## 등가속도 운동
 
 속도는 시간에 따른 위치의 변화율, 가속도는 시간에 따른 속도의 변화율이다. 시간 $t$에 대한 위치를 $\textbf{x}(t)$, 속도를 $\textbf{v}(t)$, 가속도를 $\textbf{a}(t)$라고 할 때 아래와 같은 관계가 성립한다.
 
@@ -33,7 +31,7 @@ $$
 
 $\textbf{x}_0$는 $t=0$에서의 위치이다.
 
-# 포물선 운동
+## 포물선 운동
 
 포물선 운동은 중력에 의해 영향을 받는 물체의 운동으로 3차원 공간에서 중력이 작용하는 axis를 $z$라고 가정할 때 중력 가속도 $\textbf{g} = [0,0,-g]$로 정의된다. 여기서 $g$는 중력 상수로 지구의 지표면을 기준으로 약 $9.8 \ m/s^2$이며 아래쪽 방향으로 작용한다. 포물선 운동에서 위치 $\textbf{x}(t)$는 아래와 같이 정의된다.
 
@@ -94,7 +92,7 @@ $$
 r_{xy} = \dfrac{2v_{xy}v_z}{g} = \dfrac{2(s \cos \theta)(s \sin \theta)}{g} = \dfrac{s^2 \sin 2\theta}{g} \quad \therefore \theta = \dfrac{1}{2}\sin^{-1}\dfrac{r_{xy}g}{s^2}
 $$
 
-# Force
+## Force
 
 물체에 힘이 가해지면 운동량과 가속도가 변한다. 여러 힘이 가해질 경우 하나의 전체 힘으로 합할 수 있다.
 
@@ -108,7 +106,7 @@ $$
 * 제 2법칙: 가속도 법칙 - $F = ma$
 * 제 3법칙: 반작용 법칙 - $F_{ij} = -F_{ji}$
 
-#### 중력
+### 중력
 
 중력은 지구 표면에서 작용하는 힘이다. 이때 중력가속도 $g = -9.8 \ m/s^2$이다.
 
@@ -122,7 +120,7 @@ $$
 F = G\dfrac{mM}{r^2}
 $$
 
-#### 수직항력
+### 수직항력
 
 수직항력은 표면이 물체에 가하는 반작용 힘이다. 항상 표면에 수직인 방향으로 작용한다. 중력 가속도가 $g$, 경사각이 $\theta$일 때 수직항력 $F_n$은 일반적으로 아래와 같다.
 
@@ -136,7 +134,7 @@ $$
 (Image source: Wikipedia <a href="https://en.wikipedia.org/wiki/Normal_force">Normal force</a>)</figcaption>
 </div>
 
-#### 마찰력
+### 마찰력
 
 마찰력은 표면 상의 물체의 운동을 방해하는 힘으로 물체에 가해지는 접선 방향 힘의 반대 방향으로 작용한다. 마찰력의 크기는 표면과 특성에 의존한다. 물체의 질량에 비례하나 접촉 면적과는 무관하다. 마찰력 $F_f$는 수직항력 $F_n$으로부터 계산 가능하다.
 
@@ -158,7 +156,7 @@ $$
 
 정지마찰력 $F_s$일 때 물체에 가해지는 힘 $F$의 크기가 $F_s$보다 큰 순간 물체가 움직이기 시작한다. 그때부터 정지마찰력 $F_s$는 사라지고 운동마찰력 $F_k$가 작용한다. 대체로 $F_k < F_s$인데 정지된 물체를 움직이게 하는 것이 이미 움직이는 물체를 계속 움직이게 하는 것보다 대체로 더 힘들다.
 
-#### 스프링 운동
+### 스프링 운동
 
 스프링 운동은 비강체 물체를 모델링하기 위해 주로 쓰인다. rigid body의 움직임을 제약하는 joint를 생성해 처리한다. 스프링 힘(Hooke's law) $F_s$은 아래와 같다.
 
@@ -192,7 +190,7 @@ $$
 F = F_s + F_d = -k_sx -k_dv
 $$
 
-#### 운동량
+### 운동량
 
 운동량 $p$는 질량과 속도를 곱한 벡터이다.
 
@@ -208,7 +206,7 @@ $$
 
 $v_1$, $v_2$는 충돌 전 각 물체의 속도이며 $v_1'$, $v_2'$은 충돌 후 각 물체의 속도이다.
 
-# 충돌
+## 충돌
 
 충돌을 검사하는 일반적인 방법은 다음과 같이 크게 3가지가 있다.
 
@@ -218,7 +216,7 @@ $v_1$, $v_2$는 충돌 전 각 물체의 속도이며 $v_1'$, $v_2'$은 충돌 �
 
 이 중 Particle vs Plane 충돌이 구현하기 가장 쉬운편이다. 따라서 이 포스트에서는 Particle vs Plane 충돌에 대해 알아본다.
 
-#### Particle vs Plane Collision Detection
+### Particle vs Plane Collision Detection
 
 3차원 공간에서 다음과 같은 요소들이 존재한다.
 
@@ -234,7 +232,7 @@ $v_1$, $v_2$는 충돌 전 각 물체의 속도이며 $v_1'$, $v_2'$은 충돌 �
 
 이때 $(\text{x} - \text{p}) \cdot \text{n}$가 0보다 크면 particle은 plane과 $\text{x}$는 충돌 전 상태, 0이면 plane과 접촉, 0보다 작으면 평면을 통과한 상태이다. 이는 내적 자체가 각도 정보를 포함하고 있기 때문이다.  
 
-#### Particle vs Plane Collision Response
+### Particle vs Plane Collision Response
 
 실제 collision detection 시  오차로 인해 내적값이 0이 되는 경우를 찾기 어렵다. 따라서 내적 값이 양수 -> 음수로 변할 떄 충돌했다고 가정한다. 즉, 평면을 관통했을 때 충돌했다고 판정한다. 그 후 관통한 particle을 평면 위로 이동시킨 후 충돌에 대한 후처리로 particle이 튕겨져나가는 물리적 처리를 한다.
 
@@ -264,7 +262,7 @@ $$
 
 $k_f$는 마찰계수, $k_r$은 복원계수이다.
 
-# 물리상태 계산
+## 물리상태 계산
 
 물체의 이전 물리 상태(위치, 속도 등)와 가해진 힘을 알면 **시간에 대한 적분을 통해 물체의 이후 상태를 결정**할 수 있다. 아래는 움직임에 대한 수식이다.
 
@@ -274,7 +272,7 @@ F = ma \rightarrow a = \dfrac{F}{m} \\
 \dfrac{dx}{dt} = v \rightarrow dx = v \ dt
 $$
 
-#### Runge-Kutta 적분법
+### Runge-Kutta 적분법
 
 4차 Runge-Kutta 적분법 (RK4)을 활용하면 상당히 정확한 수치해석적 적분을 구현할 수 있다. 아래와 같은 function $f$와 초기값 $t_0$, $y_0$가 있다고 하자.
 
@@ -326,7 +324,7 @@ Derivative Evaluate(const State& initial, float t, float dt, const Derivative& d
 }
 ``` -->
 
-# References
+## References
 
 [1] Incheon National University - Game Programming Lecture  
 [2] Wikipedia [Normal force](https://en.wikipedia.org/wiki/Normal_force)  
