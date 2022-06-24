@@ -2,7 +2,7 @@
 title: "[수치해석] 뉴턴 다항식 보간법"
 excerpt: "뉴턴 다항식 보간법에 대한 원리, 방법, 알고리즘을 설명한다."
 categories: [Numerical Analysis]
-tags: [Interpolation, Algorithm, Unity, C#]
+tags: [Interpolation, Algorithm, Unity, C#, Python]
 date: 2021-12-11
 math: true
 last_modified_at: 2022-06-24
