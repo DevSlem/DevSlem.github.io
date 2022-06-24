@@ -23,10 +23,10 @@ timezone: Asia/Seoul
 
 title: DevSlem Blog                          # the main title
 
-tagline: It'a blog where i write posts about AI, RL, Unity, etc.   # it will display as the sub-title
+tagline: It's a blog where i write posts about AI, RL, Unity, etc.   # it will display as the sub-title
 
 description: >-                        # used by seo meta and the atom feed
-  It'a blog where i write posts about AI, RL, Unity, etc.
+  It's a blog where i write posts about AI, RL, Unity, etc.
 
 # fill in the protocol & hostname for your site, e.g., 'https://username.github.io'
 url: ''
