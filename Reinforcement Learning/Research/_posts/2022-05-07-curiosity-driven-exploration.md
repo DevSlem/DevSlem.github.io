@@ -1,8 +1,6 @@
 ---
 title: "Intrinsic reward: Curiosity"
 excerpt: "Curiosity-driven Exploration by Self-supervised Prediction 논문에 대한 리뷰."
-categories:
-    - Reinforcement Learning
 tags:
     - [RL, AI]
 date: 2022-05-07
@@ -11,7 +9,7 @@ last_modified_at: 2022-05-22
 
 이 포스트에서는 Reinforcement Learning을 효과적으로 수행할 수 있도록 intrinsic curiosity reward를 사용하는 아이디어를 제시한 [Curiosity-driven Exploration by Self-supervised Prediction](https://pathak22.github.io/noreward-rl/resources/icml17.pdf)에 대해 소개한다.
 
-# Introduction
+## Introduction
 
 [Curiosity-driven Exploration by Self-supervised Prediction](https://pathak22.github.io/noreward-rl/resources/icml17.pdf) 논문은 강화학습에서 효과적인 학습을 수행하기 위해 intrinsic reward인 curiosity 개념을 도입해 사용하는 방법을 보인다. 이 논문이 획기적인 이유는 강화학습의 영원한 숙제인 **exploration vs exploitation dilemma** 뿐만 아니라 비슷하지만 다른 새로운 환경에도 적용 가능하도록 하는 **generalization** 문제를 모두 해결했기 때문이다. 심지어 environment에 의한 reward 없이도 적절한 exploration을 유도할 수 있는 굉장히 강력한 모델이다. 이 포스트에서는 이 논문에 대해 자세히 소개하려 한다. 아래는 실제 환경에서 envrionment에 의한 reward 없이 exploration을 수행하는 모습이다.
 
@@ -25,7 +23,7 @@ last_modified_at: 2022-05-22
 </div>
 </p>
 
-# What is intrinsic reward
+## What is intrinsic reward
 
 강화학습 알고리즘은 total rewards(보상)를 최대화하는 policy(정책)를 학습하는 것을 목표로 한다. agent가 environment의 특정 state $s$에서 policy $\pi$에 의해 action $a$를 수행하면 reward $r$을 획득할 수 있다. 이때 획득한 reward $r$을 바탕으로 agent의 action $a$를 결정하는 policy $\pi$를 update할 수 있다.  
 
@@ -37,7 +35,7 @@ last_modified_at: 2022-05-22
 
 policy $\pi$를 효과적으로 update하기 위해서는 reward가 끊임없이 주어져야한다. 주어진 데이터가 많을 수록 더 좋은 결과를 얻을 수 있기 때문이다. 그러나 실제 환경은 다르다. agent가 action을 수행했다고 해서 반드시 reward가 제공되지는 않는다. 아니, 오히려 reward가 제공되는 경우는 극히 드물다. 어떤 특정 task를 성공적으로 수행해야 reward가 제공된다고 할 때 그 task를 수행하기가 너무 어렵다면 당연히 reward를 획득하는 것도 어렵다. 즉, 그 task를 성공적으로 수행하기 전까지는 reward의 변화가 없는 셈이다. 강화학습에서는 이러한 환경을 **sparse environment**라고 부른다. 
 
-## Intrinsic Motivation - Curiosity
+### Intrinsic Motivation - Curiosity
 
 원래 강화학습에서는 policy $\pi$가 제대로 학습되지 않았을 때 environment의 특정 goal state에 도달하기 위해서는 랜덤성에 의존할 수 밖에 없었다. 이러한 방식은 simple environment를 제외하고는 효과적이지 못하다. agent의 exploration을 랜덤성에만 의존하지 않고 보다 효과적으로 이끌기 위해 제안된 아이디어 중 하나가 바로 **intrinsic reward**의 활용이다. 아래는 reward에 대한 2가지 구분이다.
 
@@ -53,7 +51,7 @@ policy $\pi$를 효과적으로 update하기 위해서는 reward가 끊임없이
 
 intrisc reward를 활용할 시 sprase environment에서 굉장히 강력한 퍼포먼스를 보인다.
 
-## Problem
+### Problem
 
 intrinsic reward를 활용하는 방법은 크게 아래와 같이 구분된다.
 
@@ -68,11 +66,11 @@ intrinsic reward를 활용하는 방법은 크게 아래와 같이 구분된다.
 
 위 문제들에 대한 해결책으로 agent가 특정 state에서의 행동 결과를 예측하긴 어렵지만 배울만한 가치가 있을 때만 reward를 제공하는 것이다. 하지만 이러한 learnability를 추정하는 것 역시 상당히 어려운 문제이다.
 
-### Key insight
+#### Key insight
 
 learnability를 추정하기 위한 environment 변화에 대한 예측 시, 위에서 제시한 문제들을 피하기 위해 agent의 action 때문에 environment가 변할 가능성이 있거나 agent에게 영향을 미칠 수 있는 environment의 변화만 예측한다. 그 외 나머지 요소는 모두 버린다. 이를 위해 굉장히 민감한 raw space(e.g. pixels)가 아닌 agent에 의해 수행된 action과 관련된 정보만을 표현하는 feature space를 학습한다.
 
-# Curiosity-Driven Exploration
+## Curiosity-Driven Exploration
 
 agent는 curiosity-driven intrinsic reward signal을 생성하는 reward generator와 intrinsic reward를 최대화하는 action들의 sequence를 구하는 policy로 구성된다. 또한 아주 가끔씩(sparse environment이기 때문에) extrinsic reward를 획득한다. time step $t$에서의 intrinsic curiosity reward를 $r_t^i$, extrinsic reward를 $r_t^e$라고 할 때 policy는 $r_t = r_t^i + r_t^e$를 최대화하는 방향으로 학습된다.
 
@@ -82,7 +80,7 @@ $$
 \max_{\theta_P}\mathbb{E}_{\pi(s_t; \theta_P)}[\textstyle\sum_tr_t]
 $$
 
-## Prediction error as curiosity reward
+### Prediction error as curiosity reward
 
 curiosity reward $r^i$는 agent의 envrionment에 대한 지식의 prediction error를 기반으로 디자인된다. 문제는 환경을 어떻게 예측할 것인가이다. [Problem](#problem)에서 언급했듯이 이미지와 같은 raw pixel space를 예측하는 것은 굉장히 부적절하다. 이는 굉장히 민감한 환경이기 때문이다. agent에게 아무런 영향도 미치지 못하지만 pixel이 조금만 변경되더라도 prediction error는 여전히 큰 상태일거고 agent는 이로인해 쓸모없는 target에 계속 curiority를 가지는 함정에 빠지게 될 것이다. 따라서 [Key insight](#key-insight)에서 언급했듯이 agent에게 유의미한 정보만을 표현하는 feature space를 학습해야한다. 이에 따라 먼저 agent의 관찰을 다음과 같은 3가지 케이스로 나눈다.
 
@@ -92,7 +90,7 @@ curiosity reward $r^i$는 agent의 envrionment에 대한 지식의 prediction er
 
 curiosity에 대해 좋은 feature space는 1과 2를 모델링해야하며 3에 의해 영향을 받지 않아야 한다.
 
-## Intrinsic Curiosity Module
+### Intrinsic Curiosity Module
 
 이 논문에서 feature space로 인코딩하고 intrinsic curiosity reward를 제공하기 위한 메커니즘인 Intrinsic Curiosity Module(ICM)을 소개한다. ICM은 크게 inverse dynamics model과 forward dynamics model로 구분되며 각각은 서로 다른 신경망이다.
 
@@ -148,11 +146,11 @@ $$
 
 $\lambda > 0$인 scalar로 intrinsic reward signal 학습의 중요도 대비 policy gradient loss의 중요도를 의미한다. policy gradient는 원래 reward를 maximize하는 방향으로 policy $\pi$가 업데이트 되지만 $-$ 부호를 붙여 minimize 시키게 만들었다. $0 \leq \beta \leq 1$는 inverse model loss와 forward model loss 사이의 비중이다. 이 논문에서는 $\beta = 0.2$, $\lambda = 0.1$의 값을 사용하였다. 
 
-# Summary
+## Summary
 
 지금까지 ICM에 대해 알아보았다. ICM intrinsic curiosity reward를 통해 agent에 exploration을 유도한다. 이를 통해 exploration vs exploitation dilemma를 해결하였다. 또한 generalization 문제는 sensory한 space를 agent에게 유의미한 feature space로 인코딩함으로써 훨씬 쉬워지게 만들었다. 이 논문에서는 *VizDoom*과 *Super mario Bros* 게임에서 각각 실험을 진행하였다. 실험에서는 A3C + ICM과 vanilla A3C를 비교하였는데 상당히 유의미한 성능 차이를 보였다. 또한 A3C + ICM과 A3C + ICM(pixels - no feature encoding)의 비교 결과 역시 유의미만 차이를 보였다. 이는 특히 generalization 부분에서 상당한 차이를 발생시켰다. 이 논문이 더 대단한 점은 extrinsic reward 없이 intrinsic reward 만으로도 agent가 environment를 잘 탐색하도록 만들었다는 점이다. 자세한 실험 결과는 논문을 직접 참조하길 바란다.
 
-# References
+## References
 
 [1] [Curiosity-driven Exploration by Self-supervised Prediction](https://pathak22.github.io/noreward-rl/resources/icml17.pdf) by Pathak  
 [2] Richard S. Sutton and Andrew G. Barto. [Reinforcement Learning: An Introduction; 2nd Edition](http://incompleteideas.net/book/bookdraft2017nov5.pdf). 2017.  

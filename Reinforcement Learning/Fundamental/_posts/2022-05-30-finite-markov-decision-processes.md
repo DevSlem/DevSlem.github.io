@@ -11,7 +11,7 @@ sidebar:
 
 이 포스트에서는 Reinforcement Learning에서 기반이 되는 finite Markov Decision Processes (MDPs)와 finite MDPs 문제를 해결하기 위한 Bellman equations에 대해 소개한다.
 
-# What is MDPs
+## What is MDPs
 
 ***Markov Decision Processes* (MDPs)는 연속적인 의사 결정을 형식화**한 프레임이다. MDPs와 Multi-armed bandits 환경의 가장 큰 차이점은 MDPs에서는 선택한 action들이 environment의 states를 변경시켜 future rewards에 영향을 미친다는 점이다. 즉, actions와 states가 연관성이 있는 *associative* setting이다. MDPs는 $(\mathcal{S}, \mathcal{A}, P, R)$로 구성되며 각 요소는 아래와 같다.
 
@@ -64,15 +64,15 @@ $$
 
 이 포스트에서는 위 수식 중 [Reinforcement Learning: An Introduction; 2nd Edition](http://incompleteideas.net/book/bookdraft2017nov5.pdf)에서의 Chapter 3에 따라 dynamics $p(s', r \vert s, a)$를 주로 사용하였다.
 
-# Goals in RL
+## Goals in RL
 
 Reinforcement Learning (RL)에서 agent는 immediate reward가 아닌 오랜 기간에 걸친 **cumulative reward를 maximize하는 것을 목표**로 한다. reward는 우리가 달성하고자 하는 것을 나타내는 중요한 지표이다. 주의할 점은 이 reward signal을 설정할 때 *how*가 아닌 *what*의 관점으로 설정해야한다. 달성하고자 하는 목표가 무엇인지에 초점을 맞추되 이것을 달성하기 위한 지식을 제시해서는 안된다.
 
-# Episode
+## Episode
 
 배틀그라운드라는 게임을 생각해보자. 이 게임은 배틀로얄 장르로 매치 시작 시 비행기에서 낙하 후 총기를 비롯한 아이템을 파밍해 전투를 펼치는 게임이다. 각 매치는 싱글플레이 기준 매치 도중 사망하거나 적이 전부 사망해 홀로 생존 시 종료되며 다시 매치 시작 시 이전 매치에서 획득한 총기, 아이템 등은 전부 초기화된다. 각 매치는 사망 혹은 홀로 생존과 같이 *terminal state*가 존재하는데 게임 내 모든 상호작용을 하나의 sequence라고 볼 때 매치 단위의 subsequence로 쪼갤 수 있다. 이러한 subsequence를 *episode*라고 하는데 episode는 앞서 언급한 terminal state에 종료된다. terminal state는 주로 게임에서의 승리나 패배와 같다. episode가 terminal state에 도달해 종료되면 다시 처음 state로 초기화되고 새로운 episode가 시작된다. 새로운 episode는 이전 episode와 독립적인 관계이다. 이러한 종류의 episodes를 가진 tasks를 *episodic tasks*라고 부른다.
 
-# Return
+## Return
 
 cumulative reward를 수학적으로 정의한 것이 *expected return* $G_t$이며 이는 time step $t$ 이후에 획득한 rewards sequence $R_{t+1}, R_{t+2}, R_{t+3}, \dots ,$에 대한 함수이다. $G_t$를 구할 때 단순히 rewards sequence의 합으로 구할 수 있지만 이는 episodic tasks에서만 유효하다. terminal state가 존재하지 않는 *continuing tasks*에서는 무한한 time steps에서 rewards를 획득하기 때문에 $G_t \rightarrow \infty$가 될 것이다. 따라서 episodic tasks 뿐만 아니라 continuing tasks에서도 expected return $G_t$를 구하기 위해 일반적으로 **미래가 고려된 discounted rewards sequence의 합**으로 구한다. 이를 *discounted return*이라고 하며 수식은 아래와 같다.
 
@@ -93,7 +93,7 @@ $$
 $$
 
 
-# Value Function
+## Value Function
 
 ***value function*은 states 혹은 state-action pairs가 얼마나 좋은지를 추정**하는 함수이다. "얼마나 좋은가"는 보통 expected return의 관점에서 정의된다. 미래에 획득할 rewards는 agent가 행동하는 방식에 의존하기 때문에 이에 대한 value functions는 agent의 행동 방식인 policy에 영향을 받는다. ***policy*는 각 state에서 가능한 각 행동들의 선택 확률**로 agent가 time step $t$에서 policy $\pi$를 따를 때, $\pi(a \vert s)$는 $S_t = s$일 때 $A_t = a$일 확률이다.
 
@@ -113,7 +113,7 @@ $$
 
 value function $v_\pi$와 $q_\pi$는 경험으로부터 추정된다. 경험이란 agent가 직접 states에 방문해보고 actions를 선택함으로써 얻게 되는 return과 같은 정보들을 말한다.
 
-# Bellman Expectation Equation
+## Bellman Expectation Equation
 
 state-value function은 expected return $G_t \doteq R_{t+1} + \gamma G_{t+1}$와 같이 **재귀적 관계**를 만족한다. 즉, $v_\pi$를 현재 state value와 후속 state value 사이의 관계로 나타낼 수 있으며 이를 **$v_\pi$에 대한 *Bellman expectation equation***이라고 한다. 수식은 아래와 같으며 복잡한 증명은 생략한다.
 
@@ -166,7 +166,7 @@ $$
 
 지금까지 알아본 내용은 특정 policy $\pi$를 따를 때 value를 추정하는 방법이다. 그러나 이것은 MDP에서 할 수 있는 최적의 방식이 아니다. 어디까지나 특정 policy $\pi$에 대한 value 추정일 뿐이다. 이제 MDP의 문제를 해결하는 방법을 알아보자.
 
-# Optimal Value Function
+## Optimal Value Function
 
 RL은 cumulative reward를 maximize하는 것이 목표로 한다. 위 Bellman equation의 수식을 보면 policy $\pi$에 따라 expected return을 나타내는 state value가 달라짐을 알 수 있다. 즉, cumulative reward는 policy $\pi$에 의존한다. 따라서 cumulative reward를 maximize하는 *optimal policy* $\pi_\ast$를 찾는 것이 목적이며 state-value function이 optimal policy를 따를 때 *optimal state-value function* $v_\ast$라 한다. 이때 $v_\ast$는 **모든 policy에 대해 가장 큰 state-value function**이다.
 
@@ -182,7 +182,7 @@ $$
 q_\ast(s, a) \doteq \max_\pi q_\pi(s, a)
 $$
 
-# Optimal policy
+## Optimal policy
 
 그렇다면 optimal policy $\pi_\ast$를 어떻게 찾을 수 있을까? 어떤 한 policy $\pi$와 다른 policy $\pi'$이 있다고 할 때 모든 states에 대한 $\pi$를 따르는 value function이 모든 states에 대한 $\pi'$을 따르는 value function보다 크거나 같을 때 더 좋은 policy라고 판단할 수 있다. 이를 수식으로 나타내면 아래와 같다.
 
@@ -190,7 +190,7 @@ $$
 \pi \geq \pi' \ \text{if} \ v_\pi(s) \geq v_{\pi'}(s) \ \text{for all} \ s \in \mathcal{S}
 $$
 
-# Bellman Optimality Equation
+## Bellman Optimality Equation
 
 ***Bellman optimality equation***은 Bellman expectation equation과 비슷하나 value들에 대한 expectation이 아닌 maximum value만을 고려한다는 차이가 있다. 아래는 optimal state-value function $v_\ast$에 대한 backup diagram이다.
 
@@ -243,7 +243,7 @@ $$
 
 Bellman optimality equation을 풀면 RL의 목적인 optimal policy를 찾을 수 있다. 그러나 이 방법은 실제로 유용하지 않다. Bellman optimality equation을 푸는 행위는 exhaustive search와 유사한 행위이다. RL에서는 environment의 가능한 states가 계산이 불가능한 영역 수준으로 많다. 가장 대표적인 예시가 그 유명한 AlphaGo의 바둑이다. 바둑의 경우의 수는 계산 불가능의 영역이다. 그럼에도 AlphaGo가 성공했던 이유는 RL의 기반인 Bellman optimality equation을 근사적으로 잘 풀어냈기 때문이다.
 
-# References
+## References
 
 [1] Richard S. Sutton and Andrew G. Barto. [Reinforcement Learning: An Introduction; 2nd Edition](http://incompleteideas.net/book/bookdraft2017nov5.pdf). 2017.  
 [2] Towards Data Science - [Reinforcement Learning: Bellman Equation and Optimality (Part 2)](https://towardsdatascience.com/reinforcement-learning-markov-decision-process-part-2-96837c936ec3)  
