@@ -5,7 +5,7 @@ categories: [Numerical Analysis]
 tags: [Interpolation, Algorithm, Unity, C#, Python]
 date: 2021-12-11
 math: true
-last_modified_at: 2022-06-24
+last_modified_at: 2022-06-25
 ---
 
 ## Introduction
@@ -98,20 +98,6 @@ $$
 $$
 
 ### 분할차분 정의 해석
-
-
-<!-- $$
-f[x_k] = f(x_k)
-$$
-
-$$
-f[x_k, x_{k + 1}, \cdots, x_l] = \displaystyle\frac{f[x_{k + 1}, \cdots, x_l] - f[x_k, \cdots, x_{l - 1}]}{x_l - x_k}
-$$
-
-$$
-f[x_k, \cdots, x_l] = f[x_l, \cdots, x_k]
-$$ -->
-
 
 분할차분의 정의 중 아래 식에서 한가지 특징을 알 수 있다.
 
@@ -284,21 +270,129 @@ $$
 
 ## Python Code
 
-TODO: 내용 추가 예정
+[Algorithm](#algorithm)의 내용을 Python 코드로 구현한다. [Numpy](https://numpy.org/) library를 활용하였다.
+
+```python
+import numpy as np
+```
+
+### 분할차분표 Method - Python
+
+point set `points`을 입력하면 분할차분표를 계산 후 반환한다. Numpy의 장점을 활용하기 위해 [Algorithm](#algorithm) 파트와 같이 중첩 for문을 사용하지 않고 각 열에 대해 vectorization 기법을 활용하여 계산하였다.
+
+```python
+def divided_differences_table(points: np.ndarray):
+    assert points.ndim == 2 and points.shape[1] == 2
+    
+    x = points[:, 0]
+    y = points[:, 1]
+    n = points.shape[0]
+    # Initialize divided differences table
+    T = np.zeros((n, n))
+    T[:, 0] = y
+    for j in range(1, n):
+        l = n - j # last row of a current colummn
+        T[:l, j] = (T[1:l+1, j-1] - T[:l, j-1]) / (x[j:j+l] - x[:l])
+        
+    return T
+```
+
+위 for문에서 지역변수 `l`은 현재 분할차분을 계산하려는 열에 대해 마지막 행으로 `i`로 생각하면 사실상 수식은 동일하다. 
+
+### 뉴턴 다항식 보간 - Python
+
+`newton_poly()`는 입력된 point set `points`에 대해 뉴턴 다항식을 반환하는 method이다. 
+
+```python
+def newton_poly(points: np.ndarray):
+    assert points.ndim == 2 and points.shape[1] == 2
+    
+    T = divided_differences_table(points)
+    coef = T[0, :] # coefficients from the first row of divided differences table
+    x_values = points[:, 0]
+    
+    def interpolate(x):
+        try:
+            iter(x)
+            x = np.array(x)
+            N = np.zeros_like(x)
+            p = np.ones_like(x)
+        except TypeError:
+            N = 0
+            p = 1
+
+        for i in range(len(coef)):
+            N += coef[i] * p
+            p *= x - x_values[i]
+        
+        return N
+    
+    return interpolate
+```
+
+위에서 정의한 `divided_differences_table()` method를 통해 분할차분표를 획득한 뒤 뉴턴 다항식 보간에 사용할 계수를 추출한다. local function `interpolate()`에 `coef`와 `x_values`를 capture 시킨 뒤 뉴턴 다항식을 계산 방법을 기술한다. 이 때 `interpolate()`의 입력 `x`에도 vectorization을 지원하기 위해 Numpy의 utility function들을 활용하였다. 그 후 `interpolate()` local function 자체를 반환하면 입력된 point set에 대한 뉴턴 다항식 자체를 획득할 수 있다.
+
+### 뉴턴 다항식 보간 최종 코드 - Python
+
+위 내용을 정리한 코드이다.
+
+<script src="https://gist.github.com/DevSlem/f47820db6203e0b7d91cc1334d0aa76a.js"></script>
+
+### 디버깅 - Python
+
+디버깅을 위해 우리가 잘 알고 있는 3차함수인 $y = x(x - 1)(x + 1)$를 지나는 Point들을 `Point2` 타입의 배열을 만들고 초기화 한다. 점이 4개이기 때문에 3차함수를 보간할 수 있다.
+
+```python
+p = np.array([[-1, 0],
+              [0, 0],
+              [1, 0],
+              [2, 6]])
+
+func = newton_poly(p)
+print(func([-2.0, 3.0]))
+```
+
+출력된 결과는 다음과 같다.
+
+![](/assets/images/newton-poly-python-result.png)
+
+보간하고자 했던 함수에 동일한 $x$값인 -2와 3을 대입해보면 동일한 함숫값을 얻을 수 있다. 즉, 성공적으로 다항식을 보간했다. 이제 어떤 임의의 점이든지 간에 그 점들을 지나는 유일한 다항함수를 결정할 수 있다.  
+
+### Matplotlib로 뉴턴 다항식 그래프 출력 - Python
+
+위 보간된 뉴턴 다항식을 그래프로도 확인해보자.
+
+```python
+import matplotlib.pyplot as plt
+
+x = np.linspace(-3.0, 3.0, 100)
+y = func(x)
+plt.plot(x, y)
+plt.scatter(p[:,0], p[:,1], c="r", marker="o")
+plt.show()
+```
+
+뉴턴 다항식 그래프:
+
+![](/assets/images/newton-poly-python-graph.png){: w="50%"}
+
+보간된 뉴턴 다항식은 주어진 point set `p`를 지나감을 확인할 수 있다.
 
 ## C# Code
+
+Unity에서 사용해 보기 위해 C#으로도 구현해보았다.
 
 ### 사용자 정의 타입 선언 - C#
 
 먼저 2차원 상의 Point의 위치를 표현할 수 있는 `Point2` struct를 정의한다.
 
-```c#
-struct Point2
+```csharp
+struct Vector2
 {
     public float x;
     public float y;
 
-    public Point2(float x, float y)
+    public Vector2(float x, float y)
     {
         this.x = x;
         this.y = y;
@@ -308,7 +402,7 @@ struct Point2
 
 다음은 입력으로 $x$값을 받고, 출력으로 함숫값을 반환하는 `delegate`를 선언한다. `delegate` 타입은 `InterpolatedFunction`이라고 명칭하겠다. 이는 뉴턴 다항식 보간 시 **보간된 다항식을 반환**하기 위한 대리자이다.
 
-```c#
+```csharp
 // 입력: x, 출력: f(x)
 delegate float InterpolatedFunction(float x);
 ```
@@ -329,8 +423,8 @@ $N(x) = f[x_0] + f[x_0, x_1] (x - x_0) + f[x_0, x_1, x_2] (x - x_0)(x - x_1)+ \c
 
 즉, 위 $N(x)$ 함수를 `InterpolatedFunction` delegate에 할당 후 반환하려는 것이다. 아래는 뉴턴 다항식 보간 메소드이다.
 
-```c#
-static InterpolatedFunction NewtonPolynomial(params Point2[] points) {  }
+```csharp
+static InterpolatedFunction NewtonPolynomial(params Vector2[] points) {  }
 ```
 
 이제 위 메소드를 구현할 시간이다.
@@ -346,7 +440,7 @@ float[,] dividedDifferenceTable = new float[n, n]; // n행 n열 크기의 분할
 
 분할차분표의 0번째 열은 $f[x_i] = f(x_i)$이므로 각 Point의 $y$좌표(또는 함수값)을 대입한다.
 
-```c#
+```csharp
 // 0번째 열에 y좌표(함수값) 대입
 for (int i = 0; i < n; i++)
 {
@@ -356,7 +450,7 @@ for (int i = 0; i < n; i++)
 
 $i$행 $j$열의 분할차분 값은 $i + 1$행 $j - 1$열의 분할차분과 $i$행 $j - 1$열의 분할차분을 통해 구한다. 즉, 분할차분표의 $i$행 $j$열의 값을 $T_{i, j}$라고 할 때 $T_{i, j} = \displaystyle\frac{T_{i + 1, j - 1} - T_{i, j - 1}}{x_{i + j} - x_i}$이다. 또한 $i + 1$행 $j - 1$열의 분할차분 참조로 인해 각 열의 원소 개수는 $n - j$개다. 따라서 각 열에 대해 $i$는 $0$부터 $n - 1 - j$까지 참조한다. 내용이 잘 이해되지 않는다면 [분할차분표를 이용한 계산](#분할차분표를-이용한-계산)을 다시 보길 권장한다.
 
-```c#
+```csharp
 // 분할 차분 값들을 이전 분할 차분 값으로부터 순차적으로 구함
 // 0번째 열은 이미 구했으므로 j = 1부터 시작
 for (int j = 1; j < n; j++)
@@ -372,7 +466,7 @@ for (int j = 1; j < n; j++)
 
 분할차분표를 완성했기 때문에 이제 뉴턴 다항식을 보간할 수 있다. **분할차분표의 0번째 행이 뉴턴 다항식의 각 항의 계수**이다. 메모리 효율성을 위해 전처리로 분할차분표의 0번째 행과 Points의 $x$값들을 따로 복사한다. 그 이유는 delegate나 local function 사용 시 변수를 캡쳐할 때 발생하는 몇가지 문제 때문이다. 자세한 내용은 C# 클로저 개념을 참조하면 되며 이 포스트의 주 목적은 아니기 때문에 크게 신경쓰지 않아도 된다.
 
-```c#
+```csharp
 // 보간하려는 다항함수의 계수: 분할차분표의 0번째 행
 float[] coef = new float[n];
 for (int i = 0; i < n; i++)
@@ -390,13 +484,13 @@ for (int i = 0; i < n - 1; i++)
 
 뉴턴 다항식을 구하는 `Interpolate()` local function 내부에서 뉴턴 다항식 $N(x) = f[x_0] + f[x_0, x_1] (x - x_0) + f[x_0, x_1, x_2] (x - x_0)(x - x_1) + \cdots$ 와 같이 각 항의 차수가 순차적으로 증가하는 형태로 다항식을 보간한다. 이 때 위에서 복사한 값을 활용해 뉴턴 다항식을 보간할 수 있다. 
 
-```c#
+```csharp
 float Interpolate(float x)
 {
     float functionValue = 0f; // 반환할 함수값
     float newtonBasisPoly = 1f; // 뉴턴 기반 다항식
 
-    for (int i = 1; i < coef.Length; i++)
+    for (int i = 0; i < coef.Length; i++)
     {
         functionValue += coef[i] * newtonBasisPoly;
         newtonBasisPoly *= x - x_points[i]; // 누적곱을 사용함
@@ -408,7 +502,7 @@ float Interpolate(float x)
 
 local function `Interpolate()`를 `InterpolatedFunction` delegate 인스턴스에 할당 후 반환한다. 이렇게 처리하는 목적은 동일한 data set에 대해 중복해서 분할차분표를 구하는 낭비를 피하기 위해서이다.
 
-```c#
+```csharp
 return new InterpolatedFunction(Interpolate);
 ```
 
@@ -418,19 +512,19 @@ return new InterpolatedFunction(Interpolate);
 
 <script src="https://gist.github.com/DevSlem/a5b6815c5c06b6399ff140d969692790.js"></script>
 
-### 디버깅
+### 디버깅 - C#
 
 디버깅을 위해 우리가 잘 알고 있는 3차함수인 $y = x(x - 1)(x + 1)$를 지나는 Point들을 `Point2` 타입의 배열을 만들고 초기화 한다. 점이 4개이기 때문에 3차함수를 보간할 수 있다.
 
 ```csharp
 static void Main(string[] args)
 {
-    Point2[] points = new Point2[4]
+    Vector2[] points = new Vector2[4]
     {
-        new Point2(-1, 0),
-        new Point2(0, 0),
-        new Point2(1, 0),
-        new Point2(2, 6)
+        new Vector2(-1, 0),
+        new Vector2(0, 0),
+        new Vector2(1, 0),
+        new Vector2(2, 6)
     };
 
     var f = NewtonPolynomial(points); // 뉴턴 다항식 보간 메소드 호출
@@ -448,15 +542,7 @@ $$
 
 보간하고자 했던 함수에 동일한 $x$값인 -2와 3을 대입해보면 동일한 함숫값을 얻을 수 있다. 즉, 성공적으로 다항식을 보간했다. 이제 어떤 임의의 점이든지 간에 그 점들을 지나는 유일한 다항함수를 결정할 수 있다.  
 
-## Practical Use
-
-위에서 구현한 Python과 C# 코드로 잘 동작하는지 활용해보았다.
-
-### Matplotlib로 뉴턴 다항식 그래프 출력
-
-TODO: 내용 추가 예정
-
-### Unity에서 구현한 비선형 오브젝트(함정)
+### Unity에서 구현한 비선형 오브젝트(함정) - C#
 
 Unity Object를 주어진 데이터에 의해 보간된 비선형 함수의 궤적을 따라 움직이도록 구현하였다.  
 
