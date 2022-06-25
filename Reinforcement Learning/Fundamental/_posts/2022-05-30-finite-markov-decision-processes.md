@@ -16,7 +16,7 @@ sidebar:
 ***Markov Decision Processes* (MDPs)는 연속적인 의사 결정을 형식화**한 프레임이다. MDPs와 Multi-armed bandits 환경의 가장 큰 차이점은 MDPs에서는 선택한 action들이 environment의 states를 변경시켜 future rewards에 영향을 미친다는 점이다. 즉, actions와 states가 연관성이 있는 *associative* setting이다. MDPs는 $(\mathcal{S}, \mathcal{A}, P, R)$로 구성되며 각 요소는 아래와 같다.
 
 * $\mathcal{S}$ - a set of states
-* $\mathcal{A}$ - a sets of actions
+* $\mathcal{A}$ - a set of actions
 * $P$ - state-transition probability function
 * $R$ - reward function
 
