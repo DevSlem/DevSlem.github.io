@@ -1,7 +1,7 @@
 ---
 title: "[Unity] Save System Pattern"
 excerpt: "Save와 Load 작업을 조금 더 효율적으로 실행하기 위한 패턴을 소개한다."
-categories: [Unity, Implementation]
+categories: [Unity]
 tags:
     - [Unity, Save System, Design Pattern]
 date: 2022-04-06

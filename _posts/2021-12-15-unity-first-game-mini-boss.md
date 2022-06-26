@@ -1,7 +1,7 @@
 ---
 title: "[Unity] 유니티 첫 게임 - 미니 보스"
 excerpt: "Unity로 미니 보스 몬스터 구현함"
-categories: [Unity, Implementation]
+categories: [Unity]
 tags: [Unity, Game Development, Project, Enemy]
 date: 2021-12-15
 last_modified_at: 2021-12-16

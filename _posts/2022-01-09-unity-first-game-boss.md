@@ -1,7 +1,7 @@
 ---
 title: "[Unity] 유니티 첫 게임 - 첫번째 보스 리퍼"
 excerpt: "Unity로 첫번째 보스 리퍼(Reaper)를 구현함"
-categories: [Unity, Implementation]
+categories: [Unity]
 tags:
     - [Unity, Game Development, Project, Enemy]
 date: 2022-01-09

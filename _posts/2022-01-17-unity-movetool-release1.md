@@ -1,7 +1,7 @@
 ---
 title: "[Unity] Scene View에서 Vector의 Position Handle 조작하기"
 excerpt: "Vector의 Position Handle을 Scene View에서 조작하기 위한 알고리즘을 소개한다."
-categories: [Unity, Implementation]
+categories: [Unity]
 tags:
     - [Unity, Unity Editor, Attribute, Reflection, Vector]
 date: 2022-01-17

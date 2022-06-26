@@ -1,7 +1,7 @@
 ---
 title: "[Unity] 포물선 운동(점프) 구현"
 excerpt: "Unity로 점프를 위한 포물선 궤적의 운동을 구현한다."
-categories: [Unity, Implementation]
+categories: [Unity]
 tags:
     - [Unity, Algorithm, Physics, Jump, Parabola, Projectile Motion]
 date: 2021-12-24

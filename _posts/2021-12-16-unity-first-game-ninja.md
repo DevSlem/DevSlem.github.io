@@ -1,7 +1,7 @@
 ---
 title: "[Unity] 유니티 첫 게임 - 닌자"
 excerpt: "Unity로 닌자 몬스터 구현함"
-categories: [Unity, Implementation]
+categories: [Unity]
 tags: [Unity, Game Development, Project, Enemy]
 date: 2021-12-16
 last_modified_at: 2021-12-23

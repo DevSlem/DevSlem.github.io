@@ -1,7 +1,7 @@
 ---
 title: "게임 물리 요약 (Game Physics Summary)"
 excerpt: "게임에 적용되는 기본적인 물리 법칙에 대해 소개한다."
-categories: [Game Development, Math Physics]
+categories: [Game Development]
 date: 2022-05-22
 last_modified_at: 2022-06-24
 math: true
