@@ -1,9 +1,9 @@
 ---
 title: "Dynamic Programming"
-excerpt: "MDP에서 optimal policy를 계산하는데 사용되는 DP를 소개한다."
+excerpt: "MDP에서 optimal policy를 구하는데 사용되는 DP를 소개한다."
 tags: [RL, AI]
 date: 2022-06-25
-last_modified_at: 2022-06-25
+last_modified_at: 2022-06-26
 sidebar:
     nav: "rl"
 ---
@@ -17,7 +17,7 @@ sidebar:
 1. [Overlapping Subproblems](https://www.geeksforgeeks.org/overlapping-subproblems-property-in-dynamic-programming-dp-1/)
 2. [Optimal Substructure](https://www.geeksforgeeks.org/overlapping-subproblems-property-in-dynamic-programming-dp-1/)
 
-Reinforcement Learning (RL)에서 environment가 perfect model로 environment의 지식 (일반적으로 MDP)을 완전히 알 수 있다면 DP를 활용하여 optimal policy를 계산할 수 있다. RL에서 DP의 핵심은 Bellman equation을 value function의 근사를 위한 update rule로 전환하는 것이다. 이 과정이 어떻게 진행되는지 알아보자.
+*Reinforcement Learning* (RL)에서 environment가 perfect model로 environment의 지식 (일반적으로 MDP)을 완전히 알 수 있다면 DP를 활용하여 optimal policy를 계산할 수 있다. RL에서 DP의 핵심은 value function의 근사를 위해 **Bellman equation을 update rule로 전환**하는 것이다. 이 과정이 어떻게 진행되는지 알아보자.
 
 ## Generalized Policy Iteration
 
@@ -60,17 +60,17 @@ $$
 \end{align}
 $$
 
-DP에서는 위 update rule이 모든 state $s \in \mathcal{S}$에 대해 수행되며 $v_k$는 일반적으로 $k \rightarrow \infty$이면 수렴한다. 이러한 알고리즘을 *iterative policy evaluation*이라고 부른다.
+DP에서는 위 update rule이 모든 state $s \in \mathcal{S}$에 대해 수행되며 $v_k$는 일반적으로 $k \rightarrow \infty$이면 수렴한다. 이 때 **terminal state의 value는 항상 0**이어야 한다. 이렇게 iterative하게 value function을 구하는 알고리즘을 *iterative policy evaluation*이라고 부른다.
 
 iterative policy evaluation이 DP인 이유는 update rule을 수행하는 방식 때문이다. 기존 Bellman equation (1)에서는 현재 state $s$의 value $v_\pi(s)$는 transition된 next state $s'$의 $v_\pi(s')$으로부터 계산된다. $v_\pi(s')$은 다시 transition된 s'의 후속 state $s''$의 $v_\pi(s'')$로부터 계산된다. 즉, 재귀적 관계이다. 이러한 방식은 당연히 비효율적이며 엄청난 계산량을 요구한다. 따라서 DP에서는 기존 Bellman equation의 update rule을 iterative하게 전환하였다. 
 
-현재 state의 new value $v_{k+1}(s)$는 transition된 후속 state $s'$의 old value $v_k(s')$로부터 계산된다. 즉, 다시 재귀적으로 계산하지 않고 지금까지 계산된 $v_k(s')$을 그대로 사용하겠다는 것이다. iterative policy evaluation의 각 iteration은 모든 state에 대해 한번에 이러한 update rule을 수행한다. 따라서 iterative policy evaluation을 수행하기 위해서는 일반적으로 old value를 저장한 array와 new value를 계산하기 위한 array가 각각 필요하다. 그러나 실제로는 한개의 array로 old value의 보관과 new value의 계산을 동시에 수행한다. 이때는 new value가 계산되면 기존 old value를 실시간으로 덮어쓴다. 따라서 각 state에 대한 value 계산 시 old value가 참조될 수도 있고, 이미 계산이 완료된 new value가 참조될 수도 있다. 2-array든 1-array 방식이든 수렴성은 보장되며 1-array 방식이 수렴속도가 일반적으로 더 빠르다. 다만 1-array 방식은 state value를 update하는 순서에 따라 수렴 속도가 변한다.
+현재 state의 new value $v_{k+1}(s)$는 transition된 후속 state $s'$의 old value $v_k(s')$로부터 계산된다. 즉, 다시 재귀적으로 계산하지 않고 **지금까지 계산된 $v_k(s')$을 그대로 사용**하겠다는 것이다. iterative policy evaluation의 각 iteration은 모든 state에 대해 한번에 이러한 update rule을 수행한다. 따라서 iterative policy evaluation을 수행하기 위해서는 일반적으로 old value를 저장한 array와 new value를 계산하기 위한 array가 각각 필요하다. 그러나 실제로는 한개의 array로 old value의 보관과 new value의 계산을 동시에 수행한다. 이때는 new value가 계산되면 기존 old value를 실시간으로 덮어쓴다. 따라서 각 state에 대한 value 계산 시 old value가 참조될 수도 있고, 이미 계산이 완료된 new value가 참조될 수도 있다. 2-array든 1-array 방식이든 수렴성은 보장되며 1-array 방식이 수렴속도가 일반적으로 더 빠르다. 다만 1-array 방식은 state value를 update하는 순서에 따라 수렴 속도가 변한다.
 
 지금까지 DP를 통해 state value $v_\pi$를 계산하는 방법을 알아보았다. 이제 계산된 state value를 통해 policy $\pi$를 개선해보자.
 
 ## Policy Improvement
 
-임의의 deterministic policy $\pi$를 따를 때의 state value $v_\pi$가 결정되었다고 가정하자. deterministic policy의 의미는 policy $\pi$의 결과과 action들의 확률 분포가 아닌 action 그 자체인 경우를 말한다. 이 때 어떻게 기존 policy를 개선할 수 있을까? 이는 action value $q_\pi$를 통해 수행할 수 있다. 먼저 action value $q_\pi$를 remind 하자.
+임의의 deterministic policy $\pi$를 따를 때의 state value $v_\pi$가 결정되었다고 가정하자. deterministic policy의 의미는 policy $\pi$의 결과가 action들의 확률 분포가 아닌 action 그 자체인 경우를 말한다. 이 때 어떻게 기존 policy를 개선할 수 있을까? 이는 action value $q_\pi$를 통해 수행할 수 있다. 먼저 action value $q_\pi$를 remind 하자.
 
 $$
 \begin{align}
@@ -79,18 +79,30 @@ $$
 \end{align}
 $$
 
-이때 각 state에서 가장 좋은 action value $q_\pi(s, a)$를 가진 action $a$를 선택하면 된다. 이러한 방식을 *greedy* policy라고 하며 new policy $\pi'$은 아래와 같다.
+모든 state $s \in \mathcal{S}$에 대해 action value가 아래와 같은 관계를 만족한다고 하자.
 
 $$
-\pi'(s) \doteq \underset{a}{\arg\max} \ q_\pi(s, a) \tag{4}
+q_\pi(s, \pi'(s)) \geq v_\pi(s) \tag{4}
 $$
 
-개선된 정책 $\pi'(s)$는 기존 $\pi(s)$에 의한 action과 같을 수도 있고 다를 수도 있지만 무엇이든 간에 기존 policy 보다는 좋을 것이다. 기존 policy에 의한 value function에 관해 greedy하게 선택하는 과정을 *policy improvement*라고 한다.
-
-만약 new greedy policy $\pi'$이 기존 policy $\pi$와 동일하면 어떨까? 이 경우 기존 policy와 동일한 action을 선택하기 때문에 결국 $v_\pi = v_{\pi'}$이 되며 수식 (4)에 의해 아래와 같은 수식을 만족한다.
+이 경우 모든 state로부터 아래와 같이 더 많거나 같은 expected return을 얻을 수 있다.
 
 $$
-v_{\pi'}(s) = \max_a \mathbb{E}[R_{t+1} + \gamma v_{\pi'}(S_{t+1}) \ \vert \ S_t = s, A_t = a]
+v_\pi'(s) \geq v_\pi(s) \tag{5}
+$$
+
+이를 *policy improvement theorem*이라고 한다. 그렇다면 어떻게 수식 (4)를 만족할 수 있을까? 가장 간단한 방법은 각 state에서 action value $q_\pi(s,a)$가 최대인 action을 선택하는 것이다. $v_\pi(s)$는 action value들의 expectation이다. 따라서 최대 action value보다 작거나 같다. 이러한 방식을 *greedy* policy라고 하며 new policy $\pi'$은 아래와 같다.
+
+$$
+\pi'(s) \doteq \underset{a}{\arg\max} \ q_\pi(s, a) \tag{6}
+$$
+
+개선된 정책 $\pi'(s)$는 기존 $\pi(s)$에 의한 action과 같을 수도 있고 다를 수도 있지만 무엇이든 간에 분명히 기존 policy만큼 좋거나 더 나을것이다. 기존 policy에 의한 value function에 관해 greedy하게 선택하는 과정을 *policy improvement*라고 한다.
+
+만약 new greedy policy $\pi'$이 기존 policy $\pi$와 동일하면 어떨까? 이 경우 기존 policy와 동일한 action을 선택하기 때문에 모든 state에 대해 $v_\pi = v_{\pi'}$이 되며 수식 (6)에 의해 아래와 같은 수식을 만족한다.
+
+$$
+v_{\pi'}(s) = \max_a \mathbb{E}[R_{t+1} + \gamma v_{\pi'}(S_{t+1}) \ \vert \ S_t = s, A_t = a] \tag{7}
 $$
 
 그런데 위 수식은 Bellman optimality equation과 동일하다. 따라서 $v_{\pi'}$은 $v_\ast$이며 $\pi$와 $\pi'$ 모두 optimal policy이다.
@@ -105,11 +117,11 @@ $$
 
 위 수식에서 $\overset{E}{\longrightarrow}$는 policy evaluation, $\overset{I}{\longrightarrow}$는 policy improvement를 나타낸다. finite MDP는 유한하기 때문에 이러한 프로세스는 유한한 iteration 안에 optimal policy와 optimal value function으로 반드시 수렴한다.
 
-아래는 policy iteration에 대한 알고리즘이다.
+아래는 policy iteration 알고리즘이다.
 
 > 1. Initialization  
 > $V(s) \in \mathbb{R}$ and $\pi(s) \in \mathcal{A}(s)$ arbitrarily for all $s \in \mathcal{S}$  
-> <br>
+> 
 > 2. Policy Evaluation  
 > **Loop**:  
 > $\quad$ $\Delta \leftarrow 0$  
@@ -118,7 +130,7 @@ $$
 > $\quad\quad$ $V(s) \leftarrow \sum_{s',r}p(s',r \vert s, \pi(s))[r + \gamma V(s')]$  
 > $\quad\quad$ $\Delta \leftarrow \max(\Delta, \vert v - V(s) \vert)$  
 > **until** $\Delta < \theta$ (a small positive number determining the accuracy of estimation)  
-> <br>
+> 
 > 3. Policy Improvement  
 > $\textit{policy-stable} \leftarrow \textit{true}$  
 > **For each** $s \in \mathcal{S}$:  
@@ -127,8 +139,46 @@ $$
 > $\quad$ **If** $\textit{old-action} \neq \pi(s)$, **then** $\textit{policy-stable} \leftarrow \textit{false}$  
 > **If** $\textit{policy-stable}$, **then** stop and return $V \approx v_\ast$ and $\pi \approx \pi_\ast$; **else** go to 2
 
-참고로 2. Policy Evaluation에서 state value를 구할 때와 3. Policy Improvement에서 개선된 policy $\pi(s)$를 얻기 위해 action value를 구할 때의 수식이 동일한데 그 이유는 policy $\pi$를 deterministic 하다고 가정했기 때문이다. state value를 구할 때 policy $\pi$를 따를 때의 action value $q_\pi(s, a)$에 대한 expectation을 취하는데 policy $\pi$를 따르는 action $a$의 확률은 1, 나머지 action은 모두 0이기 때문에 $a = \pi(s)$에 대한 action value $q_\pi(s, \pi(s))$가 곧 state value이다.
+참고로 2. Policy Evaluation에서 state value $V(s)$를 구할 때와 3. Policy Improvement에서 개선된 policy $\pi(s)$를 얻기 위해 action value를 구할 때의 수식이 동일한데 그 이유는 policy $\pi$를 deterministic 하다고 가정했기 때문이다. state value를 구할 때 policy $\pi$를 따를 때의 action value $q_\pi(s, a)$에 대한 expectation을 취하는데 policy $\pi$를 따르는 action $a$의 확률은 1, 나머지 action은 모두 0이기 때문에 $a = \pi(s)$에 대한 action value $q_\pi(s, \pi(s))$가 곧 state value이다.
 
 ## Value Iteration
 
-TODO: 내용 추가 예정
+policy iteration은 policy evaluation을 통해 현재 policy에 대한 value function을 수렴시키고 나서 policy improvement를 수행할 수 있었다. 그러나 *value iteration* 기법은 policy evaluation을 수행 시 현재 policy에 대한 value function을 수렴시키지 않는다. 대신 현재 policy에 대한 value function을 딱 한 번만 계산 후 바로 policy improvement를 수행한다. 즉, **policy evaluation의 1 iteration과 policy improvement를 결합**한 것을 반복해서 수행한다. 이 과정을 하나의 단순한 update rule로 나타낼 수 있다.
+
+$$
+\begin{align}
+    v_{k+1}(s) &\doteq \max_a\mathbb{E}[R_{t+1} + \gamma v_k(S_{t+1}) \ \vert \ S_t = s, A_t = a] \\
+    &= \max_a \sum_{s',r}p(s',r \vert s,a) \Big[r + \gamma v_k(s') \Big] \tag{8}
+\end{align}
+$$
+
+위 수식처럼 나타낼 수 있는 이유는 policy improvement시 action value가 최대인 action으로 policy가 개선되기 때문이다. 즉, greedy policy이기 때문에 다음 policy evaluation에서 action value가 최대인 action을 제외한 나머지 action이 policy에 의해 선택될 확률은 0다. 따라서 한 번의 update에서 action value의 max값을 선택하는 것과 동일해진다. 
+
+또한 위 수식 (8)은 Bellman optimality equation과 동일하다. 즉, Bellman optimality equation을 iterative한 update rule로 변경한 것이 value iteration이다. value iteration 역시 $k \rightarrow \infty$이면 $v_\ast$로 수렴하며 이때의 greedy policy가 곧 $\pi_\ast$이다.
+
+아래는 value iteration 알고리즘이다.
+
+> Algorithm parameter: a small threshold $\theta > 0$ determining accuracy of estimation  
+> Initialize $V(s)$, for all $s \in \mathcal{S}^+$, arbitrarily except that $V(\textit{terminal}) = 0$  
+> 
+> **Loop**:  
+> $\quad$ $\Delta \leftarrow 0$  
+> $\quad$ **For each** $s \in \mathcal{S}$:  
+> $\quad\quad$ $v \leftarrow V(s)$  
+> $\quad\quad$ $V(s) \leftarrow \max_a \sum_{s',r}p(s',r \vert s,a)[r + \gamma V(s')]$  
+> $\quad\quad$ $\Delta \leftarrow \max(\Delta, \vert v - V(s) \vert)$  
+> **until** $\Delta < \theta$  
+> 
+> Output a deterministic policy, $\pi \approx \pi_\ast$, such that  
+> $\quad$ $\pi(s) = \arg\max_a \sum_{s',r}p(s',r \vert s,a)[r + \gamma V(s')]$
+
+지금까지 value iteration에 대해 알아보았다.
+
+## Summary
+
+이번 포스트에서는 finite MDPs를 풀기 위해 dynamic programming 기법을 활용한 방법을 알아보았다. *policy evaluation*은 주어진 policy에 대한 value function을 계산한다. *policy improvement*는 계산된 value function을 바탕으로 policy를 개선한다. DP에서의 *policy iteration*은 policy evaluation과 policy improvement를 번갈아 수행한다. 반면 *value iteration*은 policy evaluation의 1 iteration과 policy improvement를 결합한 방식을 수행한다. 이때 policy iteration은 Bellman expected equation, value iteration은 Bellman optimality equation이 사용된다는 차이가 있다. DP에서의 이러한 과정은 *generalized policy iteration* (GPI)로 나타낼 수 있으며 이는 대부분의 *reinforcement learning* (RL)에도 적용된다. 따라서 RL에서의 DP를 이해하는 것은 중요하다고 볼 수 있다.
+
+## References
+
+[1] Richard S. Sutton and Andrew G. Barto. [Reinforcement Learning: An Introduction; 2nd Edition](http://incompleteideas.net/book/bookdraft2017nov5.pdf). 2017.  
+[2] Rohan Jagtap. [Dynamic Programming in RL](https://towardsdatascience.com/dynamic-programming-in-rl-52b44b3d4965). Towards Data Science.
