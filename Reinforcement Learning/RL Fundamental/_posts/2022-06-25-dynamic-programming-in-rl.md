@@ -1,6 +1,6 @@
 ---
-title: "Dynamic Programming"
-excerpt: "MDP에서 optimal policy를 구하는데 사용되는 DP를 소개한다."
+title: "Dynamic Programming in RL"
+excerpt: "RL에서 optimal policy를 구하는데 사용되는 DP를 소개한다."
 tags: [RL, AI]
 date: 2022-06-25
 last_modified_at: 2022-06-26
@@ -8,7 +8,7 @@ sidebar:
     nav: "rl"
 ---
 
-이 포스트에서는 MDP로써 environment의 perfect model이 주어졌을 때 optimal policy를 계산하는데 사용되는 기초적인 방식인 Dynamic Programming (DP)를 소개한다.
+이 포스트에서는 RL에서 MDP로 environment의 perfect model이 주어졌을 때 optimal policy를 구하는데 사용되는 기초적인 방식인 Dynamic Programming (DP)를 소개한다.
 
 ## Introduction
 
