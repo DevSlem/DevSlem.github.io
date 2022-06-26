@@ -29,7 +29,7 @@ description: >-                        # used by seo meta and the atom feed
   It's a blog where i write posts about AI, RL, Unity, etc.
 
 # fill in the protocol & hostname for your site, e.g., 'https://username.github.io'
-url: ''
+url: 'https://devslem.github.io'
 
 github:
   username: DevSlem             # change to your github username
