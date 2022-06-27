@@ -1,7 +1,7 @@
 ---
 title: "Dynamic Programming in RL"
 excerpt: "RL에서 optimal policy를 구하는데 사용되는 DP를 소개한다."
-tags: [RL, AI]
+tags: [RL, AI, DP]
 date: 2022-06-25
 last_modified_at: 2022-06-26
 sidebar:

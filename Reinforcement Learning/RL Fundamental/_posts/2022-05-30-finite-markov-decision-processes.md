@@ -2,7 +2,7 @@
 title: "Finite Markov Decision Processes"
 excerpt: "강화학습의 기반이 되는 finite MDPs와 Bellman equations에 대해 소개한다."
 tags:
-    - [RL, AI]
+    - [RL, AI, MDP]
 date: 2022-05-30
 last_modified_at: 2022-05-30
 sidebar:
