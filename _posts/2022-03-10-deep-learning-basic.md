@@ -4,7 +4,7 @@ excerpt: "Deep Learning from Scratch 책을 읽고 요약한 내용을 소개한
 categories:
     - Deep Learning
 tags:
-    - [Deep Learning, AI]
+    - [DL, AI]
 date: 2022-03-10
 last_modified_at: 2022-05-22
 math: true
