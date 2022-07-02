@@ -252,16 +252,16 @@ $$
 > $\text{Initialize a } n \times n \text{table } T \subset \mathbb{R}, \ T_{i,0} \leftarrow y_i \text{ for all } i$  
 >
 > **$\textbf{for }$**$j = 1 \text{ to } n - 1$**$\textbf{ do}$**  
-> **$\quad \textbf{for }$**$i = 0 \text{ to } n - 1 - j$**$\textbf{ do}$**  
-> $\quad\quad T_{i,j} \leftarrow (T_{i+1,j-1} - T_{i,j-1}) / (x_{i+j} - x_i)$  
-> **$\quad \textbf{end}$**  
+> **$\qquad \textbf{for }$**$i = 0 \text{ to } n - 1 - j$**$\textbf{ do}$**  
+> $\qquad\qquad T_{i,j} \leftarrow (T_{i+1,j-1} - T_{i,j-1}) / (x_{i+j} - x_i)$  
+> **$\qquad \textbf{end}$**  
 > **$\textbf{end}$**
 > 
 > $N \leftarrow 0$  
 > $p \leftarrow 1$  
 > **$\textbf{for }$**$i = 0 \text{ to } n - 1$**$\textbf{ do}$**  
-> $\quad N \leftarrow N + T_{0,i} \times p$  
-> $\quad p \leftarrow p \times (x - x_{i})$  
+> $\qquad N \leftarrow N + T_{0,i} \times p$  
+> $\qquad p \leftarrow p \times (x - x_{i})$  
 > **$\textbf{end}$**
 > 
 > **$\textbf{return }$**$N$
