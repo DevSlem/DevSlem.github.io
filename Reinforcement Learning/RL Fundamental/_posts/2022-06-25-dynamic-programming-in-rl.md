@@ -3,7 +3,7 @@ title: "Dynamic Programming in RL"
 excerpt: "RL에서 optimal policy를 구하는데 사용되는 DP를 소개한다."
 tags: [RL, AI, DP]
 date: 2022-06-25
-last_modified_at: 2022-06-26
+last_modified_at: 2022-07-02
 sidebar:
     nav: "rl"
 ---
@@ -12,12 +12,16 @@ sidebar:
 
 ## Introduction
 
-*Dynamic Programming* (DP)는 복잡한 문제를 간단한 여러 개의 문제로 나누어 푸는 최적화 기법이다. DP는 일반적으로 아래와 같은 2가지 유형의 문제에 적용된다.
+*Reinforcement Learning* (RL)에서 environment가 perfect model로 environment의 지식 (일반적으로 MDP)을 완전히 알 수 있다면 *Dynamic Programming* (DP)를 활용해 optimal policy를 계산할 수 있다. 즉, 모든 가능한 transition의 probability distribution을 완전히 알고 있어야 한다. 이는 굉장히 특수한 상황이다. 우리는 보통 어떤 state에서 action을 선택해 next state로의 transition이 발생했을 때 next state로 transition되었다는 결과만 안다. next state가 얼마나 존재하고 각 next state로 transition될 확률이 어느정도인지 알지 못한다. 이때는 sampling으로 획득한 environment에 대한 experience를 통해 RL 문제를 해결한다.
+
+그렇다면 DP란 무엇일까? DP는 복잡한 문제를 간단한 여러 개의 문제로 나누어 푸는 최적화 기법이다. DP는 일반적으로 아래와 같은 2가지 유형의 문제에 적용된다.
 
 1. [Overlapping Subproblems](https://www.geeksforgeeks.org/overlapping-subproblems-property-in-dynamic-programming-dp-1/)
-2. [Optimal Substructure](https://www.geeksforgeeks.org/overlapping-subproblems-property-in-dynamic-programming-dp-1/)
+2. [Optimal Substructure](https://www.geeksforgeeks.org/optimal-substructure-property-in-dynamic-programming-dp-2/)
 
-*Reinforcement Learning* (RL)에서 environment가 perfect model로 environment의 지식 (일반적으로 MDP)을 완전히 알 수 있다면 DP를 활용하여 optimal policy를 계산할 수 있다. RL에서 DP의 핵심은 value function의 근사를 위해 **Bellman equation을 update rule로 전환**하는 것이다. 이 과정이 어떻게 진행되는지 알아보자.
+Overlapping Subproblems는 동일한 sub problem들이 반복적으로 요구될 때 연산 결과를 저장했다가 사용할 수 있음을 의미한다. Optimal Substructure은 주어진 문제를 sub problem들로 쪼갠 뒤 각각의 sub problem들의 최적해를 사용하여 원래 문제의 최적해를 구할 수 있음을 의미한다. 
+
+RL에 적용되는 DP의 핵심 아이디어는 위 2가지 특성을 모두 반영해 **Bellman equation을 update rule로 전환**하는 것이다. 이를 통해 value function을 근사시켜 RL 문제를 해결할 수 있다. 이 과정이 어떻게 진행되는지 알아보자.
 
 ## Generalized Policy Iteration
 
@@ -62,9 +66,17 @@ $$
 
 DP에서는 위 update rule이 모든 state $s \in \mathcal{S}$에 대해 수행되며 $v_k$는 일반적으로 $k \rightarrow \infty$이면 수렴한다. 이 때 **terminal state의 value는 항상 0**이어야 한다. 이렇게 iterative하게 value function을 구하는 알고리즘을 *iterative policy evaluation*이라고 부른다.
 
-iterative policy evaluation이 DP인 이유는 update rule을 수행하는 방식 때문이다. 기존 Bellman equation (1)에서는 현재 state $s$의 value $v_\pi(s)$는 transition된 next state $s'$의 $v_\pi(s')$으로부터 계산된다. $v_\pi(s')$은 다시 transition된 s'의 후속 state $s''$의 $v_\pi(s'')$로부터 계산된다. 즉, 재귀적 관계이다. 이러한 방식은 당연히 비효율적이며 엄청난 계산량을 요구한다. 따라서 DP에서는 기존 Bellman equation의 update rule을 iterative하게 전환하였다. 
+iterative policy evaluation이 DP인 이유는 update rule을 수행하는 방식 때문이다. 기존 Bellman equation (1)을 Exhaustive search를 통해 푼다고 생각해보자. 현재 state $s$의 value $v_\pi(s)$는 transition된 next state $s'$의 $v_\pi(s')$으로부터 계산된다. $v_\pi(s')$은 다시 transition된 s'의 후속 state $s''$의 $v_\pi(s'')$로부터 계산된다. 즉, 재귀적 관계로 연속된 모든 후속 MDP를 고려해야하는 굉장히 비효율적인 방식이다.
 
-현재 state의 new value $v_{k+1}(s)$는 transition된 후속 state $s'$의 old value $v_k(s')$로부터 계산된다. 즉, 다시 재귀적으로 계산하지 않고 **지금까지 계산된 $v_k(s')$을 그대로 사용**하겠다는 것이다. iterative policy evaluation의 각 iteration은 모든 state에 대해 한번에 이러한 update rule을 수행한다. 따라서 iterative policy evaluation을 수행하기 위해서는 일반적으로 old value를 저장한 array와 new value를 계산하기 위한 array가 각각 필요하다. 그러나 실제로는 한개의 array로 old value의 보관과 new value의 계산을 동시에 수행한다. 이때는 new value가 계산되면 기존 old value를 실시간으로 덮어쓴다. 따라서 각 state에 대한 value 계산 시 old value가 참조될 수도 있고, 이미 계산이 완료된 new value가 참조될 수도 있다. 2-array든 1-array 방식이든 수렴성은 보장되며 1-array 방식이 수렴속도가 일반적으로 더 빠르다. 다만 1-array 방식은 state value를 update하는 순서에 따라 수렴 속도가 변한다.
+DP에서는 기존 Bellman equation을 update rule로 전환해 iterative하게 만들었다. 이때 연속된 모든 후속 state를 관찰하는게 아니라 현재 state $s$에서 가능한 next state들에 대한 **one-step transition**만을 고려한다. 현재 state의 new value $v_{k+1}(s)$는 후속 state $s'$의 old value $v_k(s')$로부터 계산되며 다시 재귀적으로 계산하지 않고 **지금까지 계산된 $v_k(s')$을 그대로 사용**하겠다는 것이다. 즉, optimal policy를 찾기 위해 각 state별로 쪼개 optimal state value를 구하며 이때 지금까지 구한 state value를 저장해 놓았다가 다음 iteration에서 연산 시 사용하기 때문에 DP의 2가지 특성을 모두 지니고 있다. 아래 그림을 보자.
+
+![](/assets/images/rl-dp-backup-diagram.png){: w="40%"}
+_Fig 3. DP backup diagram.  
+(Image source: Robotic Sea Bass. [An Intuitive Guide to Reinforcement Learning](https://roboticseabass.com/2020/08/02/an-intuitive-guide-to-reinforcement-learning/).)_
+
+위 그림은 DP의 backup diagram으로 어떤 과정을 거쳐 state value $v_{k+1}(s)$가 계산되는지를 보여준다. 이때 흰색 원은 state, 검은색 원은 action이다. Exhaustive search로 Bellman equation을 푼다면 위 backup diagram의 아래 모든 후속 state들을 고려해야 한다. 그러나 DP에서는 현재 state에서의 one-step transition만을 고려하기 때문에 위 backup diagram에 표시된 빨간색 영역만을 고려한다.
+
+iterative policy evaluation의 각 iteration은 모든 state에 대해 한번에 이러한 update rule을 수행한다. 따라서 iterative policy evaluation을 수행하기 위해서는 일반적으로 old value를 저장한 array와 new value를 계산하기 위한 array가 각각 필요하다. 그러나 실제로는 한개의 array로 old value의 보관과 new value의 계산을 동시에 수행한다. 이때는 new value가 계산되면 기존 old value를 실시간으로 덮어쓴다. 따라서 각 state에 대한 value 계산 시 old value가 참조될 수도 있고, 이미 계산이 완료된 new value가 참조될 수도 있다. 2-array든 1-array 방식이든 수렴성은 보장되며 1-array 방식이 수렴속도가 일반적으로 더 빠르다. 다만 1-array 방식은 state value를 update하는 순서에 따라 수렴 속도가 변한다.
 
 지금까지 DP를 통해 state value $v_\pi$를 계산하는 방법을 알아보았다. 이제 계산된 state value를 통해 policy $\pi$를 개선해보자.
 
