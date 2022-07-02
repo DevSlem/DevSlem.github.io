@@ -131,25 +131,25 @@ $$
 
 아래는 policy iteration 알고리즘이다.
 
-> 1. Initialization  
-> $V(s) \in \mathbb{R}$ and $\pi(s) \in \mathcal{A}(s)$ arbitrarily for all $s \in \mathcal{S}$  
+> 1. $\text{Initialization}$  
+> $V(s) \in \mathbb{R} \text{ and } \pi(s) \in \mathcal{A}(s) \text{ arbitrarily for all } s \in \mathcal{S}$  
 > 
-> 2. Policy Evaluation  
-> **Loop**:  
-> $\quad$ $\Delta \leftarrow 0$  
-> $\quad$ **For each** $s \in \mathcal{S}$:  
-> $\quad\quad$ $v \leftarrow V(s)$  
-> $\quad\quad$ $V(s) \leftarrow \sum_{s',r}p(s',r \vert s, \pi(s))[r + \gamma V(s')]$  
-> $\quad\quad$ $\Delta \leftarrow \max(\Delta, \vert v - V(s) \vert)$  
-> **until** $\Delta < \theta$ (a small positive number determining the accuracy of estimation)  
+> 2. $\text{Policy Evaluation}$  
+> **$\textbf{Loop}$**$\text{:}$  
+> $\qquad \Delta \leftarrow 0$  
+> **$\qquad \textbf{For each }$**$s \in \mathcal{S} \text{:}$  
+> $\qquad\qquad v \leftarrow V(s)$  
+> $\qquad\qquad V(s) \leftarrow \sum_{s',r}p(s',r \vert s, \pi(s))[r + \gamma V(s')]$  
+> $\qquad\qquad \Delta \leftarrow \max(\Delta, \vert v - V(s) \vert)$  
+> **$\textbf{until }$**$\Delta < \theta \text{ (a small positive number determining the accuracy of estimation)}$  
 > 
-> 3. Policy Improvement  
+> 3. $\text{Policy Improvement}$  
 > $\textit{policy-stable} \leftarrow \textit{true}$  
-> **For each** $s \in \mathcal{S}$:  
-> $\quad$ $\textit{old-action} \leftarrow \pi(s)$  
-> $\quad$ $\pi(s) \leftarrow \arg\max_a \sum_{s',r}p(s',r \vert s,a)[r + \gamma V(s')]$  
-> $\quad$ **If** $\textit{old-action} \neq \pi(s)$, **then** $\textit{policy-stable} \leftarrow \textit{false}$  
-> **If** $\textit{policy-stable}$, **then** stop and return $V \approx v_\ast$ and $\pi \approx \pi_\ast$; **else** go to 2
+> **$\textbf{For each }$**$s \in \mathcal{S} \text{:}$  
+> $\qquad \textit{old-action} \leftarrow \pi(s)$  
+> $\qquad \pi(s) \leftarrow \arg\max_a \sum_{s',r}p(s',r \vert s,a)[r + \gamma V(s')]$  
+> **$\qquad \textbf{If }$**$\textit{old-action} \neq \pi(s),$**$\textbf{ then }$**$\textit{policy-stable} \leftarrow \textit{false}$  
+> **$\textbf{If }$**$\textit{policy-stable},$**$\textbf{ then }$**$\text{stop and return } V \approx v_\ast \text{ and } \pi \approx \pi_\ast;$**$\textbf{ else }$**$\text{go to 2}$  
 
 참고로 2. Policy Evaluation에서 state value $V(s)$를 구할 때와 3. Policy Improvement에서 개선된 policy $\pi(s)$를 얻기 위해 action value를 구할 때의 수식이 동일한데 그 이유는 policy $\pi$를 deterministic 하다고 가정했기 때문이다. state value를 구할 때 policy $\pi$를 따를 때의 action value $q_\pi(s, a)$에 대한 expectation을 취하는데 policy $\pi$를 따르는 action $a$의 확률은 1, 나머지 action은 모두 0이기 때문에 $a = \pi(s)$에 대한 action value $q_\pi(s, \pi(s))$가 곧 state value이다.
 
@@ -170,19 +170,19 @@ $$
 
 아래는 value iteration 알고리즘이다.
 
-> Algorithm parameter: a small threshold $\theta > 0$ determining accuracy of estimation  
-> Initialize $V(s)$, for all $s \in \mathcal{S}^+$, arbitrarily except that $V(\textit{terminal}) = 0$  
+> $\text{Algorithm parameter: a small threshold } \theta > 0 \text{ determining accuracy of estimation}$  
+> $\text{Initialize } V(s) \text{, for all } s \in \mathcal{S}^+ \text{, arbitrarily except that } V(\textit{terminal}) = 0$  
 > 
-> **Loop**:  
-> $\quad$ $\Delta \leftarrow 0$  
-> $\quad$ **For each** $s \in \mathcal{S}$:  
-> $\quad\quad$ $v \leftarrow V(s)$  
-> $\quad\quad$ $V(s) \leftarrow \max_a \sum_{s',r}p(s',r \vert s,a)[r + \gamma V(s')]$  
-> $\quad\quad$ $\Delta \leftarrow \max(\Delta, \vert v - V(s) \vert)$  
-> **until** $\Delta < \theta$  
+> **$\textbf{Loop}$**$\text{:}$  
+> $\qquad \Delta \leftarrow 0$  
+> $\qquad$**$\textbf{For each }$**$s \in \mathcal{S} \text{:}$  
+> $\qquad\qquad v \leftarrow V(s)$  
+> $\qquad\qquad V(s) \leftarrow \max_a \sum_{s',r}p(s',r \vert s,a)[r + \gamma V(s')]$  
+> $\qquad\qquad \Delta \leftarrow \max(\Delta, \vert v - V(s) \vert)$  
+> **$\textbf{until }$**$\Delta < \theta$  
 > 
-> Output a deterministic policy, $\pi \approx \pi_\ast$, such that  
-> $\quad$ $\pi(s) = \arg\max_a \sum_{s',r}p(s',r \vert s,a)[r + \gamma V(s')]$
+> $\text{Output a deterministic policy, } \pi \approx \pi_\ast \text{, such that}$  
+> $\qquad \pi(s) = \arg\max_a \sum_{s',r}p(s',r \vert s,a)[r + \gamma V(s')]$
 
 지금까지 value iteration에 대해 알아보았다.
 

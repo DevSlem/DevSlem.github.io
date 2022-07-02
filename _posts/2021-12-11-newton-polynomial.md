@@ -248,23 +248,23 @@ $$
 
 지금까지 분할차분의 개념, 분할차분표를 통한 분할차분의 계산, 뉴턴 다항식 보간 등을 알아보았다. 이제 뉴턴 다항식 보간에 대한 알고리즘을 소개하고 이를 코딩해보려 한다. 알고리즘은 아래와 같다.
 
-> **Input:** a point set $P = (x_0, y_0), \cdots, (x_{n-1}, y_{n-1})$ of $n$ points, target $x$  
-> Initialize a $n \times n$ table $T \subset \mathbb{R}$ , $T_{i,0} \leftarrow y_i$ for all $i$
+> $\text{Input: a point set } P = (x_0, y_0), \cdots, (x_{n-1}, y_{n-1}) \text{ of } n \text{ points, target } x$  
+> $\text{Initialize a } n \times n \text{table } T \subset \mathbb{R}, \ T_{i,0} \leftarrow y_i \text{ for all } i$  
 >
-> **for** $j = 1$ to $n - 1$ **do**  
-> $\quad$ **for** $i = 0$ to $n - 1 - j$ **do**  
-> $\quad\quad$ $T_{i,j} \leftarrow (T_{i+1,j-1} - T_{i,j-1}) / (x_{i+j} - x_i)$  
-> $\quad$ **end**  
-> **end**
+> **$\textbf{for }$**$j = 1 \text{ to } n - 1$**$\textbf{ do}$**  
+> **$\quad \textbf{for }$**$i = 0 \text{ to } n - 1 - j$**$\textbf{ do}$**  
+> $\quad\quad T_{i,j} \leftarrow (T_{i+1,j-1} - T_{i,j-1}) / (x_{i+j} - x_i)$  
+> **$\quad \textbf{end}$**  
+> **$\textbf{end}$**
 > 
 > $N \leftarrow 0$  
 > $p \leftarrow 1$  
-> **for** $i = 0$ to $n - 1$ **do**  
-> $\quad$ $N \leftarrow N + T_{0,i} \times p$  
-> $\quad$ $p \leftarrow p \times (x - x_{i})$  
-> **end**
+> **$\textbf{for }$**$i = 0 \text{ to } n - 1$**$\textbf{ do}$**  
+> $\quad N \leftarrow N + T_{0,i} \times p$  
+> $\quad p \leftarrow p \times (x - x_{i})$  
+> **$\textbf{end}$**
 > 
-> **return** $N$
+> **$\textbf{return }$**$N$
 
 위 알고리즘을 활용해 실제 코드로 구현해보자.
 
