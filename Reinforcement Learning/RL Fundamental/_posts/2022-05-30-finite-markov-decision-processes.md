@@ -24,11 +24,17 @@ MDPs에서는 앞서 말했듯이 actions가 immediate rewards 뿐만 아니라 
 
 MDPs에서 learner이자 decision maker를 *agent*라고 하며, agent가 상호작용하는 agent 외의 모든 요소를 *environment*라고 한다. decision making은 agent가 action을 선택하는 행위이다. discrete time steps $t = 0, 1, 2, 3, \dots$이 있을 때 각 time step $t$에서 agent는 environment의 *state* $S_t \in \mathcal{S}$에서 *action* $A_t \in \mathcal{A}(s)$를 선택한다. 그러면 새로운 state $S_{t+1}$로 전이되고 environment로부터 numerical *reward* $R_{t+1} \in \mathcal{R} \subset \mathbb{R}$을 획득한다. 아래는 MDP에 대한 그림이다.
 
-<div style="text-align: center">
+<!-- <div style="text-align: center">
 <img width="60%" src="/assets/images/rl-sutton-figure3.1.png">
 <figcaption>Fig 1. The agent–environment interaction in a Markov decision process. <br>
 (Image source: Sec. 3.1 Sutton & Barto (2017).)</figcaption>
-</div>
+</div> -->
+
+![](/assets/images/rl-sutton-figure3.1.png){: w="60%"}
+_Fig 1. The agent–environment interaction in a Markov decision process.  
+(Image source: Sec. 3.1 Sutton & Barto (2017).)_  
+
+
 
 위 과정은 매 time step 마다 끊임없이 반복되며 MDP와 agent는 아래와 같은 sequence 혹은 *trajectory*를 생성한다.
 
@@ -132,11 +138,16 @@ $$
 
 $v_\pi$에 대한 Bellman expectation equation을 아래와 같은 *backup diagram*으로 나타낼 수 있다. 참고로 backup diagram인 이유는 후속 states에서의 value로부터 역으로 현재 state에서의 value를 구하는 *backup* operation 관계를 표현하고 있기 때문이다.
 
-<div style="text-align: center">
+<!-- <div style="text-align: center">
 <img width="40%" src="/assets/images/rl-sutton-backup-diagram-for-v.png">
 <figcaption>Fig 2. Backup diagram for <i>state-value</i> <br>
 (Image source: Sec. 3.5 Sutton & Barto (2017).)</figcaption>
-</div>
+</div> -->
+
+![](/assets/images/rl-sutton-backup-diagram-for-v.png){: w="40%"}
+_Fig 2. Backup diagram for state-value.  
+(Image source: Sec. 3.5 Sutton & Barto (2017).)_  
+
 
 비어있는 circle은 $v_\pi$, 검은색 circle은 $q_\pi$를 나타낸다. 가장 위의 node는 $v_\pi(s)$로 바로 아래의 $q_\pi(s, a)$를 가리킨다. 즉, $v_\pi$에 대한 Bellman expectation equation은 **어떤 state에서 선택 가능한 각 action들의 action-value $q_\pi$들에 대한 expectation**이다. 따라서 $v_\pi$를 아래와 같은 수식으로 나타낼 수 있다.
 
@@ -146,11 +157,16 @@ $$
 
 $q_\pi$에 대한 Bellman expectation equation의 backup diagram은 아래와 같다.
 
-<div style="text-align: center">
+<!-- <div style="text-align: center">
 <img width="40%" src="/assets/images/rl-sutton-backup-diagram-for-q.png">
 <figcaption>Fig 3. Backup diagram for <i>action-value</i> <br>
 (Image source: Sec. 3.5 Sutton & Barto (2017).)</figcaption>
-</div>
+</div> -->
+
+![](/assets/images/rl-sutton-backup-diagram-for-q.png){: w="35%"}
+_Fig 3. Backup diagram for action-value.  
+(Image source: Sec. 3.5 Sutton & Barto (2017).)_  
+
 
 $p$는 MDP의 dynamics로 state $s$에서 action $a$를 선택했을 때 reward $r$과 next state $s'$이 발생할 확률이다. 가장 위의 node는 $q_\pi(s, a)$로 바로 아래의 $v_\pi(s')$을 가리킨다. 즉, $q_\pi(s, a)$는 **어떤 state $s$에서 action $a$를 선택했을 때 획득한 return들의 expectation**으로 나타낼 수 있다.
 
@@ -194,11 +210,16 @@ $$
 
 ***Bellman optimality equation***은 Bellman expectation equation과 비슷하나 value들에 대한 expectation이 아닌 maximum value만을 고려한다는 차이가 있다. 아래는 optimal state-value function $v_\ast$에 대한 backup diagram이다.
 
-<div style="text-align: center">
+<!-- <div style="text-align: center">
 <img width="40%" src="/assets/images/rl-sutton-backup-diagram-for-bellman-optim-v.png">
 <figcaption>Fig 4. Backup diagram for <i>optimal state-value</i> <br>
 (Image source: Sec. 3.6 Sutton & Barto (2017).)</figcaption>
-</div>
+</div> -->
+
+![](/assets/images/rl-sutton-backup-diagram-for-bellman-optim-v.png){: w="40%"}
+_Fig 4. Backup diagram for optimal state-value.  
+(Image source: Sec. 3.6 Sutton & Barto (2017).)_  
+
 
 가장 위의 node $v_\ast(s)$는 action-value에 대해 maximum value를 선택한다. 즉, $v_\ast$에 대한 Bellman optimality equation은 **optimal policy를 따르는 state value가 그 state에서의 best action에 대한 expected return 혹은 action value와 동일**하다.
 
@@ -211,11 +232,16 @@ $$
 
 아래는 optimal action-value function function $q_\ast$에 대한 backup diagram이다.
 
-<div style="text-align: center">
+<!-- <div style="text-align: center">
 <img width="40%" src="/assets/images/rl-sutton-backup-diagram-for-bellman-optim-q.png">
 <figcaption>Fig 5. Backup diagram for <i>optimal action-value</i> <br>
 (Image source: Sec. 3.6 Sutton & Barto (2017).)</figcaption>
-</div>
+</div> -->
+
+![](/assets/images/rl-sutton-backup-diagram-for-bellman-optim-q.png){: w="40%"}
+_Fig 5. Backup diagram for optimal action-value.  
+(Image source: Sec. 3.6 Sutton & Barto (2017).)_  
+
 
 가장 위의 node는 $q_\ast(s, a)$로 바로 아래의 $v_\ast(s')$을 가리킨다. $q_\ast$에 대한 Bellman optimality equation은 Bellman expectation equation과 같이 여전히 기댓값을 취하지만 유일한 차이점은 이미 각 states에 대한 optimal values를 알고 있다는 점이다.
 
@@ -245,6 +271,6 @@ Bellman optimality equation을 풀면 RL의 목적인 optimal policy를 찾을 �
 
 ## References
 
-[1] Richard S. Sutton and Andrew G. Barto. [Reinforcement Learning: An Introduction; 2nd Edition](http://incompleteideas.net/book/bookdraft2017nov5.pdf). 2017.  
-[2] Towards Data Science - [Reinforcement Learning: Bellman Equation and Optimality (Part 2)](https://towardsdatascience.com/reinforcement-learning-markov-decision-process-part-2-96837c936ec3)  
-[3] Wikipedia - [Markov decision process](https://en.wikipedia.org/wiki/Markov_decision_process)  
+[1] Richard S. Sutton and Andrew G. Barto. [Reinforcement Learning: An Introduction; 2nd Edition. 2017](http://incompleteideas.net/book/bookdraft2017nov5.pdf).  
+[2] Towards Data Science. blackburn. [Reinforcement Learning: Bellman Equation and Optimality (Part 2)](https://towardsdatascience.com/reinforcement-learning-markov-decision-process-part-2-96837c936ec3)  
+[3] Wikipedia. [Markov decision process](https://en.wikipedia.org/wiki/Markov_decision_process)  

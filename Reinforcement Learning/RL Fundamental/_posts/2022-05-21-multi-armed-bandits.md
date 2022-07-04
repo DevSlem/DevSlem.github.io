@@ -25,11 +25,16 @@ Multi-armed Bandits 환경은 슬롯 머신에서 여러 개의 레버를 당겨
 
 stationary probability distribution은 시간이 흐름에도 변하지 않는 정적인 확률 분포를 의미한다.
 
-<div style="text-align: center">
+<!-- <div style="text-align: center">
 <img width="60%" src="https://lilianweng.github.io/posts/2018-01-23-multi-armed-bandit/bern_bandit.png">
 <figcaption>Fig 1. Multi-armed bandits<br>
 (Image source: <a href="https://lilianweng.github.io/posts/2018-01-23-multi-armed-bandit/">Lil'Log</a>)</figcaption>
-</div>
+</div> -->
+
+![](https://lilianweng.github.io/posts/2018-01-23-multi-armed-bandit/bern_bandit.png){: w="60%"}
+_Fig 1. Multi-armed bandits.  
+(Image source: [Lil'Log](https://lilianweng.github.io/posts/2018-01-23-multi-armed-bandit/).)_  
+
 
 $k$-armed bandit problem과 일반적인 reinforcement learning problem의 가장 큰 차이점은 $k$-armed bandit problem은 어떤 상태에서 선택한 행동으로 즉각적인 보상만 획득할 뿐, **레버를 당기는 action들이 environment의 states와 future rewards를 변경시키지 않는다**. 즉, actions와 states가 연관성이 없으며 이를 *nonassociative* setting이라고 한다. 반대로 *associative* setting에서는 선택한 action들이 states를 변경시켜 future rewards에 영향을 미치는 파급효과를 가진다.
 
@@ -147,5 +152,5 @@ $\bar{R_t}$는 time step $t$까지의 모든 reward의 평균이다. $\bar{R_t}$
 
 ## References
 
-[1] Richard S. Sutton and Andrew G. Barto. [Reinforcement Learning: An Introduction; 2nd Edition](http://incompleteideas.net/book/bookdraft2017nov5.pdf). 2017.  
-[2] Lil'Log - [The Multi-Armed Bandit Problem and Its Solutions](https://lilianweng.github.io/posts/2018-01-23-multi-armed-bandit/)
+[1] Richard S. Sutton and Andrew G. Barto. [Reinforcement Learning: An Introduction; 2nd Edition. 2017](http://incompleteideas.net/book/bookdraft2017nov5.pdf).  
+[2] Lil'Log. [The Multi-Armed Bandit Problem and Its Solutions](https://lilianweng.github.io/posts/2018-01-23-multi-armed-bandit/).
