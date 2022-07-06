@@ -104,6 +104,7 @@ policy evaluation은 앞서 [Monte Carlo Prediction](#monte-carlo-prediction)에
 
 first-visit Monte Carlo ES 알고리즘은 아래와 같다. 
 
+> ##### $\text{Algorithm: Monte Carlo ES (Exploring Starts), for estimating } \pi \approx \pi_\ast$
 > $\text{Initialize:}$  
 > $\qquad \pi(s) \in \mathcal{A} \text{ (arbitrarily), for all } s \in \mathcal{S}$  
 > $\qquad Q(s,a) \in \mathbb{R} \text{ (arbitrarily), for all } s \in \mathcal{S}, \ a \in \mathcal{A}(s)$  
@@ -149,6 +150,7 @@ $\epsilon$-greedy policy는 $\epsilon$*-soft* policy의 가장 대표적인 예�
 
 On-policy first-visit MC methods 알고리즘을 살펴보자. policy는 $\epsilon$-greedy이다.
 
+> ##### $\text{Algorithm: On-policy first-visit MC control (for } \epsilon \text{-soft policies), estimates } \pi \approx \pi_\ast$
 > $\text{Algorithm parameter: small } \epsilon > 0$  
 > $\text{Initialize: }$  
 > $\qquad \pi \leftarrow \text{an arbitrary } \epsilon \text{-soft policy}$  
@@ -268,6 +270,7 @@ $$
 
 이제 Off-policy MC methods 알고리즘을 보자. 여기서는 prediction 부분만 보이도록 하겠다. target policy $\pi$와 behavior policy $b$ 모두 어떤 policy도 가능하지만 *coverage*를 만족해야한다. coverage란 $\pi$에 의해 선택될 수 있는 모든 action은 $b$에 의해서도 선택될 수 있어야 함을 의미한다. 즉, $\pi(a \vert s) > 0$면 $b(a \vert s) > 0$이어야 한다.
 
+> ##### $\text{Algorithm: Off-policy MC prediction (policy evaluation) for estimating } Q \approx q_\pi$
 > $\text{Input: an arbitrary target policy } \pi$  
 > $\text{Initialize, for all } s \in \mathcal{S}, \ a \in \mathcal{A}(s) \text{:}$  
 > $\qquad Q(s,a) \in \mathbb{R} \text{ (arbitrarily)}$  

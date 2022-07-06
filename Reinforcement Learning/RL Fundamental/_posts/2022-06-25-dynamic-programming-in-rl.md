@@ -131,6 +131,7 @@ $$
 
 아래는 policy iteration 알고리즘이다.
 
+> ##### $\text{Algorithm: Policy Iteration (using iterative policy evaluation) for estimating } \pi \approx \pi_\ast$
 > 1. $\text{Initialization}$  
 > $V(s) \in \mathbb{R} \text{ and } \pi(s) \in \mathcal{A}(s) \text{ arbitrarily for all } s \in \mathcal{S}$  
 > 
@@ -170,6 +171,7 @@ $$
 
 아래는 value iteration 알고리즘이다.
 
+> ##### $\text{Algorithm: Value Iteration, for estimating } \pi \approx \pi_\ast$
 > $\text{Algorithm parameter: a small threshold } \theta > 0 \text{ determining accuracy of estimation}$  
 > $\text{Initialize } V(s) \text{, for all } s \in \mathcal{S}^+ \text{, arbitrarily except that } V(\textit{terminal}) = 0$  
 > 
