@@ -169,7 +169,7 @@ Divided Differences Table은 분할차분표로 위에서 소개한 bottom-up �
 
 $n$개의 Point(점)가 있고, 분할차분표의 행 인덱스는 $i$, 열 인덱스는 $j$이며 0부터 시작한다. 위 분할차분표의 특징은 아래와 같다.  
 
-* 분할차분 값에 해당되는 부분의 행과 열의 크기는 Point의 개수인 $n$과 동일하다.  
+* 분할차분 값에 해당되는 부분은 $n \times n$ table로 구성된다.  
 * 각 열의 원소 개수는 $n$개에서 $j$개씩 감소한다. 즉, $n - j$개이다.  
 
 ### 분할차분표를 이용한 계산
@@ -248,8 +248,9 @@ $$
 
 지금까지 분할차분의 개념, 분할차분표를 통한 분할차분의 계산, 뉴턴 다항식 보간 등을 알아보았다. 이제 뉴턴 다항식 보간에 대한 알고리즘을 소개하고 이를 코딩해보려 한다. 알고리즘은 아래와 같다.
 
+> ##### $\text{Algorithm: Newton polynomial interpolation}$  
 > $\text{Input: a point set } P = (x_0, y_0), \cdots, (x_{n-1}, y_{n-1}) \text{ of } n \text{ points, target } x$  
-> $\text{Initialize a } n \times n \text{table } T \subset \mathbb{R}, \ T_{i,0} \leftarrow y_i \text{ for all } i$  
+> $\text{Initialize a } n \times n \text{ table } T \subset \mathbb{R}, \ T_{i,0} \leftarrow y_i \text{ for all } i$  
 >
 > **$\textbf{for }$**$j = 1 \text{ to } n - 1$**$\textbf{ do}$**  
 > **$\qquad \textbf{for }$**$i = 0 \text{ to } n - 1 - j$**$\textbf{ do}$**  
@@ -564,3 +565,8 @@ Unity Object를 주어진 데이터에 의해 보간된 비선형 함수의 궤�
 ![Non Linear Object](/assets/images/non-linear-trap.webp){: w="70%"}
 
 직선 방향으로만 움직이는 함정보다 위와 같이 곡선 형태의 움직임을 취하면 좀 더 다양성을 줄 수 있고 게임 난이도도 올릴 수 있다.
+
+## References
+
+[1] Wikipedia. [Newton polynomial](https://en.wikipedia.org/wiki/Newton_polynomial).  
+[2] INU. Jibum Kim. 수치해석 lecture.

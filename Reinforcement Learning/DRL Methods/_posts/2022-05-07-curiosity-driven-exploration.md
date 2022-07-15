@@ -153,6 +153,6 @@ $\lambda > 0$인 scalar로 intrinsic reward signal 학습의 중요도 대비 po
 
 ## References
 
-[1] [Curiosity-driven Exploration by Self-supervised Prediction](https://pathak22.github.io/noreward-rl/resources/icml17.pdf) by Pathak  
+[1] Pathak et al. [Curiosity-driven Exploration by Self-supervised Prediction](https://pathak22.github.io/noreward-rl/resources/icml17.pdf).  
 [2] Richard S. Sutton and Andrew G. Barto. [Reinforcement Learning: An Introduction; 2nd Edition](http://incompleteideas.net/book/bookdraft2017nov5.pdf). 2017.  
-[3] Github [pathak22/noreward-rl](https://github.com/pathak22/noreward-rl)
+[3] Github. [pathak22/noreward-rl](https://github.com/pathak22/noreward-rl).

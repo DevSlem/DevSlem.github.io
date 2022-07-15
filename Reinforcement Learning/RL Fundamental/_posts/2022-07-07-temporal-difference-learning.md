@@ -123,6 +123,10 @@ _Fig 3. Sarsa backup diagram.
 > $\qquad\qquad S \leftarrow S'; \ A \leftarrow A';$  
 > $\qquad \text{until } S \text{ is terminal}$
 
+## References
+
+[1] Richard S. Sutton and Andrew G. Barto. [Reinforcement Learning: An Introduction; 2nd Edition. 2017](http://incompleteideas.net/book/bookdraft2017nov5.pdf).  
+
 ## Footnotes
 
 [^1]: [Monte Carlo Estimation of Action Values](../monte-carlo-methods/#monte-carlo-estimation-of-action-values)
