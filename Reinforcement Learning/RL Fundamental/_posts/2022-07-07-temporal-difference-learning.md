@@ -2,7 +2,7 @@
 title: "Temporal-Difference Learning"
 tags: [RL, AI]
 date: 2022-07-07
-last_modified_at: 2022-07-07
+last_modified_at: 2022-07-17
 sidebar:
     nav: "rl"
 ---
