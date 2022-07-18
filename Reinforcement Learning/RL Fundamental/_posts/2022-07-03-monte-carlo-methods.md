@@ -2,7 +2,7 @@
 title: "Monte Carlo Methods in RL"
 tags: [RL, AI]
 date: 2022-07-03
-last_modified_at: 2022-07-04
+last_modified_at: 2022-07-19
 sidebar:
     nav: "rl"
 ---
@@ -198,7 +198,7 @@ on-policy는 일반적으로 비교적 쉬운 편이기 때문에 자주 고려�
 
 *importance sampling*은 **다른 distribution을 따르는 sample이 주어졌을 때 목표로 하는 distribution의 expected value를 추정**하는 기법이다. 대부분의 off-policy methods는 서로 다른 policy를 사용하기 때문에 importance sampling을 통해 expected value를 추정한다.
 
-target policy와 behavior policy에 대한 trajectory의 상대적 확률에 따라 return에 가중치를 부여한다. 이를 *importance-sampling ratio*라고 한다. 먼저 시작 state $S_t$가 주어졌을 때 어떤 임의의 policy를 따라 생성된 state-action trajectory는 아래와 같다.
+target policy와 behavior policy에 대한 trajectory의 상대적 확률에 따라 return에 가중치를 부여한다. 이를 *importance-sampling ratio*라고 한다. 먼저 **시작 state $S_t$가 주어졌을 때 어떤 임의의 policy를 따라 생성된 state-action trajectory**는 아래와 같다.
 
 $$
 A_t, S_{t+1}, A_{t+1}, \dots, S_T
@@ -268,7 +268,7 @@ $$
 
 ### Off-policy MC Prediction Algorithm 
 
-이제 Off-policy MC methods 알고리즘을 보자. 여기서는 prediction 부분만 보이도록 하겠다. target policy $\pi$와 behavior policy $b$ 모두 어떤 policy도 가능하지만 *coverage*를 만족해야한다. coverage란 $\pi$에 의해 선택될 수 있는 모든 action은 $b$에 의해서도 선택될 수 있어야 함을 의미한다. 즉, $\pi(a \vert s) > 0$면 $b(a \vert s) > 0$이어야 한다.
+이제 Off-policy MC methods 알고리즘을 보자. 여기서는 prediction 부분만 보이도록 하겠다. 한가지 중요한 사실은 target policy $\pi$와 behavior policy $b$ 모두 어떤 policy도 가능하지만 ***coverage*를 만족**해야한다. coverage란 $\pi$에 의해 선택될 수 있는 모든 action은 $b$에 의해서도 선택될 수 있어야 함을 의미한다. 즉, $\pi(a \vert s) > 0$면 $b(a \vert s) > 0$이어야 한다.
 
 > ##### $\text{Algorithm: Off-policy MC prediction (policy evaluation) for estimating } Q \approx q_\pi$
 > $\text{Input: an arbitrary target policy } \pi$  
@@ -286,6 +286,26 @@ $$
 > $\qquad\qquad C(S_t,A_t) \leftarrow C(S_t,A_t) + W$  
 > $\qquad\qquad Q(S_t,A_t) \leftarrow Q(S_t,A_t) + \frac{W}{C(S_t,A_t)}[G - Q(S_t,A_t)]$  
 > $\qquad\qquad W \leftarrow W \frac{\pi(A_t \vert S_t)}{b(A_t \vert S_t)}$
+
+그런데 위 알고리즘을 보면 한가지 이상한 점이 있다. 바로 $W = 1$부터 시작하는 것이다. 우리는 앞서 [Importance Sampling](#importance-sampling)에서 importance-sampling ratio $\rho_{t:T-1}$는 time step $t$에서의 ratio부터 고려했었다. 즉, $\pi(A_t \vert S_t) / b(A_t \vert S_t)$를 고려했었다. 따라서 $W = \pi(A_{T-1} \vert S_{T-1}) / b(A_t \vert S_{T-1})$부터 시작해야한다. 그런데 왜 $W = 1$부터 시작하는걸까? 필자 역시 처음 공부했을 때 이러한 의문이 있었으며 어느 곳에서도 답을 찾을 수 없었다. 추후 다른 chapter를 공부하다가 그 이유를 알게 되었다. 한번 알아보자.
+
+[Importance Sampling](#importance-sampling)에서 정의했던 importance-sampling ratio $\rho_{t:T-1}$는 시작 state $S_t$가 주어졌을 때 임의의 policy를 따라 생성된 state-action trajectory를 전제로 했었다. 
+
+$$
+A_t, S_{t+1}, A_{t+1}, \dots, S_T
+$$
+
+그런데 우리는 action value를 추정하고 있다. action value 추정의 전제는 state-action pair가 주어져있다는 것이다. 즉, **$S_t, A_t$는 이미 주어져있기 때문에** 우리가 고려해야할 state-action trajectory는 아래와 같다.
+
+$$
+S_{t+1}, A_{t+1}, \dots, S_T
+$$
+
+따라서 action value를 추정할 떄 필요한 importance-sampling ratio는 $\rho_{t+1:T-1}$이다. [Importance Sampling](#importance-sampling) 파트의 trajectory가 임의의 policy 를 따를 때 발생할 확률에 위 trajectory로 대체해보면 간단히 증명할 수 있다. 위와 같은 이유로 $t = T-1$일 때 $\rho_{T:T-1} = 1$이므로, $W=1$부터 시작한다. 아래는 Reinforcement Learning: An Introduction에서 importance sampling ratio를 $t+1$부터 시작하는 이유를 설명하는 문장이다.
+
+> We do not have to care how likely we were to select the action; now that we have selected it we want to learn fully from what happens, with importance sampling only for subsequent actions.[^4]
+
+근데 위 문장이 Monte Carlo Methods가 아니라 n-step Bootstrapping chapter에 있었어서 다소 아쉬웠다. 이 문장을 보고 나서야 왜 $t+1$부터 시작하는지 위와 같이 이해할 수 있었다.
 
 ## Summary
 
@@ -306,5 +326,6 @@ MC methods는 DP와 주요한 2가지 차이점이 있다. 먼저, MC methods는
 ## Footnotes
 
 [^1]: StackExchange. [Why are state-values alone not sufficient in determining a policy (without a model)?](https://ai.stackexchange.com/questions/22907/why-are-state-values-alone-not-sufficient-in-determining-a-policy-without-a-mod).  
-[^2]: Reinforcement Learning: An Introduction; 2nd Edition. 2017. [Sec. 5.4](http://incompleteideas.net/book/bookdraft2017nov5.pdf#page=101).
-[^3]: Reinforcement Learning: An Introduction; 2nd Edition. 2017. [Sec. 5.5](http://incompleteideas.net/book/bookdraft2017nov5.pdf#page=104).
+[^2]: Reinforcement Learning: An Introduction; 2nd Edition. 2017. [Sec. 5.4](http://incompleteideas.net/book/bookdraft2017nov5.pdf#page=101).  
+[^3]: Reinforcement Learning: An Introduction; 2nd Edition. 2017. [Sec. 5.5](http://incompleteideas.net/book/bookdraft2017nov5.pdf#page=104).  
+[^4]: Reinforcement Learning: An Introduction; 2nd Edition. 2017. [Sec. 7.3](http://incompleteideas.net/book/bookdraft2017nov5.pdf#page=139).  
