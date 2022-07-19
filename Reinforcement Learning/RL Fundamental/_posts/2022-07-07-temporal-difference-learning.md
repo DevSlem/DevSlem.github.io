@@ -89,7 +89,7 @@ MC method에서 state value $v_\pi$를 추정할 경우 environment에 대한 �
 
 ![](/assets/images/rl-sutton-state-action-sequence.png)
 _Fig 2. State-action pair sequence.  
-(Image source: Sec 6.4 Sutton & Barto (2017).)_  
+(Image source: Sec 6.4 Sutton & Barto (2018).)_  
 
 앞으로 알아볼 TD method algorithm은 모두 action value $q_\pi$를 추정한다. 이 때 TD method는 bootstrap하기 때문에 다른 학습된 next state에서의 action value 추정치를 기반으로 현재 state-action pair의 $Q(s,a)$를 추정한다. 따라서 TD method algorithm들은 **다른 학습된 action value 추정치를 고려하는 방식에 따라 구분**된다. 조금 더 구체적으로 얘기하자면, TD method를 target policy와 behavior policy 관점에서 볼 때 현재 update하려는 state-action pair는 behavior policy에 의해 선택되고, **다른 학습된 action value 추정치에 대한 선택은 target policy에 의해 이루어진다**. 이 target policy를 어떻게 설정하느냐에 따라 algorithm들이 구분된다.
 
@@ -107,7 +107,7 @@ Sarsa를 target policy와 behavior policy 관점에서 살펴보자. Sarsa는 on
 
 ![](/assets/images/rl-sutton-sarsa-backup-diagram.png)
 _Fig 3. Sarsa backup diagram.  
-(Image source: Sec 6.4 Sutton & Barto (2017).)_  
+(Image source: Sec 6.4 Sutton & Barto (2018).)_  
 
 모든 on-policy method에서는 experience 생성에 사용된 behavior policy $\pi$에 대한 $q_\pi$를 추정함과 동시에, 추정된 $q_\pi$에 관해 behavior policy $\pi$를 greedy한 방향으로 update한다. Sarsa가 수렴하기 위해서는 exploration이 잘 수행되어야 하기 때문에 주로 $\epsilon$-soft policy류의 방법을 사용한다. 아래는 Sarsa algorithm이다.
 
@@ -143,7 +143,7 @@ Q-learning과 Sarsa의 가장 주요한 차이는 TD error를 구성할 때 next
 
 ![](/assets/images/rl-sutton-q-learning-backup-diagram.png){: w="25%"}
 _Fig 4. Q-learning backup diagram.  
-(Image source: Sec 6.5 Sutton & Barto (2017).)_  
+(Image source: Sec 6.5 Sutton & Barto (2018).)_  
 
 위 backup diagram에서 화살표 사이를 이어주는 선은 greedy selection을 의미한다.
 
@@ -184,7 +184,7 @@ Expected Sarsa는 on-policy일까 off-policy method일까? 정답은 둘다 될 
 
 ![](/assets/images/rl-sutton-expected-sarsa-backup-diagram.png){: w="30%"}
 _Fig 5. Expected Sarsa backup diagram.  
-(Image source: Sec 6.6 Sutton & Barto (2017).)_  
+(Image source: Sec 6.6 Sutton & Barto (2018).)_  
 
 Expected Sarsa는 위 Q-learning과 거의 구조가 동일하기 때문에 따로 algorithm을 올리지는 않겠다. 대신 아래에 소스코드를 첨부한다. 여기서는 target policy와 behavior policy가 동일한 on-policy Expected Sarsa를 구현했다.  Expected Sarsa의 update rule은 `update()` 메서드에 구현되어 있다.
 
@@ -197,7 +197,7 @@ Expected Sarsa는 위 Q-learning과 거의 구조가 동일하기 때문에 따�
 
 ![](/assets/images/rl-sutton-doubleq-stochastic-env.png){: w="60%"}
 _Fig 6. Simple stochastic environment.  
-(Image source: Sec 6.7 Sutton & Barto (2017).)_  
+(Image source: Sec 6.7 Sutton & Barto (2018).)_  
 
 
 agent는 항상 state A에서 시작한다. A에서 right action을 선택하면 reward 0과 함께 즉시 episode는 종료된다. left action을 선택하면 reward 0과 함께 state B로 전이된다. state B에서는 episode를 즉시 종료할 수 있는 수 많은 action들이 존재한다. 이 때 각 action들을 선택함으로써 얻게 되는 reward는 normal distribution $N(-0.1,1)$을 따른다. 즉, stochastic한 environment이다.
@@ -208,7 +208,7 @@ agent는 항상 state A에서 시작한다. A에서 right action을 선택하면
 
 ![](/assets/images/rl-sutton-q-vs-doubleq.png){: w="80%"}
 _Fig 7. Comparison of Q-learning and Double Q-learning.  
-(Image source: Sec 6.7 Sutton & Barto (2017).)_  
+(Image source: Sec 6.7 Sutton & Barto (2018).)_  
 
 위 그림을 보면 알겠지만 Q-learning은 training 초기에 left action을 overestimation하여 left action 쪽으로 편향된 모습을 확인할 수 있다. 반대로 Double Q-learning은 training 초기부터 안정적이며 Q-learning에 비해 훨씬 빠르게 optimal에 도달한다. 이에 대한 자세한 직관적 설명은 첨부된 블로그를[^5], 수식적 증명은 논문[^6]을 찾아보길 바란다.
 
@@ -247,13 +247,13 @@ $Q_2$를 update할 때는 위 update rule에서 $Q_1$과 $Q_2$를 서로 바꿔�
 
 ## References
 
-[1] Richard S. Sutton and Andrew G. Barto. [Reinforcement Learning: An Introduction; 2nd Edition. 2017](http://incompleteideas.net/book/bookdraft2017nov5.pdf).  
+[1] Richard S. Sutton and Andrew G. Barto. [Reinforcement Learning: An Introduction; 2nd Edition. 2018](/assets/materials/Reinforcement%20Learning%20An%20Introduction;%202nd%20Edition.%202018.pdf).  
 
 ## Footnotes
 
 [^1]: DevSlem. [Monte Carlo Estimation of Action Values](../monte-carlo-methods/#monte-carlo-estimation-of-action-values).  
 [^2]: DevSlem. [Off-policy methods](../monte-carlo-methods/#off-policy-methods).  
-[^3]: Reinforcement Learning: An Introduction; 2nd Edition. 2017. [Example 6.5: Windy Gridworld](http://incompleteideas.net/book/bookdraft2017nov5.pdf#page=124).  
-[^4]: Reinforcement Learning: An Introduction; 2nd Edition. 2017. [Example 6.6: Cliff Walking](http://incompleteideas.net/book/bookdraft2017nov5.pdf#page=126).  
+[^3]: Reinforcement Learning: An Introduction; 2nd Edition. 2018. [Sec. 6.4, p.152; Example 6.5: Windy Gridworld](/assets/materials/Reinforcement%20Learning%20An%20Introduction;%202nd%20Edition.%202018.pdf#page=152).  
+[^4]: Reinforcement Learning: An Introduction; 2nd Edition. 2018. [Sec. 6.5, p.154; Example 6.6: Cliff Walking](/assets/materials/Reinforcement%20Learning%20An%20Introduction;%202nd%20Edition.%202018.pdf#page=154).  
 [^5]: Towards Data Science. Ziad SALLOUM. [Double Q-Learning, the Easy Way](https://towardsdatascience.com/double-q-learning-the-easy-way-a924c4085ec3).  
 [^6]: Hado van Hasselt. [Double Q-learning](https://proceedings.neurips.cc/paper/2010/file/091d584fced301b442654dd8c23b3fc9-Paper.pdf).

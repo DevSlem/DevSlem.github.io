@@ -34,13 +34,13 @@ RL에 적용되는 DP의 핵심 아이디어는 위 2가지 특성을 모두 반
 
 ![](/assets/images/rl-sutton-gpi-diagram.png){: w="30%"}
 _Fig 1. GPI diagram.  
-(Image source: Sec. 4.6 Sutton & Barto (2017).)_
+(Image source: Sec. 4.6 Sutton & Barto (2018).)_
 
 policy evaluation과 policy improvement는 서로 경쟁하면서 협력하는 관계로 볼 수 있다. 이 둘은 서로를 반대 방향으로 잡아 당긴다. policy evaluation에서는 현재 policy $\pi$에 관해 value function $v_\pi$가 계산된다. 즉, value function을 policy 쪽으로 끌어당긴 셈이다. 반대로 policy improvement에서는 value function $v_\pi$에 관해 policy $\pi$가 개선되기 때문에 policy를 value function 쪽으로 끌어 당겼다. 이렇게 서로 끌어당기다 보면 어느 시점에 한 지점에 도달하게 되고 이 때가 바로 optimal value function과 policy이다. 이러한 관계를 나타내는 그림은 아래와 같다.
 
 ![](/assets/images/rl-sutton-gpi-relationship.png){: w="50%"}
 _Fig 2. GPI relationship.  
-(Image source: Sec. 4.6 Sutton & Barto (2017).)_
+(Image source: Sec. 4.6 Sutton & Barto (2018).)_
 
 몰론 실제로는 엄청나게 복잡한 과정이 내부에서 발생하지만 직관적으로 위와 같이 GPI를 이해할 수 있다. GPI에 대해 알아보았으니 이제 DP에서 GPI가 어떻게 적용되는지 알아보자.
 
@@ -194,5 +194,5 @@ $$
 
 ## References
 
-[1] Richard S. Sutton and Andrew G. Barto. [Reinforcement Learning: An Introduction; 2nd Edition. 2017](http://incompleteideas.net/book/bookdraft2017nov5.pdf).   
+[1] Richard S. Sutton and Andrew G. Barto. [Reinforcement Learning: An Introduction; 2nd Edition. 2018](/assets/materials/Reinforcement%20Learning%20An%20Introduction;%202nd%20Edition.%202018.pdf).  
 [2] Towards Data Science. Rohan Jagtap. [Dynamic Programming in RL](https://towardsdatascience.com/dynamic-programming-in-rl-52b44b3d4965).

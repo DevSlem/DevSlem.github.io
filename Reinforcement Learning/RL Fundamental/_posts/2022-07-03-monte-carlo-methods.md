@@ -73,7 +73,7 @@ $$
 
 ![](/assets/images/rl-sutton-gpi-action-value.png){: w="40%"}
 _Fig 2. GPI for action value.  
-(Image source: Sec 5.3 Sutton & Barto (2017).)_  
+(Image source: Sec 5.3 Sutton & Barto (2018).)_  
 
 위 그림을 sequence로 나타내면 아래와 같다.
 
@@ -242,7 +242,7 @@ $\mathcal{J}(s,a)$는 state-action pair s, a가 방문된 time step $t$에 대�
 
 ![](/assets/images/rl-sutton-ordinary-vs-weighted-importance-sampling.png){: w="70%"}
 _Fig 3. Ordinary importance sampling vs weighted importance sampling.  
-(Image source: Sec 5.5 Sutton & Barto (2017).)_  
+(Image source: Sec 5.5 Sutton & Barto (2018).)_  
 
 위 그림은 ordinary importance sampling과 weighted importance sampling을 비교하는 그래프이다. 둘다 error가 0으로 수렴하지만 weighted importance sampling이 더 안정적임을 확인할 수 있다.
 
@@ -319,13 +319,13 @@ MC methods는 DP와 주요한 2가지 차이점이 있다. 먼저, MC methods는
 
 ## References
 
-[1] Richard S. Sutton and Andrew G. Barto. [Reinforcement Learning: An Introduction; 2nd Edition. 2017](http://incompleteideas.net/book/bookdraft2017nov5.pdf).  
+[1] Richard S. Sutton and Andrew G. Barto. [Reinforcement Learning: An Introduction; 2nd Edition. 2018](/assets/materials/Reinforcement%20Learning%20An%20Introduction;%202nd%20Edition.%202018.pdf).  
 [2] Towards Data Science. Sagi Shaier. [Monte Carlo Methods](https://towardsdatascience.com/introduction-to-reinforcement-learning-rl-part-5-monte-carlo-methods-25067003bb0f).  
 [3] 생각많은 소심남. [[RL] Off-policy Learning for Prediction](https://talkingaboutme.tistory.com/entry/RL-Off-policy-Learning-for-Prediction).
 
 ## Footnotes
 
 [^1]: StackExchange. [Why are state-values alone not sufficient in determining a policy (without a model)?](https://ai.stackexchange.com/questions/22907/why-are-state-values-alone-not-sufficient-in-determining-a-policy-without-a-mod).  
-[^2]: Reinforcement Learning: An Introduction; 2nd Edition. 2017. [Sec. 5.4](http://incompleteideas.net/book/bookdraft2017nov5.pdf#page=101).  
-[^3]: Reinforcement Learning: An Introduction; 2nd Edition. 2017. [Sec. 5.5](http://incompleteideas.net/book/bookdraft2017nov5.pdf#page=104).  
-[^4]: Reinforcement Learning: An Introduction; 2nd Edition. 2017. [Sec. 7.3](http://incompleteideas.net/book/bookdraft2017nov5.pdf#page=139).  
+[^2]: Reinforcement Learning: An Introduction; 2nd Edition. 2018. [Sec. 5.4, p.123](/assets/materials/Reinforcement%20Learning%20An%20Introduction;%202nd%20Edition.%202018.pdf#page=123).  
+[^3]: Reinforcement Learning: An Introduction; 2nd Edition. 2018. [Sec. 5.5, p.126](/assets/materials/Reinforcement%20Learning%20An%20Introduction;%202nd%20Edition.%202018.pdf#page=126).  
+[^4]: Reinforcement Learning: An Introduction; 2nd Edition. 2018. [Sec. 7.3, p.171](/assets/materials/Reinforcement%20Learning%20An%20Introduction;%202nd%20Edition.%202018.pdf#page=171).  
