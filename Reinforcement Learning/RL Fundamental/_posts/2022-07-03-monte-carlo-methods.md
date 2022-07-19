@@ -326,6 +326,6 @@ MC methods는 DP와 주요한 2가지 차이점이 있다. 먼저, MC methods는
 ## Footnotes
 
 [^1]: StackExchange. [Why are state-values alone not sufficient in determining a policy (without a model)?](https://ai.stackexchange.com/questions/22907/why-are-state-values-alone-not-sufficient-in-determining-a-policy-without-a-mod).  
-[^2]: Reinforcement Learning: An Introduction; 2nd Edition. 2018. [Sec. 5.4, p.123](/assets/materials/Reinforcement%20Learning%20An%20Introduction;%202nd%20Edition.%202018.pdf#page=123).  
-[^3]: Reinforcement Learning: An Introduction; 2nd Edition. 2018. [Sec. 5.5, p.126](/assets/materials/Reinforcement%20Learning%20An%20Introduction;%202nd%20Edition.%202018.pdf#page=126).  
-[^4]: Reinforcement Learning: An Introduction; 2nd Edition. 2018. [Sec. 7.3, p.171](/assets/materials/Reinforcement%20Learning%20An%20Introduction;%202nd%20Edition.%202018.pdf#page=171).  
+[^2]: Reinforcement Learning: An Introduction; 2nd Edition. 2017. [Sec. 5.4](http://incompleteideas.net/book/bookdraft2017nov5.pdf#page=101).  
+[^3]: Reinforcement Learning: An Introduction; 2nd Edition. 2017. [Sec. 5.5](http://incompleteideas.net/book/bookdraft2017nov5.pdf#page=104).  
+[^4]: Reinforcement Learning: An Introduction; 2nd Edition. 2017. [Sec. 7.3](http://incompleteideas.net/book/bookdraft2017nov5.pdf#page=139).  
