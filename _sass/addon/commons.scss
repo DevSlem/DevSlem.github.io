@@ -1260,7 +1260,7 @@ $sidebar-display: "sidebar-display";
 
   html,
   body {
-    overflow-x: hidden;
+    overflow-x: visible;
   }
 
   [#{$sidebar-display}] {
