@@ -152,5 +152,5 @@ $\bar{R_t}$는 time step $t$까지의 모든 reward의 평균이다. $\bar{R_t}$
 
 ## References
 
-[1] Richard S. Sutton and Andrew G. Barto. [Reinforcement Learning: An Introduction; 2nd Edition. 2018](/assets/materials/Reinforcement%20Learning%20An%20Introduction;%202nd%20Edition.%202018.pdf).  
+[1] Richard S. Sutton and Andrew G. Barto. [Reinforcement Learning: An Introduction; 2nd Edition. 2017](http://incompleteideas.net/book/bookdraft2017nov5.pdf).  
 [2] Lil'Log. [The Multi-Armed Bandit Problem and Its Solutions](https://lilianweng.github.io/posts/2018-01-23-multi-armed-bandit/).

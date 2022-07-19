@@ -194,5 +194,5 @@ $$
 
 ## References
 
-[1] Richard S. Sutton and Andrew G. Barto. [Reinforcement Learning: An Introduction; 2nd Edition. 2018](/assets/materials/Reinforcement%20Learning%20An%20Introduction;%202nd%20Edition.%202018.pdf).  
+[1] Richard S. Sutton and Andrew G. Barto. [Reinforcement Learning: An Introduction; 2nd Edition. 2017](http://incompleteideas.net/book/bookdraft2017nov5.pdf).   
 [2] Towards Data Science. Rohan Jagtap. [Dynamic Programming in RL](https://towardsdatascience.com/dynamic-programming-in-rl-52b44b3d4965).
