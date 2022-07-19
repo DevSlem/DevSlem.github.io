@@ -61,7 +61,6 @@ $$
 
 이 때 $s \neq S_t$인 모든 state의 value는 변하지 않는다. 위 알고리즘이 *$n$-step TD*이다. episode의 첫 $n-1$ step까지는 어떤 변화도 발생하지 않는다는 사실을 꼭 기억하길 바란다.
 
-> ##### $$ \text{Algorithm: } n\text{-step TD for estimating } V \approx v_\pi $$  
 > $$ 
 > \begin{align*}
 > & \text{Input: a policy } \pi \\
