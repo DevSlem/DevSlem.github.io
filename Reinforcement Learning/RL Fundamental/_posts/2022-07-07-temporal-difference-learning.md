@@ -245,8 +245,6 @@ $Q_2$를 update할 때는 위 update rule에서 $Q_1$과 $Q_2$를 서로 바꿔�
 
 지금까지 TD method에 대해 알아보았다. TD method는 MC method와 DP의 아이디어를 결합한 방식이다. MC method 처럼 environment에 대한 지식 없이 sampling을 통해 학습하며 DP와 같이 bootstrap한 속성을 가진다. TD method 역시 GPI를 따른다. TD prediction에서 TD error는 굉장히 중요한 수식으로 RL 전반에 걸쳐 등장한다. TD method 역시 on-policy와 off-policy로 구분되며 on-policy에는 Sarsa, off-policy에는 Q-learning이 있다. 특히 Q-learning은 굉장히 중요한 algorithm이다. 그 외에도 위 두 algorithm을 개선한 Expected Sarsa, Double Q-learning을 알아보았다.
 
-[Reinforcement Learning: An Introduction; 2nd Edition. 2018](/assets/materials/Reinforcement%20Learning%20An%20Introduction;%202nd%20Edition.%202018.pdf#page=150).  
-
 ## References
 
 [1] Richard S. Sutton and Andrew G. Barto. [Reinforcement Learning: An Introduction; 2nd Edition. 2018](/assets/materials/Reinforcement%20Learning%20An%20Introduction;%202nd%20Edition.%202018.pdf).  
