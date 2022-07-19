@@ -64,24 +64,24 @@ $$
 > ##### $\text{Algorithm: $n$-step TD for estimating } V \approx v_\pi$
 > $$ 
 > \begin{align*}
-> & \text{Input: a policy } \pi \\
-> & \text{Algorithm parameters: step size } \alpha \in (0, 1] \text{, a positive integer } n \\
-> & \text{Initialize } V(s) \text{ arbitrarily, for all } s \in \mathcal{S} \\
-> & \text{All store and access operations (for } S_t \text{ and } R_t \text{) can take their index mode } n+1 \\
-> & \\
-> & \text{Loop for each episode:} \\
-> & \qquad \text{Initialize and store } S_0 \neq \text{terminal} \\
-> & \qquad T \leftarrow \infty \\
-> & \qquad \text{Loop for } t = 0, 1, 2, \dotso : \\
-> & \qquad\qquad \text{If } t < T \text{, then:} \\
-> & \qquad\qquad\qquad \text{Take an action according to } \pi(\cdot \vert S_t) \\
-> & \qquad\qquad\qquad \text{Observe and store the next reward as } R_{t+1} \text{ and the next state as } S_{t+1} \\
-> & \qquad\qquad\qquad \text{If } S_{t+1} \text{ is terminal, then } T \leftarrow t + 1 \\
-> & \qquad\qquad \tau \leftarrow t - n + 1 \qquad \text{($\tau$ is the time whose state's estimate is being updated)} \\
-> & \qquad\qquad \text{If $\tau \geq 0$:} \\
-> & \qquad\qquad\qquad G \leftarrow \textstyle\sum_{i=\tau + 1}^{\min(\tau + n, T)} \gamma^{i - \tau - 1}R_i \\
-> & \qquad\qquad\qquad \text{If } \tau + n < T \text{, then: } G \leftarrow G + \gamma^n V(S_{\tau + n}) \qquad (G_{\tau : \tau + n}) \\
-> & \qquad\qquad\qquad V(S_\tau) \leftarrow V(S_\tau) + \alpha [G - V(S_\tau)] \\
-> & \qquad \text{until } \tau = T - 1
+> & \textstyle \text{Input: a policy } \pi \\
+> & \textstyle \text{Algorithm parameters: step size } \alpha \in (0, 1] \text{, a positive integer } n \\
+> & \textstyle \text{Initialize } V(s) \text{ arbitrarily, for all } s \in \mathcal{S} \\
+> & \textstyle \text{All store and access operations (for } S_t \text{ and } R_t \text{) can take their index mode } n+1 \\
+> \\
+> & \textstyle \text{Loop for each episode:} \\
+> & \textstyle \qquad \text{Initialize and store } S_0 \neq \text{terminal} \\
+> & \textstyle \qquad T \leftarrow \infty \\
+> & \textstyle \qquad \text{Loop for } t = 0, 1, 2, \dotso : \\
+> & \textstyle \qquad\qquad \text{If } t < T \text{, then:} \\
+> & \textstyle \qquad\qquad\qquad \text{Take an action according to } \pi(\cdot \vert S_t) \\
+> & \textstyle \qquad\qquad\qquad \text{Observe and store the next reward as } R_{t+1} \text{ and the next state as } S_{t+1} \\
+> & \textstyle \qquad\qquad\qquad \text{If } S_{t+1} \text{ is terminal, then } T \leftarrow t + 1 \\
+> & \textstyle \qquad\qquad \tau \leftarrow t - n + 1 \qquad \text{($\tau$ is the time whose state's estimate is being updated)} \\
+> & \textstyle \qquad\qquad \text{If $\tau \geq 0$:} \\
+> & \textstyle \qquad\qquad\qquad G \leftarrow \sum_{i=\tau + 1}^{\min(\tau + n, T)} \gamma^{i - \tau - 1}R_i \\
+> & \textstyle \qquad\qquad\qquad \text{If } \tau + n < T \text{, then: } G \leftarrow G + \gamma^n V(S_{\tau + n}) \qquad (G_{\tau : \tau + n}) \\
+> & \textstyle \qquad\qquad\qquad V(S_\tau) \leftarrow V(S_\tau) + \alpha [G - V(S_\tau)] \\
+> & \textstyle \qquad \text{until } \tau = T - 1
 > \end{align*}
 > $$

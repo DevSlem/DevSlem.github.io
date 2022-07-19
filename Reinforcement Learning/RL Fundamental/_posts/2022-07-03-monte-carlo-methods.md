@@ -104,22 +104,26 @@ policy evaluation은 앞서 [Monte Carlo Prediction](#monte-carlo-prediction)에
 
 first-visit Monte Carlo ES 알고리즘은 아래와 같다. 
 
-> ##### $\text{Algorithm: Monte Carlo ES (Exploring Starts), for estimating } \pi \approx \pi_\ast$
-> $\text{Initialize:}$  
-> $\qquad \pi(s) \in \mathcal{A} \text{ (arbitrarily), for all } s \in \mathcal{S}$  
-> $\qquad Q(s,a) \in \mathbb{R} \text{ (arbitrarily), for all } s \in \mathcal{S}, \ a \in \mathcal{A}(s)$  
-> $\qquad \textit{Returns}(s,a) \leftarrow \text{empty list, for all } s \in \mathcal{S}, \ a \in \mathcal{A}(s)$  
-> 
-> **$\textbf{Loop}$**$\text{ forever (for each episode):}$  
-> $\qquad \text{Choose } S_0 \in \mathcal{S}, \ A_0 \in \mathcal{A}(S_0) \text{ randomly such that all pairs have probability} > 0$  
-> $\qquad \text{Generate an episode from } S_0, A_0, \text{ following } \pi \text{: } S_0, A_0, R_1, \dots, S_{T-1}, A_{T-1}, R_T$  
-> $\qquad G \leftarrow 0$  
-> **$\qquad \textbf{Loop}$** $\text{ for each step of episode, } t = T-1, T-2, \dots, 0 \text{:}$  
-> $\qquad\qquad G \leftarrow \gamma G + R_{t+1}$  
-> **$\qquad\qquad \textbf{Unless}$** $\text{ the pair } S_t, A_t \text{ appears in } S_0, A_0, S_1, A_1, \dots, S_{t-1}, A_{t-1} \text{:}$  
-> $\qquad\qquad\qquad \text{Append } G \text{ to } \textit{Returns}(S_t,A_t)$  
-> $\qquad\qquad\qquad Q(S_t,A_t) \leftarrow \text{average}(\textit{Returns}(S_t,A_t))$  
-> $\qquad\qquad\qquad \pi(S_t) \leftarrow \arg\max_a Q(S_t,a)$
+> ##### $\text{Algorithm: Monte Carlo ES (Exploring Starts), for estimating } \pi \approx \pi_\ast$  
+> $$
+> \begin{align*}
+> & \textstyle \text{Initialize:} \\
+> & \textstyle \qquad \pi(s) \in \mathcal{A}(s) \text{ (arbitrarily), for all } s \in \mathcal{S} \\
+> & \textstyle \qquad Q(s,a) \in \mathbb{R} \text{ (arbitrarily), for all } s \in \mathcal{S}, \ a \in \mathcal{A}(s) \\
+> & \textstyle \qquad \textit{Returns}(s,a) \leftarrow \text{empty list, for all } s \in \mathcal{S}, \ a \in \mathcal{A}(s) \\
+> \\
+> & \textstyle \text{Loop forever (for each episode):} \\
+> & \textstyle \qquad \text{Choose } S_0 \in \mathcal{S}, \ A_0 \in \mathcal{A}(S_0) \text{ randomly such that all pairs have probability} > 0 \\
+> & \textstyle \qquad \text{Generate an episode from } S_0, A_0, \text{ following } \pi \text{: } S_0, A_0, R_1, \dots, S_{T-1}, A_{T-1}, R_T \\
+> & \textstyle \qquad G \leftarrow 0 \\
+> & \textstyle \qquad \text{Loop for each step of episode, } t = T-1, T-2, \dots, 0 \text{:} \\
+> & \textstyle \qquad\qquad G \leftarrow \gamma G + R_{t+1} \\
+> & \textstyle \qquad\qquad \text{Unless the pair } S_t, A_t \text{ appears in } S_0, A_0, S_1, A_1, \dots, S_{t-1}, A_{t-1} \text{:} \\
+> & \textstyle \qquad\qquad\qquad \text{Append } G \text{ to } \textit{Returns}(S_t,A_t) \\
+> & \textstyle \qquad\qquad\qquad Q(S_t,A_t) \leftarrow \text{average}(\textit{Returns}(S_t,A_t)) \\
+> & \textstyle \qquad\qquad\qquad \pi(S_t) \leftarrow \arg\max_a Q(S_t,a)
+> \end{align*}
+> $$
 
 exploring starts이기 때문에 각 episode의 시작마다 모든 state-action pair의 확률이 0보다 큰 조건 하에 랜덤하게 state-action pair를 선택한다. 또한 action value $Q(S_t, A_t)$를 정의에 따라  $S_t, A_t$ pair에 대해 지금까지 획득한 return $G_t$들의 expectation으로 update한다.
 
@@ -150,28 +154,32 @@ $\epsilon$-greedy policy는 $\epsilon$*-soft* policy의 가장 대표적인 예�
 
 On-policy first-visit MC methods 알고리즘을 살펴보자. policy는 $\epsilon$-greedy이다.
 
-> ##### $\text{Algorithm: On-policy first-visit MC control (for } \epsilon \text{-soft policies), estimates } \pi \approx \pi_\ast$
-> $\text{Algorithm parameter: small } \epsilon > 0$  
-> $\text{Initialize: }$  
-> $\qquad \pi \leftarrow \text{an arbitrary } \epsilon \text{-soft policy}$  
-> $\qquad Q(s, a) \in \mathbb{R} \text{ (arbitrarily), for all } s \in \mathcal{S}, \ a \in \mathcal{A}(s)$  
-> $\qquad \textit{Returns}(s,a) \leftarrow \text{empty list, for all } s \in \mathcal{S}, \ a \in \mathcal{A}(s)$  
-> 
-> **$\textbf{Loop }$**$\text{forever (for each episode):}$  
-> $\qquad \text{Generate an episode following } \pi \text{: } S_0, A_0, R_1, \dots, S_{T-1}, A_{T-1}, R_T$  
-> $\qquad G \leftarrow 0$  
-> **$\qquad\textbf{Loop }$**$\text{for each step of episode, } t = T-1, T-2, \dots, 0 \text{:}$  
-> $\qquad\qquad G \leftarrow \gamma G + R_{t+1}$  
-> **$\qquad\qquad \textbf{Unless }$**$\text{the pair } S_t,A_t \text{ appears in } S_0, A_0, S_1, A_1, \dots, S_{t-1}, A_{t-1} \text{:}$  
-> $\qquad\qquad\qquad \text{Append } G \text{ to } \textit{Returns}(S_t,A_t)$  
-> $\qquad\qquad\qquad Q(S_t, A_t) \leftarrow \text{average}(\textit{Returns}(S_t, A_t))$  
-> $\qquad\qquad\qquad A^\ast \leftarrow \arg\max_a Q(S_t, a)$  
-> **$\qquad\qquad\qquad \textbf{For }$**$\text{all } a \in \mathcal{A}(S_t)\text{:}$  
-> $\qquad\qquad\qquad\qquad \pi(a \vert s) \leftarrow 
+> ##### $\text{Algorithm: On-policy first-visit MC control (for } \epsilon \text{-soft policies), estimates } \pi \approx \pi_\ast$  
+> $$
+> \begin{align*}
+> & \textstyle \text{Algorithm parameter: small } \epsilon > 0 \\
+> & \textstyle \text{Initialize: } \\
+> & \textstyle \qquad \pi \leftarrow \text{an arbitrary } \epsilon \text{-soft policy} \\
+> & \textstyle \qquad Q(s, a) \in \mathbb{R} \text{ (arbitrarily), for all } s \in \mathcal{S}, \ a \in \mathcal{A}(s) \\
+> & \textstyle \qquad \textit{Returns}(s,a) \leftarrow \text{empty list, for all } s \in \mathcal{S}, \ a \in \mathcal{A}(s) \\
+> \\
+> & \textstyle \text{Loop forever (for each episode):} \\
+> & \textstyle \qquad \text{Generate an episode following } \pi \text{: } S_0, A_0, R_1, \dots, S_{T-1}, A_{T-1}, R_T \\
+> & \textstyle \qquad G \leftarrow 0 \\
+> & \textstyle \qquad \text{Loop for each step of episode, } t = T-1, T-2, \dots, 0 \text{:} \\
+> & \textstyle \qquad\qquad G \leftarrow \gamma G + R_{t+1} \\
+> & \textstyle \qquad\qquad \text{Unless the pair } S_t,A_t \text{ appears in } S_0, A_0, S_1, A_1, \dots, S_{t-1}, A_{t-1} \text{:} \\
+> & \textstyle \qquad\qquad\qquad \text{Append } G \text{ to } \textit{Returns}(S_t,A_t) \\
+> & \textstyle \qquad\qquad\qquad Q(S_t, A_t) \leftarrow \text{average}(\textit{Returns}(S_t, A_t)) \\
+> & \textstyle \qquad\qquad\qquad A^\ast \leftarrow \arg\max_a Q(S_t, a) \\
+> & \textstyle \qquad\qquad\qquad \text{For all } a \in \mathcal{A}(S_t)\text{:} \\
+> & \textstyle \qquad\qquad\qquad\qquad \pi(a \vert S_t) \leftarrow 
 \begin{cases}
-    1 - \epsilon + \epsilon / \vert \mathcal{A}(s) \vert & \text{if } a = A_\ast \\\\\\
-    \epsilon / \vert \mathcal{A}(s) \vert \qquad & \text{if } a \neq A_\ast
-\end{cases}$
+    1 - \epsilon + \epsilon / \vert \mathcal{A}(S_t) \vert & \text{if } a = A_\ast \\
+    \epsilon / \vert \mathcal{A}(S_t) \vert \qquad & \text{if } a \neq A_\ast
+\end{cases}
+> \end{align*}
+> $$
 
 on-policy methods이기 때문에 episode 생성에 사용되는 policy $\pi$를 평가하고 개선한다. 이 때 $q_\pi$에 관한 $\epsilon$-soft policy는 policy improvement theorem에 의해 보장된다.[^2] 
 
@@ -270,22 +278,26 @@ $$
 
 이제 Off-policy MC methods 알고리즘을 보자. 여기서는 prediction 부분만 보이도록 하겠다. 한가지 중요한 사실은 target policy $\pi$와 behavior policy $b$ 모두 어떤 policy도 가능하지만 ***coverage*를 만족**해야한다. coverage란 $\pi$에 의해 선택될 수 있는 모든 action은 $b$에 의해서도 선택될 수 있어야 함을 의미한다. 즉, $\pi(a \vert s) > 0$면 $b(a \vert s) > 0$이어야 한다.
 
-> ##### $\text{Algorithm: Off-policy MC prediction (policy evaluation) for estimating } Q \approx q_\pi$
-> $\text{Input: an arbitrary target policy } \pi$  
-> $\text{Initialize, for all } s \in \mathcal{S}, \ a \in \mathcal{A}(s) \text{:}$  
-> $\qquad Q(s,a) \in \mathbb{R} \text{ (arbitrarily)}$  
-> $\qquad C(s,a) \leftarrow 0$  
-> 
-> **$\textbf{Loop }$**$\text{forever (for each episode):}$  
-> $\qquad b \leftarrow \text{any policy with coverage of } \pi$  
-> $\qquad \text{Generate an episode following } b \text{: } S_0, A_0, R_1, \dots, S_{T-1}, A_{T-1}, R_T$  
-> $\qquad G \leftarrow 0$  
-> $\qquad W \leftarrow 1$  
-> **$\qquad \textbf{Loop }$**$\text{for each step of episode, } t = T-1, T-2, \dots, 0,$**$\textbf{ while }$**$W \neq 0 \text{:}$  
-> $\qquad\qquad G \leftarrow \gamma G + R_{t+1}$  
-> $\qquad\qquad C(S_t,A_t) \leftarrow C(S_t,A_t) + W$  
-> $\qquad\qquad Q(S_t,A_t) \leftarrow Q(S_t,A_t) + \frac{W}{C(S_t,A_t)}[G - Q(S_t,A_t)]$  
-> $\qquad\qquad W \leftarrow W \frac{\pi(A_t \vert S_t)}{b(A_t \vert S_t)}$
+> ##### $\text{Algorithm: Off-policy MC prediction (policy evaluation) for estimating } Q \approx q_\pi$  
+> $$
+> \begin{align*}
+> & \textstyle \text{Input: an arbitrary target policy } \pi \\
+> & \textstyle \text{Initialize, for all } s \in \mathcal{S}, \ a \in \mathcal{A}(s) \text{:} \\
+> & \textstyle \qquad Q(s,a) \in \mathbb{R} \text{ (arbitrarily)} \\
+> & \textstyle \qquad C(s,a) \leftarrow 0 \\
+> \\
+> & \textstyle \text{Loop forever (for each episode):} \\
+> & \textstyle \qquad b \leftarrow \text{any policy with coverage of } \pi \\
+> & \textstyle \qquad \text{Generate an episode following } b \text{: } S_0, A_0, R_1, \dots, S_{T-1}, A_{T-1}, R_T \\
+> & \textstyle \qquad G \leftarrow 0 \\
+> & \textstyle \qquad W \leftarrow 1 \\
+> & \textstyle \qquad \text{Loop for each step of episode, } t = T-1, T-2, \dots, 0, \text{ while } W \neq 0 \text{:} \\
+> & \textstyle \qquad\qquad G \leftarrow \gamma G + R_{t+1} \\
+> & \textstyle \qquad\qquad C(S_t,A_t) \leftarrow C(S_t,A_t) + W \\
+> & \textstyle \qquad\qquad Q(S_t,A_t) \leftarrow Q(S_t,A_t) + \frac{W}{C(S_t,A_t)}[G - Q(S_t,A_t)] \\
+> & \textstyle \qquad\qquad W \leftarrow W \frac{\pi(A_t \vert S_t)}{b(A_t \vert S_t)}
+> \end{align*}
+> $$
 
 그런데 위 알고리즘을 보면 한가지 이상한 점이 있다. 바로 $W = 1$부터 시작하는 것이다. 우리는 앞서 [Importance Sampling](#importance-sampling)에서 importance-sampling ratio $\rho_{t:T-1}$는 time step $t$에서의 ratio부터 고려했었다. 즉, $\pi(A_t \vert S_t) / b(A_t \vert S_t)$를 고려했었다. 따라서 $W = \pi(A_{T-1} \vert S_{T-1}) / b(A_t \vert S_{T-1})$부터 시작해야한다. 그런데 왜 $W = 1$부터 시작하는걸까? 필자 역시 처음 공부했을 때 이러한 의문이 있었으며 어느 곳에서도 답을 찾을 수 없었다. 추후 다른 chapter를 공부하다가 그 이유를 알게 되었다. 한번 알아보자.
 

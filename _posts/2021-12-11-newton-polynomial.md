@@ -249,23 +249,27 @@ $$
 지금까지 분할차분의 개념, 분할차분표를 통한 분할차분의 계산, 뉴턴 다항식 보간 등을 알아보았다. 이제 뉴턴 다항식 보간에 대한 알고리즘을 소개하고 이를 코딩해보려 한다. 알고리즘은 아래와 같다.
 
 > ##### $\text{Algorithm: Newton polynomial interpolation}$  
-> $\text{Input: a point set } P = (x_0, y_0), \cdots, (x_{n-1}, y_{n-1}) \text{ of } n \text{ points, target } x$  
-> $\text{Initialize a } n \times n \text{ table } T \subset \mathbb{R}, \ T_{i,0} \leftarrow y_i \text{ for all } i$  
->
-> **$\textbf{for }$**$j = 1 \text{ to } n - 1$**$\textbf{ do}$**  
-> **$\qquad \textbf{for }$**$i = 0 \text{ to } n - 1 - j$**$\textbf{ do}$**  
-> $\qquad\qquad T_{i,j} \leftarrow (T_{i+1,j-1} - T_{i,j-1}) / (x_{i+j} - x_i)$  
-> **$\qquad \textbf{end}$**  
-> **$\textbf{end}$**
-> 
-> $N \leftarrow 0$  
-> $p \leftarrow 1$  
-> **$\textbf{for }$**$i = 0 \text{ to } n - 1$**$\textbf{ do}$**  
-> $\qquad N \leftarrow N + T_{0,i} \times p$  
-> $\qquad p \leftarrow p \times (x - x_{i})$  
-> **$\textbf{end}$**
-> 
-> **$\textbf{return }$**$N$
+> $$
+> \begin{align*}
+> & \textstyle \text{Input: a point set } P = (x_0, y_0), \cdots, (x_{n-1}, y_{n-1}) \text{ of } n \text{ points, target } x \\
+> & \textstyle \text{Initialize a } n \times n \text{ table } T \subset \mathbb{R}, \ T_{i,0} \leftarrow y_i \text{ for all } i \\
+> \\
+> & \textstyle \text{for } j = 1 \text{ to } n - 1 \text{ do} \\
+> & \textstyle \qquad \text{for } i = 0 \text{ to } n - 1 - j \text{ do} \\
+> & \textstyle \qquad\qquad T_{i,j} \leftarrow (T_{i+1,j-1} - T_{i,j-1}) / (x_{i+j} - x_i) \\
+> & \textstyle \qquad \text{end} \\
+> & \textstyle \text{end} \\
+> \\
+> & \textstyle N \leftarrow 0 \\
+> & \textstyle p \leftarrow 1 \\
+> & \textstyle \text{for } i = 0 \text{ to } n - 1 \text{ do} \\
+> & \textstyle \qquad N \leftarrow N + T_{0,i} \times p \\
+> & \textstyle \qquad p \leftarrow p \times (x - x_{i}) \\
+> & \text{end} \\
+> \\
+> & \textstyle \text{return } N
+> \end{align*}
+> $$
 
 위 알고리즘을 활용해 실제 코드로 구현해보자.
 

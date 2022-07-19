@@ -60,18 +60,23 @@ $$
 이러한 TD method를 *TD(0)* 혹은 *one-step TD*라고 하는데 TD($\lambda$)나 $n$-step TD method의 특수 case이다. 아래는 TD(0)에 대한 알고리즘이다.
 
 > ##### $\text{Algorithm: Tabular TD(0) for estimating } v_\pi$
-> $\text{Input: the policy } \pi \text{ to be evaluated}$  
-> $\text{Algorithm parameter: step size } \alpha \in (0, 1]$  
-> $\text{Initialize } V(s) \text{, for all } s \in \mathcal{S}^+ \text{, arbitrarily except that } V(\textit{terminal}) = 0$  
-> 
-> $\text{Loop for each episode: }$  
-> $\qquad \text{Initialize } S$  
-> $\qquad \text{Loop for each step of episode:}$
-> $\qquad\qquad A \leftarrow \text{action given by } \pi \text{ for } S$  
-> $\qquad\qquad \text{Take action } A \text{, observe } R, S'$  
-> $\qquad\qquad V(S) \leftarrow V(S) + \alpha[R + \gamma V(S') - V(S)]$  
-> $\qquad\qquad S \leftarrow S'$  
-> $\qquad \text{until } S \text{ is terminal}$
+> $$
+> \begin{align*}
+> & \textstyle \text{Input: the policy } \pi \text{ to be evaluated} \\
+> & \textstyle \text{Algorithm parameter: step size } \alpha \in (0, 1] \\
+> & \textstyle \text{Initialize } V(s) \text{, for all } s \in \mathcal{S}^+ \text{, arbitrarily except that } V(\textit{terminal}) = 0 \\
+> \\
+> & \textstyle \text{Loop for each episode: } \\
+> & \textstyle \qquad \text{Initialize } S \\
+> & \textstyle \qquad \text{Loop for each step of episode:} \\
+> & \textstyle \qquad\qquad A \leftarrow \text{action given by } \pi \text{ for } S \\
+> & \textstyle \qquad\qquad \text{Take action } A \text{, observe } R, S' \\
+> & \textstyle \qquad\qquad V(S) \leftarrow V(S) + \alpha[R + \gamma V(S') - V(S)] \\
+> & \textstyle \qquad\qquad S \leftarrow S' \\
+> & \textstyle \qquad \text{until } S \text{ is terminal} \\
+> \end{align*}
+> $$
+
 
 아래는 TD(0)에 대한 backup diagram이다.
 
@@ -112,18 +117,22 @@ _Fig 3. Sarsa backup diagram.
 모든 on-policy method에서는 experience 생성에 사용된 behavior policy $\pi$에 대한 $q_\pi$를 추정함과 동시에, 추정된 $q_\pi$에 관해 behavior policy $\pi$를 greedy한 방향으로 update한다. Sarsa가 수렴하기 위해서는 exploration이 잘 수행되어야 하기 때문에 주로 $\epsilon$-soft policy류의 방법을 사용한다. 아래는 Sarsa algorithm이다.
 
 > ##### $\text{Algorithm: Sarsa (on-policy TD control) for estimating } Q \approx q_\ast$  
-> $\text{Algorithm parameters: step size }  \alpha \in (0,1], \text{ small } \epsilon > 0$  
-> $\text{Initialize } Q(s,a) \text{, for all } s \in \mathcal{S}^+, a \in \mathcal{A}(s) \text{, arbitrarily except that } Q(\textit{terminal},\cdot) = 0$  
-> 
-> $\text{Loop for each episode:}$  
-> $\qquad \text{Initialize } S$  
-> $\qquad \text{Choose } A \text{ from } S \text{ using policy derived from } Q \text{ (e.g., } \epsilon \text{-greedy)}$  
-> $\qquad \text{Loop for each step of episode:}$  
-> $\qquad\qquad \text{Take action } A \text{, observe } R, S'$  
-> $\qquad\qquad \text{Choose } A' \text{ from } S' \text{ using policy derive from } Q \text{ (e.g., } \epsilon \text{-greedy)}$  
-> $\qquad\qquad Q(S,A) \leftarrow Q(S,A) + \alpha [R + \gamma Q(S',A') - Q(S,A)]$  
-> $\qquad\qquad S \leftarrow S'; \ A \leftarrow A';$  
-> $\qquad \text{until } S \text{ is terminal}$
+> $$
+> \begin{align*}
+> & \textstyle \text{Algorithm parameters: step size }  \alpha \in (0,1], \text{ small } \epsilon > 0 \\
+> & \textstyle \text{Initialize } Q(s,a) \text{, for all } s \in \mathcal{S}^+, a \in \mathcal{A}(s) \text{, arbitrarily except that } Q(\textit{terminal},\cdot) = 0 \\
+> \\
+> & \textstyle \text{Loop for each episode:} \\
+> & \textstyle \qquad \text{Initialize } S \\
+> & \textstyle \qquad \text{Choose } A \text{ from } S \text{ using policy derived from } Q \text{ (e.g., } \epsilon \text{-greedy)} \\
+> & \textstyle \qquad \text{Loop for each step of episode:} \\
+> & \textstyle \qquad\qquad \text{Take action } A \text{, observe } R, S' \\
+> & \textstyle \qquad\qquad \text{Choose } A' \text{ from } S' \text{ using policy derive from } Q \text{ (e.g., } \epsilon \text{-greedy)} \\
+> & \textstyle \qquad\qquad Q(S,A) \leftarrow Q(S,A) + \alpha [R + \gamma Q(S',A') - Q(S,A)] \\
+> & \textstyle \qquad\qquad S \leftarrow S'; \ A \leftarrow A'; \\
+> & \textstyle \qquad \text{until } S \text{ is terminal}
+> \end{align*}
+> $$
 
 아래는 위 algorithm을 구현한 소스 코드이다.
 
@@ -150,17 +159,21 @@ _Fig 4. Q-learning backup diagram.
 Q-learning을 target policy와 behavior policy 관점에서 살펴보자. Q-learning은 off-policy method로 target policy와 behavior policy가 분리된다.[^2] Q-learning에서 next state-action pair에 대한 value function $Q$를 고려할 때 greedy하게 고려하기 때문에 **target policy는 greedy policy**이다. behavior policy는 exploration을 충분히 수행할 수 있는 임의의 policy (e.g. $\epsilon$-soft policy)이다. 아래는 Q-learning algorithm이다.
 
 > ##### $\text{Algorithm: Q-learning (off-policy TD control) for estimating } \pi \approx \pi_\ast$  
-> $\text{Algorithm parameters: step size } \alpha \in (0,1] \text{, small } \epsilon > 0$  
-> $\text{Initialize } Q(s,a) \text{, for all } s \in \mathcal{S}^+, a \in \mathcal{A}(s) \text{, arbitrarily except that } Q(\textit{terminal}, \cdot) = 0$  
-> 
-> $\text{Loop for each episode:}$  
-> $\qquad \text{Initialize } S$  
-> $\qquad \text{Loop for each step of episode:}$  
-> $\qquad\qquad \text{Choose } A \text{ from } S \text{ using policy derived from } Q \text{ (e.g., } \epsilon \text{-greedy)}$  
-> $\qquad\qquad \text{Take action, observe } R,S'$  
-> $\qquad\qquad Q(S,A) \leftarrow Q(S,A) + \alpha [R + \gamma \max_a Q(S',a) - Q(S,A)]$  
-> $\qquad\qquad S \leftarrow S'$  
-> $\qquad \text{until } S \text{ is terminal}$
+> $$
+> \begin{align*}
+> & \textstyle \text{Algorithm parameters: step size } \alpha \in (0,1] \text{, small } \epsilon > 0 \\
+> & \textstyle \text{Initialize } Q(s,a) \text{, for all } s \in \mathcal{S}^+, a \in \mathcal{A}(s) \text{, arbitrarily except that } Q(\textit{terminal}, \cdot) = 0 \\
+> \\
+> & \textstyle \text{Loop for each episode:} \\
+> & \textstyle \qquad \text{Initialize } S \\
+> & \textstyle \qquad \text{Loop for each step of episode:} \\
+> & \textstyle \qquad\qquad \text{Choose } A \text{ from } S \text{ using policy derived from } Q \text{ (e.g., } \epsilon \text{-greedy)} \\
+> & \textstyle \qquad\qquad \text{Take action, observe } R,S' \\
+> & \textstyle \qquad\qquad Q(S,A) \leftarrow Q(S,A) + \alpha [R + \gamma \max_a Q(S',a) - Q(S,A)] \\
+> & \textstyle \qquad\qquad S \leftarrow S' \\
+> & \textstyle \qquad \text{until } S \text{ is terminal}
+> \end{align*}
+> $$
 
 아래는 Q-learning과 Sarsa algorithm을 구현한 뒤 비교하는 소스 코드이다.
 
@@ -221,20 +234,24 @@ $$
 $Q_2$를 update할 때는 위 update rule에서 $Q_1$과 $Q_2$를 서로 바꿔주기만 하면 된다. $Q_1$과 $Q_2$는 당연하지만 둘이 같은 값을 가지도록 수렴할 것이다. behavior policy는 보통 $Q_1$과 $Q_2$를 모두 고려한다. 가장 간단한 방법은 behavior policy가 $Q_1 + Q_2$에 대해 action을 선택하는 것이다. $Q_1$과 $Q_2$의 update 역시 여러 가지 방법이 있겠지만 가장 간단한 방법은 각 episode의 time step $t$마다 0.5의 확률로 랜덤하게 update하는 것이다. 이에 대한 algorithm은 아래와 같다.
 
 > ##### $\text{Algorithm: Double Q-learning, for estimating } Q_1 \approx Q_2 \approx q_\ast$  
-> $\text{Algorithm parameters: step size } \alpha \in (0,1] \text{, small } \epsilon > 0$  
-> $\text{Initialize } Q_1(s,a) \text{ and } Q_2(s,a) \text{, for all } s \in \mathcal{S}^+, a \in \mathcal{A}(s) \text{, such that } Q(\textit{terminal}, \cdot) = 0$  
-> 
-> $\text{Loop for each episode:}$  
-> $\qquad \text{Initialize } S$  
-> $\qquad \text{Loop for each step of episode:}$  
-> $\qquad\qquad \text{Choose } A \text{ from } S \text{ using the policy } \epsilon \text{-greedy in } Q_1 + Q_2$  
-> $\qquad\qquad \text{Take action } A \text{, observe } R, S'$  
-> $\qquad\qquad \text{With 0.5 probability:}$  
-> $\qquad\qquad\qquad Q_1(S,A) \leftarrow Q_1(S,A) + \alpha \Big(R + \gamma Q_2 \big(S', \arg\max_a Q_1(S',a) \big) - Q_1(S,A) \Big)$  
-> $\qquad\qquad \text{else:}$  
-> $\qquad\qquad\qquad Q_2(S,A) \leftarrow Q_2(S,A) + \alpha \Big(R + \gamma Q_1 \big(S', \arg\max_a Q_2(S',a) \big) - Q_2(S,A) \Big)$  
-> $\qquad\qquad S \leftarrow S'$  
-> $\qquad \text{until } S \text{ is terminal}$
+> $$
+> \begin{align*}
+> & \textstyle \text{Algorithm parameters: step size } \alpha \in (0,1] \text{, small } \epsilon > 0 \\
+> & \textstyle \text{Initialize } Q_1(s,a) \text{ and } Q_2(s,a) \text{, for all } s \in \mathcal{S}^+, a \in \mathcal{A}(s) \text{, such that } Q(\textit{terminal}, \cdot) = 0 \\
+> \\
+> & \textstyle \text{Loop for each episode:} \\
+> & \textstyle \qquad \text{Initialize } S \\
+> & \textstyle \qquad \text{Loop for each step of episode:} \\
+> & \textstyle \qquad\qquad \text{Choose } A \text{ from } S \text{ using the policy } \epsilon \text{-greedy in } Q_1 + Q_2 \\
+> & \textstyle \qquad\qquad \text{Take action } A \text{, observe } R, S' \\
+> & \textstyle \qquad\qquad \text{With 0.5 probability:} \\
+> & \textstyle \qquad\qquad\qquad Q_1(S,A) \leftarrow Q_1(S,A) + \alpha \Big(R + \gamma Q_2 \big(S', \arg\max_a Q_1(S',a) \big) - Q_1(S,A) \Big) \\
+> & \textstyle \qquad\qquad \text{else:} \\
+> & \textstyle \qquad\qquad\qquad Q_2(S,A) \leftarrow Q_2(S,A) + \alpha \Big(R + \gamma Q_1 \big(S', \arg\max_a Q_2(S',a) \big) - Q_2(S,A) \Big) \\
+> & \textstyle \qquad\qquad S \leftarrow S' \\
+> & \textstyle \qquad \text{until } S \text{ is terminal}
+> \end{align*}
+> $$
 
 아래는 위 update rule을 구현한 소스 코드이다. `update()` 메서드에 구현되어있다.
 
