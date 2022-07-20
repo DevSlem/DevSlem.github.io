@@ -270,7 +270,7 @@ $Q_2$를 update할 때는 위 update rule에서 $Q_1$과 $Q_2$를 서로 바꿔�
 
 [^1]: DevSlem. [Monte Carlo Estimation of Action Values](../monte-carlo-methods/#monte-carlo-estimation-of-action-values).  
 [^2]: DevSlem. [Off-policy methods](../monte-carlo-methods/#off-policy-methods).  
-[^3]: Reinforcement Learning: An Introduction; 2nd Edition. 2018. [Sec. 6.4, p.152; Example 6.5: Windy Gridworld](/assets/materials/Reinforcement%20Learning%20An%20Introduction;%202nd%20Edition.%202018.pdf).  
-[^4]: Reinforcement Learning: An Introduction; 2nd Edition. 2018. [Sec. 6.5, p.154; Example 6.6: Cliff Walking](/assets/materials/Reinforcement%20Learning%20An%20Introduction;%202nd%20Edition.%202018.pdf).  
+[^3]: Reinforcement Learning: An Introduction; 2nd Edition. 2018. [Sec. 6.4, p.152; Example 6.5: Windy Gridworld](https://devslem.github.io/assets/materials/Reinforcement%20Learning%20An%20Introduction;%202nd%20Edition.%202018.pdf#page=152).  
+[^4]: Reinforcement Learning: An Introduction; 2nd Edition. 2018. [Sec. 6.5, p.154; Example 6.6: Cliff Walking](https://devslem.github.io/assets/materials/Reinforcement%20Learning%20An%20Introduction;%202nd%20Edition.%202018.pdf#page=154).  
 [^5]: Towards Data Science. Ziad SALLOUM. [Double Q-Learning, the Easy Way](https://towardsdatascience.com/double-q-learning-the-easy-way-a924c4085ec3).  
 [^6]: Hado van Hasselt. [Double Q-learning](https://proceedings.neurips.cc/paper/2010/file/091d584fced301b442654dd8c23b3fc9-Paper.pdf).

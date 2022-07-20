@@ -206,13 +206,13 @@ on-policy는 일반적으로 비교적 쉬운 편이기 때문에 자주 고려�
 
 *importance sampling*은 **다른 distribution을 따르는 sample이 주어졌을 때 목표로 하는 distribution의 expected value를 추정**하는 기법이다. 대부분의 off-policy methods는 서로 다른 policy를 사용하기 때문에 importance sampling을 통해 expected value를 추정한다.
 
-target policy와 behavior policy에 대한 trajectory의 상대적 확률에 따라 return에 가중치를 부여한다. 이를 *importance-sampling ratio*라고 한다. 먼저 **시작 state $S_t$가 주어졌을 때 어떤 임의의 policy를 따라 생성된 state-action trajectory**는 아래와 같다.
+target policy와 behavior policy에 대한 trajectory의 상대적 확률에 따라 return에 가중치를 부여한다. 이를 *importance-sampling ratio*라고 한다. 먼저 **시작 state $S_t$가 주어졌을 때** 생성된 state-action trajectory가 아래와 같이 있다고 하자.
 
 $$
 A_t, S_{t+1}, A_{t+1}, \dots, S_T
 $$
 
-이 때 위 trajectory가 임의의 policy $\pi$를 따를 때 발생할 확률은 아래와 같다. 이때 $\pi$는 trajectory를 생성한 policy가 아니여도 된다.
+이 때 임의의 policy $\pi$를 따를 때 위 trajectory의 발생 확률은 아래와 같다. 이때 $\pi$는 trajectory를 생성한 policy가 아니여도 된다.
 
 $$
 \begin{align}
@@ -338,6 +338,6 @@ MC methods는 DP와 주요한 2가지 차이점이 있다. 먼저, MC methods는
 ## Footnotes
 
 [^1]: StackExchange. [Why are state-values alone not sufficient in determining a policy (without a model)?](https://ai.stackexchange.com/questions/22907/why-are-state-values-alone-not-sufficient-in-determining-a-policy-without-a-mod).  
-[^2]: Reinforcement Learning: An Introduction; 2nd Edition. 2018. [Sec. 5.4, p.123](/assets/materials/Reinforcement%20Learning%20An%20Introduction;%202nd%20Edition.%202018.pdf).  
-[^3]: Reinforcement Learning: An Introduction; 2nd Edition. 2018. [Sec. 5.5, p.126](/assets/materials/Reinforcement%20Learning%20An%20Introduction;%202nd%20Edition.%202018.pdf).  
-[^4]: Reinforcement Learning: An Introduction; 2nd Edition. 2018. [Sec. 7.3, p.171](/assets/materials/Reinforcement%20Learning%20An%20Introduction;%202nd%20Edition.%202018.pdf).  
+[^2]: Reinforcement Learning: An Introduction; 2nd Edition. 2018. [Sec. 5.4, p.123](https://devslem.github.io/assets/materials/Reinforcement%20Learning%20An%20Introduction;%202nd%20Edition.%202018.pdf#page=123).  
+[^3]: Reinforcement Learning: An Introduction; 2nd Edition. 2018. [Sec. 5.5, p.126](https://devslem.github.io/assets/materials/Reinforcement%20Learning%20An%20Introduction;%202nd%20Edition.%202018.pdf#page=126).  
+[^4]: Reinforcement Learning: An Introduction; 2nd Edition. 2018. [Sec. 7.3, p.171](https://devslem.github.io/assets/materials/Reinforcement%20Learning%20An%20Introduction;%202nd%20Edition.%202018.pdf#page=171).  
