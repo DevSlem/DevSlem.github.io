@@ -11,9 +11,9 @@ sidebar:
 
 ## What is $n$-step TD method
 
-*$n$-step TD method*는 1-step TD method와 Monte Carlo (MC) method를 통합한 방법이다. $n$-step TD method는 일종의 스펙트럼으로 양 끝단에 각각 1-step TD와 MC method가 존재한다. 실제 1-step TD나 MC method가 항상 좋은 performance를 내는건 아니다. 따라서 보다 일반적인 n-step TD method에 대해 알아둘 필요가 있다.
+***$n$-step TD method*는 1-step TD method와 Monte Carlo (MC) method를 통합한 방법**이다. $n$-step TD method는 일종의 스펙트럼으로 양 끝단에 각각 1-step TD와 MC method가 존재한다. 실제 1-step TD나 MC method가 항상 좋은 performance를 내는건 아니다. 따라서 보다 일반적인 n-step TD method에 대해 알아둘 필요가 있다.
 
-이전 포스트에서 TD method는 MC method와 Dynamic Programming (DP)의 아이디어를 결합한 방법이라고 소개했었다. $n$-step method 역시 동일하다. 즉, sampling과 bootstrapping을 통해 training이 이루어진다. 다만 1-step TD와의 차이점은 bootstrapping이 이루어지는 time step이 1개가 아니라 여러 개일 뿐이다.
+이전 포스트에서 TD method는 MC method와 Dynamic Programming (DP)의 아이디어를 결합한 방법이라고 소개했었다. $n$-step method 역시 동일하다. 즉, **sampling과 bootstrapping을 통해 training**이 이루어진다. 다만 1-step TD와의 차이점은 bootstrapping이 이루어지는 time step이 1개가 아니라 여러 개일 뿐이다.
 
 ## $n$-step TD Prediction
 
@@ -23,7 +23,7 @@ $$
 G_t \doteq R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \cdots + \gamma^{T-t-1}R_T
 $$
 
-$T$는 episode의 last time step이다. 그런데 1-step TD method는 episode 전체가 아니라 sampling된 단 하나의 transition 고려하기 때문에 next reward $R_{t+1}$만 구할 수 있다. 따라서 아직 sampling 되지 않은 time step들의 discounted reward들을 아래와 같이 next state에서의 추정치로 근사해 처리한다.
+$T$는 episode의 last time step이다. 그런데 1-step TD method는 episode 전체가 아니라 sampling된 단 하나의 transition 고려하기 때문에 next reward $R_{t+1}$만 구할 수 있다. 따라서 아직 sampling 되지 않은 time step들의 discounted reward들을 아래와 같이 **next state에서의 추정치로 근사해 처리**한다.
 
 $$
 G_{t:t+1} \doteq R_{t+1} + \gamma V_t(S_{t+1})
@@ -35,7 +35,7 @@ $G_{t:t+1}$은 time step $t$에서 $t+1$까지의 transition이 발생했을 때
 _Fig 1. Backup diagrams of $n$-step methods.  
 (Image source: Sec 7.1 Sutton & Barto (2018).)_  
 
-위 backup diagram을 보면 알 수 있지만 1-step TD 수행 시 실제 reward는 $R_{t+1}$만 획득할 수 있다. 2-step TD 수행 시 $R_{t+1}$과 $R_{t+2}$만 획득할 수 있다. 획득하지 못한 나머지 reward는 기존에 학습된 추정치로 대체한다. 즉, 2-step TD 수행 시 $S_{t+2}$에 위치할 것이기 때문에 $V(S_{t+2})$를 사용한다. 아래는 2-step TD method의 target이다.
+위 backup diagram을 보면 알 수 있지만 1-step TD 수행 시 실제 reward는 $R_{t+1}$만 획득할 수 있다. 2-step TD 수행 시 $R_{t+1}$과 $R_{t+2}$만 획득할 수 있다. **획득하지 못한 나머지 reward는 기존에 학습된 추정치로 대체**한다. 즉, 2-step TD 수행 시 $S_{t+2}$에 위치할 것이기 때문에 $V(S_{t+2})$를 사용한다. 아래는 2-step TD method의 target이다.
 
 $$
 G_{t:t+2} \doteq R_{t+1} + \gamma R_{t+2} + \gamma^2 V_{t+1}(S_{t+2})
@@ -92,7 +92,7 @@ $$
 
 이제 $n$-step method의 control에 대해 알아보자. 가장 먼저 알아볼 것은 *n-step Sarsa*이다. Sarsa는 on-policy method이며 여기서는 단지 1-step이 아닌 $n$-step으로 확장했을 뿐이다.
 
-핵심 아이디어는 MC나 1-step TD method와 동일하게 state value 추정을 action value 추정으로 전환하는 것이다. 이에 따라 모든 시작과 끝은 state가 아니라 action이 된다. 아래는 $n$-step Sarsa에 대한 backup diagram이다.
+핵심 아이디어는 MC나 1-step TD method와 동일하게 **state value 추정을 action value 추정으로 전환**하는 것이다. 이에 따라 모든 시작과 끝은 state가 아니라 action이 된다. 아래는 $n$-step Sarsa에 대한 backup diagram이다.
 
 ![](/assets/images/rl-sutton-n-step-sarsa-backup-diagram.png){: w="70%"}
 _Fig 2. Backup diagrams of $n$-step Sarsa.  
@@ -171,7 +171,7 @@ $$
 
 ## $n$-step Off-policy Learning
 
-off-policy learning은 behavior policy $b$에 따라 sampling 한 뒤, target policy $\pi$에 대한 value function을 학습 하는 방법이다. off-policy method에서 behavior policy와 target policy의 distribution이 다르기 때문에 importance-sampling 기법을 사용했었다. importance-sampling ratio는 **어떤 trajectory의 action들을 두 policy를 따라 선택할 상대적 확률**이다.[^1]
+off-policy learning은 **behavior policy $b$에 따라 sampling 한 뒤, target policy $\pi$에 대한 value function을 학습** 하는 방법이다. off-policy method에서 behavior policy와 target policy의 distribution이 다르기 때문에 importance-sampling 기법을 사용했었다. importance-sampling ratio는 **어떤 trajectory의 action들을 두 policy에 따라 선택할 상대적 확률**이다.[^1]
 
 $$
 \rho_{t:h} \doteq \prod_{k=t}^{\min(h, T-1)} \dfrac{\pi(A_k \vert S_k)}{b(A_k \vert S_k)}
@@ -189,7 +189,7 @@ $$
 V_{t+n}(S_t) \doteq V_{t+n-1}(S_t) + \alpha \rho_{t:t+n-1}[G_{t:t+n} - V_{t+n-1}(S_t)], \quad 0 \leq t < T
 $$
 
-이를 바탕으로 off-policy $n$-step Sarsa를 정의할 수 있다. 마찬가지로 state value를 action value로 전환하면 된다. 다만 importance-sampling ratio을 고려할 때 주의할 점이 있다. state value 추정과 action value 추정 시의 trajectory가 달라 importance-sampling ratio가 다르다. action value를 추정할 때는 state action pair $S_t, A_t$가 주어져 있으며, Sarsa이기 때문에 trajectory의 마지막 state에서도 action을 선택한다. 아래는 Sarsa의 $n$-step transition trajectory이다.
+이를 바탕으로 off-policy $n$-step Sarsa를 정의할 수 있다. 마찬가지로 state value를 action value로 전환하면 된다. 다만 importance-sampling ratio을 고려할 때 주의할 점이 있다. **state value 추정과 action value 추정 시의 trajectory가 달라** importance-sampling ratio가 다르다. action value를 추정할 때는 state action pair $S_t, A_t$가 주어져 있으며, Sarsa이기 때문에 trajectory의 마지막 state에서도 action을 선택한다. 아래는 Sarsa의 $n$-step transition trajectory이다.
 
 $$
 S_{t+1}, A_{t+1}, \dots, A_{t+n-1}, S_{t+n}, A_{t+n}
@@ -201,7 +201,7 @@ $$
 Q_{t+n}(S_t, A_t) \doteq Q_{t+n-1}(S_t, A_t) + \alpha \rho_{t+1:t+n}[G_{t:t+n} - Q_{t+n-1}(S_t, A_t)], \quad 0 \leq t < T
 $$
 
-importance-sampling ratio는 subsequent action에 대해서만 고려한다는 사실을 꼭 기억하길 바란다. 아래는 off-policy $n$-step Sarsa 알고리즘이다.
+**importance-sampling ratio는 subsequent action에 대해서만 고려**한다는 사실을 꼭 기억하길 바란다. 아래는 off-policy $n$-step Sarsa 알고리즘이다.
 
 > ##### $\text{Algorithm: Off-policy $n$-step Sarsa for estimating } Q \approx q_\ast \text{ or } q_\pi$  
 > $$
@@ -244,7 +244,7 @@ off-policy Expected Sarsa의 경우 위 알고리즘에서 importance-sampling r
 
 ## $n$-step Tree Backup
 
-importance sampling은 off-policy learning을 가능하게 하지만 분산이 커질 수 있다는 단점이 있다. importance sampling을 사용하지 않고 off-policy learning을 가능하게 해주는 방법이 있는데 바로 *tree-backup algorithm*이다. 아래는 3개의 sample transition과 2개의 sample action을 나타낸 backup diagram이다. 각 state node의 사이드에 달려 있는 action node들은 sampling 시에 선택되지 않은 action을 나타낸다.
+importance sampling은 off-policy learning을 가능하게 하지만 **분산이 커질 수 있다는 단점**이 있다. importance sampling을 사용하지 않고 off-policy learning을 가능하게 해주는 방법이 있는데 바로 *tree-backup algorithm*이다. 아래는 3개의 sample transition과 2개의 sample action을 나타낸 backup diagram이다. 각 state node의 사이드에 달려 있는 action node들은 sampling 시에 선택되지 않은 action을 나타낸다.
 
 ![](/assets/images/rl-sutton-3-step-tree-backup-diagram.png){: w="15%"}
 _Fig 4. 3-step tree-backup diagram.  
