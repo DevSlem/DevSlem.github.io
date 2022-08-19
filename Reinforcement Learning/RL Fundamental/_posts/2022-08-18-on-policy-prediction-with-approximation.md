@@ -2,7 +2,7 @@
 title: "On-policy Prediction with Approximation"
 tags: [RL, AI, Function Approximation RL]
 date: 2022-08-18
-last_modified_at: 2022-08-18
+last_modified_at: 2022-08-20
 sidebar:
     nav: "rl"
 ---
