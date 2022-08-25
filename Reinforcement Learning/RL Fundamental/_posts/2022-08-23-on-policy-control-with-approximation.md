@@ -2,7 +2,7 @@
 title: "On-policy Control with Approximation"
 tags: [RL, AI, Function Approximation RL]
 date: 2022-08-23
-last_modified_at: 2022-08-24
+last_modified_at: 2022-08-25
 sidebar:
     nav: "rl"
 ---
@@ -32,7 +32,7 @@ $$
 > \begin{align*}
 > & \textstyle \text{Input: a differentiable action-value function parameterization } \hat{q} : \mathcal{S} \times \mathcal{A} \times \mathbb{R}^d \rightarrow \mathbb{R} \\
 > & \textstyle \text{Algorithm parameters: step size $\alpha > 0$, small $\epsilon > 0$} \\
-> & \textstyle \text{Initialize value-function weights $\mathbf{w} \in \mathbb{R}^d$ arbitrarily (e.g., $\mathbf{w} = 0$)} \\
+> & \textstyle \text{Initialize value-function weights $\mathbf{w} \in \mathbb{R}^d$ arbitrarily (e.g., $\mathbf{w} = \mathbf{0}$)} \\
 > \\
 > & \textstyle \text{Loop for each episode:} \\
 > & \textstyle \qquad S,A \leftarrow \text{initial state and action of episode (e.g., $\epsilon$-greedy)} \\
@@ -70,7 +70,7 @@ $$
 > & \textstyle \text{Input: a differentiable action-value function parameterization } \hat{q}: \mathcal{S} \times \mathcal{A} \times \mathbb{R}^d \rightarrow \mathbb{R} \\
 > & \textstyle \text{Input: a policy $\pi$ (if estimating $q_\pi$)} \\
 > & \textstyle \text{Algorithm parameters: step size $\alpha > 0$, small $\epsilon > 0$, a positive integer $n$} \\
-> & \textstyle \text{Initialize value-function weights $\mathbf{w} \in \mathbb{R}^d$ arbitrarily (e.g., $\mathbf{w} = 0$)} \\
+> & \textstyle \text{Initialize value-function weights $\mathbf{w} \in \mathbb{R}^d$ arbitrarily (e.g., $\mathbf{w} = \mathbf{0}$)} \\
 > & \textstyle \text{All store and access operations $(S_t, A_t, R_t)$ can take their index mod $n+1$} \\
 > \\
 > & \textstyle \text{Loop for each episode:} \\
@@ -167,7 +167,7 @@ $\delta_t$는 action value에 대한 differential TD error이다. differential s
 > \begin{align*}
 > & \textstyle \text{Input: a differentiable action-value function parameterization } \hat{q} : \mathcal{S} \times \mathcal{A} \times \mathbb{R}^d \rightarrow \mathbb{R} \\
 > & \textstyle \text{Algorithm parameters: step size $\alpha, \beta > 0$, small $\epsilon > 0$} \\
-> & \textstyle \text{Initialize value-function weights $\mathbf{w} \in \mathbb{R}^d$ arbitrarily (e.g., $\mathbf{w}=0$)} \\
+> & \textstyle \text{Initialize value-function weights $\mathbf{w} \in \mathbb{R}^d$ arbitrarily (e.g., $\mathbf{w}=\mathbf{0}$)} \\
 > & \textstyle \text{Initialize average reward estimate $\bar{R} \in \mathbb{R}$ arbitrarily (e.g., $\bar{R} = 0$)} \\
 > \\
 > & \textstyle \text{Initialize state $S$, and action $A$} \\
@@ -187,6 +187,44 @@ $\delta_t$는 action value에 대한 differential TD error이다. differential s
 ## Deprecating the Discounted Setting
 
 곧 추가될 예정.
+
+## Differential Semi-gradient $n$-step Sarsa
+
+$n$-step return을 function approximation이 사용된 differential 형식으로 아래와 같이 바꿀 수 있다.
+
+$$
+G_{t:t+n} \doteq R_{t+1} - \bar{R}_{t+n-1} + \cdots + R_{t+n} - \bar{R}_{t+n-1} + \hat{q}(S_{t+n}, A_{t+n}, \mathbf{w}_{t+n-1})
+$$
+
+$\bar{R}$는 $r(\pi)$의 추정치이며, $n \geq 1$, $t+n < T$이다. $t+n \geq T$이면 $G_{t:t+n} \doteq G_t$이다. differential $n$-step TD error는 아래와 같다.
+
+$$
+\delta_t \doteq G_{t:t+n} - \hat{q}(S_t, A_t, \mathbf{w})
+$$
+
+아래 박스는 전체 알고리즘이다.
+
+> ##### $\text{Algorithm: Differential semi-gradient $n$-step Sarsa for estimating $\hat{q} \approx q_\pi$ or $q_\ast$}$  
+> $$
+> \begin{align*}
+> & \textstyle \text{Input: a differentiable function $\hat{q} : \mathcal{S} \times \mathcal{A} \times \mathbb{R}^d \rightarrow \mathbb{R}$, a policy $\pi$} \\
+> & \textstyle \text{Initialize value-function weights $\mathbf{w} \in \mathbb{R}^d$ arbitrarily (e.g., $\mathbf{w} = \mathbf{0}$)} \\
+> & \textstyle \text{Initialize average-reward estimate $\bar{R} \in \mathbb{R}$ arbitrarily (e.g., $\bar{R} = 0$)} \\
+> & \textstyle \text{Algorithm parameters: step size $\alpha, \beta > 0$, small $\epsilon > 0$, a positive integer $n$} \\
+> & \textstyle \text{All store and access operations $(S_t,A_t,R_t)$ can take their index mode $n+1$} \\
+> \\
+> & \textstyle \text{Initialize and store $S_0$, and $A_0$} \\
+> & \textstyle \text{Loop for each step, } t = 0, 1, 2, \ldots : \\
+> & \textstyle \qquad \text{Take action $A_t$} \\
+> & \textstyle \qquad \text{Observe and store the next reward as $R_{t+1}$ and the next state as $S_{t+1}$} \\
+> & \textstyle \qquad \text{Select and store an action $A_{t+1} \sim \pi(\cdot \vert S_{t+1})$, or $\epsilon$-greedy wrt $\hat{q}(S_{t+1}, \cdot, \mathbf{w})$} \\
+> & \textstyle \qquad \tau \leftarrow t - n + 1 \qquad \text{($\tau$ is the time whose estimate is being updated)} \\
+> & \textstyle \qquad \text{If $\tau \geq 0$:}  \\
+> & \textstyle \qquad\qquad \delta \leftarrow \sum_{i=\tau+1}^{\tau+n} (R_i - \bar{R}) + \hat{q}(S_{\tau+n}, A_{\tau+n}, \mathbf{w}) - \hat{q}(S_\tau, A_\tau, \mathbf{w}) \\
+> & \textstyle \qquad\qquad \bar{R} \leftarrow \bar{R} + \beta \delta \\
+> & \textstyle \qquad\qquad \mathbf{w} \leftarrow \mathbf{w} + \alpha \delta \nabla \hat{q}(S_\tau, A_\tau, \mathbf{w}) \\
+> \end{align*}
+> $$
 
 ## References
 

@@ -94,7 +94,7 @@ $$
 > & \textstyle \text{Input: the policy $\pi$ to be evaluated} \\
 > & \textstyle \text{Input: a differentiable function } \hat{v} : \mathcal{S} \times \mathbb{R}^d \rightarrow \mathbb{R} \\
 > & \textstyle \text{Algorithm parameter: step size } \alpha > 0 \\
-> & \textstyle \text{Initialize value-function weights $\mathbf{w} \in \mathbb{R}^d$ arbitrarily (e.g., $\mathbf{w}=0$)} \\
+> & \textstyle \text{Initialize value-function weights $\mathbf{w} \in \mathbb{R}^d$ arbitrarily (e.g., $\mathbf{w}=\mathbf{0}$)} \\
 > \\
 > & \textstyle \text{Loop forever (for each episode):} \\
 > & \textstyle \qquad \text{Generate an episode } S_0, A_0, R_1, S_1, A_1, \dots, R_T, S_T \text{ using } \pi \\
@@ -119,7 +119,7 @@ bootstrapping 방법은 추정치에 대해서 weight vector $\mathbf{w}_ t$를 
 > & \textstyle \text{Input: the policy $\pi$ to be evaluated} \\
 > & \textstyle \text{Input: a differntiable function $\hat{v} : \mathcal{S}^+ \times \mathbb{R}^d \rightarrow \mathbb{R}$ such that } \hat{v}(\text{terminal}, \cdot) = 0 \\
 > & \textstyle \text{Algorithm parameter: step size } \alpha > 0 \\
-> & \textstyle \text{Initialize value-function weights $\mathbf{w} \in \mathbb{R}^d$ arbitrarily (e.g., $\mathbf{w}=0$)} \\
+> & \textstyle \text{Initialize value-function weights $\mathbf{w} \in \mathbb{R}^d$ arbitrarily (e.g., $\mathbf{w}=\mathbf{0}$)} \\
 > \\
 > & \textstyle \text{Loop for each episode:} \\
 > & \textstyle \qquad \text{Initialize } S \\
