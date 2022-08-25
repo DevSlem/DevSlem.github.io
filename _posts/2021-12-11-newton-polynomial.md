@@ -252,7 +252,7 @@ $$
 > $$
 > \begin{align*}
 > & \textstyle \text{Input: a point set } P = (x_0, y_0), \cdots, (x_{n-1}, y_{n-1}) \text{ of } n \text{ points, target } x \\
-> & \textstyle \text{Initialize a } n \times n \text{ table } T \subset \mathbb{R}, \ T_{i,0} \leftarrow y_i \text{ for all } i \\
+> & \textstyle \text{Initialize a } n \times n \text{ table } T \in \mathbb{R}^{n \times n}, \ T_{i,0} \leftarrow y_i \text{ for all } i \\
 > \\
 > & \textstyle \text{for } j = 1 \text{ to } n - 1 \text{ do} \\
 > & \textstyle \qquad \text{for } i = 0 \text{ to } n - 1 - j \text{ do} \\
