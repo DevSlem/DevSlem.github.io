@@ -1,8 +1,8 @@
 ---
 title: "Off-policy Methods with Approximation"
 tags: [RL, AI, Function Approximation RL]
-date: 2022-08-23
-last_modified_at: 2022-08-25
+date: 2022-08-30
+last_modified_at: 2022-08-31
 sidebar:
     nav: "rl"
 ---
@@ -71,6 +71,52 @@ $$
 > 세 번째 수식에서 [on-policy semi-gradient $n$-step Sarsa](../on-policy-control-with-approximation/#differential-semi-gradient-n-step-sarsa)의 경우 average reward가 오직 $\bar{R}_{t+n-1}$이었는데 여기서는 다르다. off-policy 여서 다른 건지, 책이 오류인 건지 모르겠다.
 {: .prompt-warning}
 
+## The Deadly Triad
+
+off-policy learning에서 발생하는 불안정성과 발산 이슈는 아래 3가지 요소를 모두 결합할 때 발생한다. 이를 *the deadly triad*라고 부른다.
+
+1. Function approximation
+2. Bootstrapping
+3. Off-policy learning
+
+the deadly triad 중 2가지 요소만 결합한다면 불안정성 이슈를 피할 수 있다. 따라서 위 3개 중 하나를 포기할 수 있다면 포기하는 것이 바람직하다.
+
+먼저, *function approximation*은 당연히 포기할 수 없다. function approximation은 매우 큰 state space를 효과적으로 처리할 수 있는 강력한 도구이기 때문이다.
+
+*bootstrapping* 없이 학습이 가능하다는 것은 이미 알려진 사실이다. 가장 대표적인 게 Monte Carlo (MC) Method이다. 그러나 bootstrapping method는 MC method에 비해 훨씬 강력하다. online으로 학습할 수 있기 때문에 훨씬 빠르고, 데이터를 효율적으로 사용하며, continuing task에 적용 가능하다. 또한 MC method는 일반적인 bootstrapping method에 비해 분산이 훨씬 크다. 따라서 bootstrapping 역시 포기하기는 어렵다.
+
+마지막으로 *off-policy learning*이다. 포기할 수 있을까? off-policy method는 target policy와 behavior policy가 다르다. 이는 어디까지나 편리한 거지, 반드시 필요한 것은 아니다. 그러나 더 큰 목표를 가진 강력한 AI를 만들기 위해서는 off-policy learning은 필수적이다. agent가 하나의 behavior policy로부터 선택된 action을 바탕으로 생성된 experience를 통해 여러 개의 target policy를 병렬적으로 학습할 수 있기 때문이다.
+
+## Linear Value-function Geometry
+
+이 섹션에서는 value function approximation을 조금 더 추상적으로 다룰 것이다. 먼저, state-value function $v : \mathcal{S} \rightarrow \mathbb{R}$이 있다고 하자. 또한 function approximation을 사용하는 대부분의 경우, state 개수보다 weight vector $\mathbf{w}$의 weight 개수가 훨씬 작다.
+
+예를 들어 3개의 state $\mathcal{S} = \\{ s_1, s_2, s_3 \\}$와 2개의 weight $\mathbf{w} = (w_1, w_2)^\top$가 있다고 하자. 이 경우 value function $v = [v(s_1), v(s_2), v(s_3)]^\top$를 3차원 공간 내의 점들로 표현되며, weight vector는 하위 공간인 2차원 공간으로 표현된다. 아래는 이에 대한 그림이다.
+
+![](/assets/images/rl-sutton-geometry-of-linear-value-function-approximation.png)
+_Fig 1. The geometry of linear value-function approximation.  
+(Image source: Sec 11.4 Sutton & Barto (2020).)_  
+
+위 그림에서 true value function $v_\pi$는 weight vector $\mathbf{w}$에 의해 표현되는 2차원 공간보다 더 큰 공간에 (여기서는 3차원) 표현된다.
+
+어떤 고정된 policy $\pi$를 고려해보자. true value function $v_\pi$는 위 그림처럼 매우 복잡해서 weight vector $\mathbf{w}$로 정확히 근사하는 것은 불가능하다. 즉, $v_\pi$는 하위 공간에 존재하지 않는다. 그렇다면 표현 가능한 value function 중 어떤 것이 true value function에 가까울까?
+
+먼저, 두 value function 사이의 거리를 측정할 필요가 있다. 두 value function $v_1$, $v_2$가 주어졌졌으며 $v = v_1 - v_2$라고 하자. 또한 특정 state를 조금 더 정확히 추정하기 위해 그 state에 얼마나 집중할 지를 나타내는 state distribution $\mu : \mathcal{S} \rightarrow [0,1]$를 (주로 on-policy distribution이 사용됨) 사용하자. 이 때 value function 사이의 distance를 아래와 같이 norm을 사용해 정의할 수 있다.
+
+$$
+\big\lVert v \big\rVert_\mu^2 \doteq \sum_{s \in \mathcal{S}} \mu(s) v(s)^2
+$$
+
+위 정의를 사용할 때 mean square value error $\overline{\text{VE}}(\mathbf{w}) \doteq \sum_{s \in \mathcal{S}}\mu(s)\Big[v_\pi(s) - \hat{v}(s,\mathbf{w}) \Big]^2$를 $\overline{\text{VE}}(\mathbf{w}) = \lVert v_{\mathbf{w}} - v_\pi \rVert_\mu^2$와 같은 단순한 형태로 나타낼 수 있다.[^5] 어떤 value function의 하위 공간에서의 가장 가까운 표현 가능한 value function은 projection 연산 $\Pi$을 통해 찾을 수 있다.
+
+$$
+\Pi v \doteq v_\mathbf{w} \text{  where  } \mathbf{w} = \underset{\mathbf{w} \in \mathbb{R}^d}{\arg\min} \ \big\lVert v - v_\mathbf{w} \big\rVert_\mu^2
+$$
+
+true value function $v_\pi$에 가장 가까운 표현 가능한 value function은 $v_\pi$의 projection $\Pi v_\pi$로 Fig 1에서 확인할 수 있다.
+
+곧 내용 추가.
+
 ## References
 
 [1] Richard S. Sutton and Andrew G. Barto. Reinforcement Learning: An Introduction; 2nd Edition. 2020.  
@@ -79,5 +125,6 @@ $$
 
 [^1]: DevSlem. [Monte Carlo Methods in RL. Importance Sampling](../monte-carlo-methods/#importance-sampling).  
 [^2]: DevSlem. [On-policy Control with Approximation. Average Reward: A New Problem Setting for Continuing Tasks. Conversion to Average Reward Setting](../on-policy-control-with-approximation/#conversion-to-average-reward-setting).  
-[^3]: DevSlem. [n-step Bootstrapping. $n$-step Off-policy Learning](../n-step-bootstrapping/#n-step-off-policy-learning).
-[^4]: Reinforcement Learning: An Introduction; 2nd Edition. 2020. Sec. 11.1, p.259.
+[^3]: DevSlem. [n-step Bootstrapping. $n$-step Off-policy Learning](../n-step-bootstrapping/#n-step-off-policy-learning).  
+[^4]: Reinforcement Learning: An Introduction; 2nd Edition. 2020. Sec. 11.1, p.259.  
+[^5]: DevSlem. [On-policy Prediction with Approximation. The Prediction Objective ($\overline{\text{VE}}$)](../on-policy-prediction-with-approximation/#the-prediction-objective-overlinetextve).
