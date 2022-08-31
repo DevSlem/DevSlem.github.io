@@ -89,7 +89,7 @@ the deadly triad 중 2가지 요소만 결합한다면 불안정성 이슈를 �
 
 ## Linear Value-function Geometry
 
-이 섹션에서는 value function approximation을 조금 더 추상적으로 다룰 것이다. 먼저, state-value function $v : \mathcal{S} \rightarrow \mathbb{R}$이 있다고 하자. 또한 function approximation을 사용하는 대부분의 경우, state 개수보다 weight vector $\mathbf{w}$의 weight 개수가 훨씬 작다.
+이 섹션에서는 value function approximation을 조금 더 추상적으로 이해해 볼 것이다. 먼저, state-value function $v : \mathcal{S} \rightarrow \mathbb{R}$이 있다고 하자. 또한 function approximation을 사용하는 대부분의 경우, state 개수보다 weight vector $\mathbf{w}$의 weight 개수가 훨씬 작다.
 
 예를 들어 3개의 state $\mathcal{S} = \\{ s_1, s_2, s_3 \\}$와 2개의 weight $\mathbf{w} = (w_1, w_2)^\top$가 있다고 하자. 이 경우 value function $v = [v(s_1), v(s_2), v(s_3)]^\top$를 3차원 공간 내의 점들로 표현되며, weight vector는 하위 공간인 2차원 공간으로 표현된다. 아래는 이에 대한 그림이다.
 
@@ -115,7 +115,7 @@ $$
 
 true value function $v_\pi$에 가장 가까운 표현 가능한 value function은 $v_\pi$의 projection $\Pi v_\pi$로 Fig 1에서 확인할 수 있다.
 
-곧 내용 추가.
+여기서는 이정도 컨셉만 이해하고 넘어간다. 더 자세한 내용은 여기서 소개하기에는 너무 복잡해 궁금하다면 Sutton 책을 참조하기 바란다.[^6]
 
 ## References
 
@@ -127,4 +127,5 @@ true value function $v_\pi$에 가장 가까운 표현 가능한 value function�
 [^2]: DevSlem. [On-policy Control with Approximation. Average Reward: A New Problem Setting for Continuing Tasks. Conversion to Average Reward Setting](../on-policy-control-with-approximation/#conversion-to-average-reward-setting).  
 [^3]: DevSlem. [n-step Bootstrapping. $n$-step Off-policy Learning](../n-step-bootstrapping/#n-step-off-policy-learning).  
 [^4]: Reinforcement Learning: An Introduction; 2nd Edition. 2020. Sec. 11.1, p.259.  
-[^5]: DevSlem. [On-policy Prediction with Approximation. The Prediction Objective ($\overline{\text{VE}}$)](../on-policy-prediction-with-approximation/#the-prediction-objective-overlinetextve).
+[^5]: DevSlem. [On-policy Prediction with Approximation. The Prediction Objective ($\overline{\text{VE}}$)](../on-policy-prediction-with-approximation/#the-prediction-objective-overlinetextve).  
+[^6]: Reinforcement Learning: An Introduction; 2nd Edition. 2020. Sec. 11.4, p.266.  
