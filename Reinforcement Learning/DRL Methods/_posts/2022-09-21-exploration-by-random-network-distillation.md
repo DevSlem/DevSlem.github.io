@@ -47,3 +47,37 @@ exploration bonus를 extrinsic reward와 결합하기 위해 PPO algorithm을 �
 * predictor - observation을 예측
 
 target network $f : \mathcal{O} \rightarrow \mathbb{R}^k$는 observation을 임베딩한다. predictor network $\hat{f} : \mathcal{O} \rightarrow \mathbb{R}^k$는 expected MSE $\lVert \hat{f}(x;\theta) - f(x) \rVert^2$를 최소화하도록 학습된다. prediction error는 predictor가 학습했던 것과 비슷하지 않은 새로운 state에 대해서 높을 것이다. 이를 통해 exploration을 도울 수 있다.
+
+### Prediction Error
+
+prediction error의 요인은 아래와 같다.
+
+1. Amount of training data - 비슷한 example을 적게 관찰 했을 때
+2. Stochasticity - target function이 stochastic할 때
+3. Model misspecification - 반드시 필요한 정보를 놓쳤거나 target function의 복잡성에 맞추기 어려울 때
+4. Learning dynamics - target function을 가장 잘 근사하는 predictor를 찾는데 실패할 때
+
+위 첫번째 요소는 prediction error를 exploration bonus로 사용하게 하는 근본적 요인이다. 만약 예측 문제가 forward dynamics ($s_t$와 $a_t$를 통해 $s_{t+1}$을 예측하는 모델) 일 경우 두번째 요소는 'noisy-TV' 문제를 일으킨다. deterministic한 transition보다 stochastic한 transition 예측이 어려운 건 너무나 당연하다. 또한 세번째 요소 역시 부적절하다.
+
+RND는 target network가 deterministic하게 선택되고, predictor network의 model-class 내에 있기 때문에 두번째와 세번째 요소를 피할 수 있다.
+
+### Combining Intrinsic and Extrinsic Returns
+
+이 논문에서는 intrinsic reward를 non-episodic return으로 좋다고 주장한다. 그 이유는 아래와 같다.
+
+* agent의 intrinsic return은 미래에 발견할 수도 있는 모든 새로운 상태와 관련됨
+* episodic intrinsic reward는 정보 누락을 발생시킴
+* 이 접근법은 인간이 게임을 탐색할 때와 유사함
+* episodic하다면 탐색 도중 game over 시 return이 0이 되기 때문에 risk 감수를 꺼리게 됨
+
+그러나 extrinsic reward에 대해서는 episodic return으로 다루는 것이 좋다고 주장한다. 그 이유는 만약 게임 시작 근처에서 reward를 발견할 경우, 그 reward를 계속 획득하기 위해 의도적으로 game over를 반복적으로 당하도록 악용할 것이다.
+
+그렇다면 어떻게 intrinsic reward $i_t$의 non-episodic stream과 extrinsic reward $e_t$의 episodic stream을 적절히 결합할 수 있을까? 이 논문에서는 extrinsic return $R_E$와 intrinsic return $R_I$ 각각을 더한 $R = R_E + R_I$를 관찰한다. 즉, 각 return에 대한 value $V_E$와 $V_I$를 구한 뒤 value function $V = V_E + V_I$로 결합한다. 이러한 아이디어로 서로 다른 discount factor를 사용한 reward stream을 결합할 수도 있다.
+
+episodic과 non-episodic reward stream의 결합 혹은 서로 다른 discount factor를 가진 reward stream의 결합을 하지 않더라도, value function에 대한 추가적인 supervisory signal의 존재 때문에 여전히 value function을 분리하는 것에 이점이 있다. 이는 특히 exploration bonus에 중요한데 extrinsic reward function은 stationary한 반면 intrinsic reward function은 non-stationary하기 때문이다.
+
+### Reward and Observation Normalization
+
+prediction error를 exploration bonus로 사용할 때, 환경이 달라지거나 다른 순간에 있을 때 reward 크기가 너무 달라진다는 문제가 있다. reward를 일관된 크기로 유지하기 위해 intrinsic return의 표준편차 추정치로 나눔으로써 정규화를 수행한다.
+
+observation도 정규화를 수행한다. observation을 정규화하지 않을 경우 임베딩의 분산이 극도로 낮아 입력에 대한 정보가 전혀 전달되지 않을 수 있다. 이를 위해 observation에 평균을 빼고 표준편차로 나눈 뒤 -5와 5 사이의 범위로 clipping한다. 정규화 파라미터 (평균, 표준편차)는 최적화 시작 전에 random agent로 약간의 step을 통해 초기화된다.
