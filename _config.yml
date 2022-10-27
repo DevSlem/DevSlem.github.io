@@ -157,6 +157,11 @@ defaults:
     values:
       math: true
   - scope:
+      path: Algorithm
+      type: posts
+    values:
+      math: true
+  - scope:
       path: _drafts
     values:
       comments: false

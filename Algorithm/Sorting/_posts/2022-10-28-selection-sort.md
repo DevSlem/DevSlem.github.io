@@ -45,7 +45,7 @@ last_modified_at: 2022-10-28
 > \\
 > & \textstyle \text{Loop for $i = 0, 1, \dots, n - 2$:} \\
 > & \textstyle \qquad m \leftarrow \arg\min A_{i:n} \qquad \text{($A_{l:r}$ is from $A_l$ to $A_{r-1}$)} \\
-> & \textstyle \qquad \text{swap($A_i$, $A_m$)} \\
+> & \textstyle \qquad \text{Swap($A_i$, $A_m$)} \\
 > \end{align*}
 > $$
 
@@ -68,3 +68,7 @@ void selection_sort(int a[], int n)
     }
 }
 ```
+
+## References
+
+[1] Wikipedia. [Selection sort](https://en.wikipedia.org/wiki/Selection_sort).
