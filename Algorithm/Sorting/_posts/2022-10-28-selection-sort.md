@@ -52,10 +52,10 @@ last_modified_at: 2022-10-28
 
 ## C++ Code
 
-위 알고리즘을 구현한 C++는 아래와 같다. $\arg\min$은 내부 루프를 통해 구할 수 있다.
+위 알고리즘을 구현한 C++는 아래와 같다. $\arg\min$은 내부 루프를 통해 구할 수 있다. `dtype`은 임의의 비교 가능한 데이터 타입이며 `swap()` 함수는 두 변수의 값을 교환하는 함수이다.
 
 ```c++
-void selection_sort(int a[], int n)
+void selection_sort(dtype a[], int n)
 {
     for (int i = 0; i < n - 1; i++)
     {

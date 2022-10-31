@@ -33,7 +33,7 @@ _Fig 1. A graphical example of insertion sort.
 
 ## Algorithm
 
-[Key Idea](#key-idea)와 위 예시를 바탕으로 아래와 같이 알고리즘을 작성할 수 있다.
+[Key Idea](#key-idea)와 위 예시를 바탕으로 아래와 같이 알고리즘을 작성할 수 있다. $\mathbf{a}_i$는 `a[i]`와 동일한 의미이다.
 
 > ##### $\text{Algorithm: Insertion sort}$  
 > $$
@@ -53,14 +53,14 @@ _Fig 1. A graphical example of insertion sort.
 
 ## C++ Code
 
-아래는 위 알고리즘을 C++로 작성한 코드이다.
+아래는 위 알고리즘을 C++로 작성한 코드이다. `dtype`은 임의의 비교 가능한 데이터 타입이다.
 
 ```c++
-void insertion_sort(int a[], int n)
+void insertion_sort(dtype a[], int n)
 {
     for (int i = 1; i < n; i++)
     {
-        int x = a[i];
+        dtype x = a[i];
         int j = i - 1;
         while (j >= 0 && a[j] > x)
         {
