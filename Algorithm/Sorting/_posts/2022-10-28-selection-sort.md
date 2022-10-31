@@ -36,16 +36,17 @@ last_modified_at: 2022-10-28
 
 ## Algorithm
 
-아래는 선택 정렬 알고리즘이다. $A_i$는 `A[i]`와 동일한 의미이며, $\arg\min$은 가장 작은 원소의 인덱스를 의미한다.
+아래는 선택 정렬 알고리즘이다. $\mathbf{a}_i$는 `a[i]`와 동일한 의미이며, $\arg\min$은 가장 작은 원소의 인덱스를 의미한다.
 
 > ##### $\text{Algorithm: Selection sort}$  
 > $$
 > \begin{align*}
-> & \textstyle \text{Input: an array $A$, the number of elements $n$} \\
+> & \textstyle \text{Input: an array $\mathbf{a} \in \mathbb{R}^n$, the number of elements $n$} \\
 > \\
-> & \textstyle \text{Loop for $i = 0, 1, \dots, n - 2$:} \\
-> & \textstyle \qquad m \leftarrow \arg\min A_{i:n} \qquad \text{($A_{l:r}$ is from $A_l$ to $A_{r-1}$)} \\
-> & \textstyle \qquad \text{Swap($A_i$, $A_m$)} \\
+> & \textstyle \text{Loop for $i = 0, 1, \dots$:} \\
+> & \textstyle \qquad m \leftarrow \arg\min \mathbf{a}_{i:n} \qquad \text{($\mathbf{a}_{l:r}$ is from $\mathbf{a}_l$ to $\mathbf{a}_{r-1}$)} \\
+> & \textstyle \qquad \text{Swap($\mathbf{a}_i$, $\mathbf{a}_m$)} \\
+> & \textstyle \text{until $i = n-2$} \\
 > \end{align*}
 > $$
 

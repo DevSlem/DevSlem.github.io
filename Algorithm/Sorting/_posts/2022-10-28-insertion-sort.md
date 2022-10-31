@@ -38,15 +38,16 @@ _Fig 1. A graphical example of insertion sort.
 > ##### $\text{Algorithm: Insertion sort}$  
 > $$
 > \begin{align*}
-> & \textstyle \text{Input: an array $A \in \mathbb{R}^n$, the number of elements $n$} \\
+> & \textstyle \text{Input: an array $\mathbf{a} \in \mathbb{R}^n$, the number of elements $n$} \\
 > \\
-> & \textstyle \text{Loop for $i=1,2,\dots,n-1$:} \\
-> & \textstyle \qquad x \leftarrow A_i \\
+> & \textstyle \text{Loop for $i=1,2,\dots$:} \\
+> & \textstyle \qquad x \leftarrow \mathbf{a}_i \\
 > & \textstyle \qquad j \leftarrow i - 1 \\
-> & \textstyle \qquad \text{Loop while $j \geq 0$ and $A_j > x$:} \\
-> & \textstyle \qquad\qquad A_{j+1} \leftarrow A_j \\
+> & \textstyle \qquad \text{Loop while $j \geq 0$ and $\mathbf{a}_j > x$:} \\
+> & \textstyle \qquad\qquad \mathbf{a}_{j+1} \leftarrow \mathbf{a}_j \\
 > & \textstyle \qquad\qquad j \leftarrow j - 1 \\
-> & \textstyle \qquad A_{j+1} \leftarrow x \\
+> & \textstyle \qquad \mathbf{a}_{j+1} \leftarrow x \\
+> & \textstyle \text{until $i=n-1$} \\
 > \end{align*}
 > $$
 

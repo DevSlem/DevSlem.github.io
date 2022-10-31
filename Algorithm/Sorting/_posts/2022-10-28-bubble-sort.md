@@ -42,17 +42,19 @@ $i=3$일 때:
 
 ## Algorithm
 
-위 예시를 바탕으로 알고리즘을 작성해보자. $A_i$는 `A[i]`와 동일한 의미이다.
+위 예시를 바탕으로 알고리즘을 작성해보자. $\mathbf{a}_i$는 `a[i]`와 동일한 의미이다.
 
 > ##### $\text{Algorithm: Bubble sort}$  
 > $$
 > \begin{align*}
-> & \textstyle \text{Input: an array $A$, the number of elements $n$} \\
+> & \textstyle \text{Input: an array $\mathbf{a} \in \mathbb{R}^n$, the number of elements $n$} \\
 > \\
-> & \textstyle \text{Loop for $i = n - 1, n - 2, \dots, 1$:} \\
-> & \textstyle \qquad \text{Loop for $j = 0, 1, \dots, i - 1$:} \\
-> & \textstyle \qquad\qquad \text{If $A_j > A_{j+1}$, then:} \\
-> & \textstyle \qquad\qquad\qquad \text{Swap($A_j$, $A_{j+1}$)} \\
+> & \textstyle \text{Loop for $i = n - 1, n - 2, \dots$:} \\
+> & \textstyle \qquad \text{Loop for $j = 0, 1, \dots$:} \\
+> & \textstyle \qquad\qquad \text{If $\mathbf{a}_j > \mathbf{a}_{j+1}$, then:} \\
+> & \textstyle \qquad\qquad\qquad \text{Swap($\mathbf{a}_j$, $\mathbf{a}_{j+1}$)} \\
+> & \textstyle \qquad \text{until $j=i-1$} \\
+> & \textstyle \text{until $i = 1$} \\
 > \end{align*}
 > $$
 
