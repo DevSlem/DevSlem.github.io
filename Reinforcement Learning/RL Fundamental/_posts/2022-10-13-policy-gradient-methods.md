@@ -6,7 +6,7 @@ sidebar:
     nav: "rl"
 ---
 
-드디어 긴 장정 끝에 대망의 마지막 챕터로 왔다. 그 유명한 policy gradient method에 대해 소개하려고 한다. 드디어 나 오늘 여기서 장렬하게 잠든다.
+드디어 긴 장정 끝에 대망의 마지막 챕터로 왔다. 이번 포스트에서는 그 유명한 policy gradient method에 대해 소개하려고 한다. 길고 긴 여정이 드디어 끝났다.
 
 ## Introduction
 
@@ -213,6 +213,7 @@ state-value function을 학습하는 가장 자연스러운 방법은 semi-gradi
 > & \textstyle \text{Input: a differentiable state-value function parameterization $\hat{v}(s, \mathbf{w})$} \\
 > & \textstyle \text{Parameters: step sizes $\alpha^\mathbf{\theta} > 0$, $\alpha^\mathbf{w} > 0$} \\
 > & \textstyle \text{Initialize policy parameters $\mathbf{\theta} \in \mathbb{R}^{d'}$ and state-value weights $\mathbf{w} \in \mathbb{R}^d$ (e.g., to $\mathbf{0}$)} \\
+> \\
 > & \textstyle \text{Loop forever (for each episode)} \\
 > & \textstyle \qquad \text{Initialize $S$ (first state of episode)} \\
 > & \textstyle \qquad I \leftarrow 1 \\
